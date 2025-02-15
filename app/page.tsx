@@ -217,6 +217,8 @@ export default function SudokuGame() {
     const gridNumbers = gameState.grid.map((row) => row.map((cell) => cell.value || 0));
     const possibleValues = getPossibleValues(gridNumbers, row, col);
 
+    console.log(`possibleValues`, possibleValues);
+
     if (possibleValues.length === 0) return;
 
     const newGrid = deepCopy(gameState.grid);
@@ -254,7 +256,7 @@ export default function SudokuGame() {
       isPaused: false,
       isNotesMode: false,
       mistakes: 0,
-      maxMistakes: 10,
+      maxMistakes: 3,
       score: 0,
       history: [],
     };
