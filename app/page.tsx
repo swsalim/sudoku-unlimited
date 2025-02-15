@@ -1,11 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Difficulty, GameState, Grid } from '@/types';
 
 import { deepCopy } from '@/utils/helpers';
-import { generateGrid, generatePuzzle, getPossibleValues, isValidMove } from '@/utils/sudoku';
+import { generateGrid, getPossibleValues, isValidMove } from '@/utils/sudoku';
 
 import { Cell } from '@/components/cell';
 import { Controls } from '@/components/controls';
