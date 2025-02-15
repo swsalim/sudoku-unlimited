@@ -25,16 +25,19 @@ export function Cell({
   'aria-selected': ariaSelected,
   className,
 }: CellProps) {
-  const baseClasses = 'size-16 flex items-center justify-center border border-gray-300 relative';
+  const baseClasses =
+    'size-16 flex items-center justify-center border border-green-900/30 relative text-green-900';
   const highlightClasses = isSelected
-    ? 'bg-blue-200'
+    ? 'bg-green-300/70'
     : isHighlighted
-      ? 'bg-blue-50'
+      ? 'bg-green-100'
       : isSameNumber
-        ? 'bg-blue-50/50'
+        ? 'bg-green-100/50'
         : '';
-  const errorClasses = cell.hasError ? 'bg-red-100' : '';
-  const valueClasses = cell.isInitial ? 'font-bold' : 'text-blue-600';
+  const errorClasses = cell.hasError ? 'bg-green-100 text-red-500' : '';
+  const valueClasses = cell.isInitial
+    ? 'text-3xl font-medium text-inherit'
+    : 'text-3xl font-medium text-inherit';
 
   return (
     <button
@@ -51,7 +54,7 @@ export function Cell({
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
             <span
               key={num}
-              className="flex h-full w-full items-center justify-center text-xs leading-tight text-gray-500">
+              className="flex h-full w-full items-center justify-center text-sm leading-tight text-green-700">
               {cell.notes.has(num) ? num : ''}
             </span>
           ))}

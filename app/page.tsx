@@ -54,7 +54,7 @@ export default function SudokuGame() {
     if (gameState && gameState.mistakes >= gameState.maxMistakes) {
       setShowGameOver(true);
     }
-  }, [gameState?.mistakes, gameState?.maxMistakes]);
+  }, [gameState]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -109,7 +109,11 @@ export default function SudokuGame() {
       }
       cell.notes = newNotes;
     } else {
-      const gridNumbers = gameState.grid.map((row) => row.map((cell) => cell.value || 0));
+      // Convert the current grid state to numbers for validation
+      const gridNumbers = gameState.grid.map((row) =>
+        row.map((cell) => (cell.value === null ? 0 : cell.value)),
+      );
+      // Check if the move would be valid
       const isValid = isValidMove(gridNumbers, row, col, number);
 
       cell.value = number;
@@ -117,28 +121,33 @@ export default function SudokuGame() {
       cell.hasError = !isValid;
 
       if (!isValid) {
-        oldState.mistakes = gameState.mistakes + 1;
-        oldState.score = Math.max(0, gameState.score - 10);
+        setGameState((prev) =>
+          prev
+            ? {
+                ...prev,
+                grid: newGrid,
+                mistakes: prev.mistakes + 1,
+                score: Math.max(0, prev.score - 10),
+              }
+            : null,
+        );
 
-        if (oldState.mistakes >= gameState.maxMistakes) {
+        if (gameState.mistakes + 1 >= gameState.maxMistakes) {
           setShowGameOver(true);
         }
       } else {
-        oldState.score = gameState.score + 10;
+        setGameState((prev) =>
+          prev
+            ? {
+                ...prev,
+                grid: newGrid,
+                score: prev.score + 10,
+              }
+            : null,
+        );
       }
     }
 
-    setGameState((prev) =>
-      prev
-        ? {
-            ...prev,
-            grid: newGrid,
-            mistakes: oldState.mistakes,
-            score: oldState.score,
-            history: [...prev.history, deepCopy(oldState.grid)],
-          }
-        : null,
-    );
     saveToHistory(oldState);
     // console.log(moveHistory);
     console.log(`gameState`, gameState);
@@ -313,7 +322,7 @@ export default function SudokuGame() {
 
       <div className="flex gap-8">
         <div className="flex-grow">
-          <div className="grid w-fit grid-cols-9 border-4 border-black bg-gray-50">
+          <div className="grid w-fit grid-cols-9 border-4 border-green-900 bg-green-50/50">
             {gameState.grid.map((row, rowIndex) =>
               row.map((cell, colIndex) => {
                 const highlighted = isHighlighted(rowIndex, colIndex);
@@ -335,7 +344,7 @@ export default function SudokuGame() {
                       gameState.selectedCell?.row === rowIndex &&
                       gameState.selectedCell?.col === colIndex
                     }
-                    className={`${colIndex % 3 === 2 && colIndex !== 8 ? 'border-r-4 border-r-black' : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? 'border-b-4 border-b-black' : ''}`}
+                    className={`${colIndex % 3 === 2 && colIndex !== 8 ? 'border-r-4 border-r-green-900' : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? 'border-b-4 border-b-green-900' : ''}`}
                   />
                 );
               }),
@@ -354,11 +363,6 @@ export default function SudokuGame() {
           onNumberClick={handleNumberInput}
           onNewGame={() => startNewGame(gameState.difficulty as Difficulty)}
         />
-      </div>
-
-      <div>
-        <h2>Move History: {moveHistory.length}</h2>
-        <pre>{JSON.stringify(moveHistory, null, 2)}</pre>
       </div>
 
       <AlertDialog open={showGameOver}>

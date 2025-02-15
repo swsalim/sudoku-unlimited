@@ -22,27 +22,27 @@ export function Controls({
   onNewGame,
 }: ControlsProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-grow flex-col gap-4">
       <div className="flex gap-2">
-        <Button variant="outline" size="icon" onClick={onUndo}>
-          <RotateCcw className="h-4 w-4" />
+        <Button variant="outline" size="icon" onClick={onUndo} className="size-12">
+          <RotateCcw className="!size-6" />
         </Button>
-        <Button variant="outline" size="icon" onClick={onErase}>
-          <Eraser className="h-4 w-4" />
+        <Button variant="outline" size="icon" onClick={onErase} className="size-12">
+          <Eraser className="size-8" />
         </Button>
         <Button
           variant="outline"
           size="icon"
           onClick={onToggleNotes}
           data-state={isNotesMode ? 'on' : 'off'}
-          className="relative">
-          <Pencil className="h-4 w-4" />
+          className="relative size-12">
+          <Pencil className="size-8" />
           <span className="absolute -right-4 -top-4 rounded-full bg-gray-100 p-2 text-xs text-gray-700">
             {isNotesMode ? 'ON' : 'OFF'}
           </span>
         </Button>
-        <Button variant="outline" size="icon" onClick={onHint}>
-          <HelpCircle className="h-4 w-4" />
+        <Button variant="outline" size="icon" onClick={onHint} className="size-12">
+          <HelpCircle className="size-8" />
         </Button>
       </div>
 

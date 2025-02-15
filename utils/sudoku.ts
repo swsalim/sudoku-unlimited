@@ -146,20 +146,15 @@ function hasUniqueSolution(grid: number[][]): boolean {
   return solutions.length === 1;
 }
 
-export function isValidMove(
-  grid: number[][],
-  row: number,
-  col: number,
-  num: number
-): boolean {
+export function isValidMove(grid: number[][], row: number, col: number, num: number): boolean {
   // Check row
   for (let x = 0; x < 9; x++) {
-    if (grid[row][x] === num) return false;
+    if (x !== col && grid[row][x] === num) return false;
   }
 
   // Check column
   for (let x = 0; x < 9; x++) {
-    if (grid[x][col] === num) return false;
+    if (x !== row && grid[x][col] === num) return false;
   }
 
   // Check 3x3 box
@@ -167,7 +162,10 @@ export function isValidMove(
   const startCol = Math.floor(col / 3) * 3;
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
-      if (grid[i + startRow][j + startCol] === num) return false;
+      const currentRow = startRow + i;
+      const currentCol = startCol + j;
+      if (currentRow !== row && currentCol !== col && grid[currentRow][currentCol] === num)
+        return false;
     }
   }
 
@@ -175,11 +173,7 @@ export function isValidMove(
 }
 
 // Get all possible values for a cell
-export function getPossibleValues(
-  grid: number[][],
-  row: number,
-  col: number
-): number[] {
+export function getPossibleValues(grid: number[][], row: number, col: number): number[] {
   const possible: number[] = [];
 
   if (grid[row][col] !== 0) return possible;
@@ -246,6 +240,6 @@ export function generateGrid(difficulty: Difficulty): Grid {
       notes: new Set(),
       isInitial: value !== 0,
       hasError: false,
-    }))
+    })),
   );
 }
