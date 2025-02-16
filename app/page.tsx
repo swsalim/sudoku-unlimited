@@ -71,8 +71,8 @@ export default function HomePage() {
 
           <h3>5. Stay Patient and Logical</h3>
           <p>
-            Sudoku is a game of logic, not guessing. If you're stuck, take a step back, double-check
-            your work, and look for new patterns.
+            Sudoku is a game of logic, not guessing. If you&rsquo;re stuck, take a step back,
+            double-check your work, and look for new patterns.
           </p>
 
           <h2>Ready to Play?</h2>
