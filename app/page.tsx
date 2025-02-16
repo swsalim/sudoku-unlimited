@@ -79,7 +79,7 @@ export default function SudokuGame() {
   };
 
   const saveToHistory = (state: GameMove) => {
-    console.log(deepCopy(state));
+    // console.log(deepCopy(state));
     setMoveHistory((prev) => [...prev, deepCopy(state)]);
   };
 
@@ -150,7 +150,7 @@ export default function SudokuGame() {
 
     saveToHistory(oldState);
     // console.log(moveHistory);
-    console.log(`gameState`, gameState);
+    // console.log(`gameState`, gameState);
   };
 
   const handleUndo = () => {
@@ -159,8 +159,8 @@ export default function SudokuGame() {
     const newHistory = [...moveHistory];
     const previousState = newHistory[newHistory.length - 1];
 
-    console.log(`previousState`, previousState);
-    console.log(`newHistory`, newHistory);
+    // console.log(`previousState`, previousState);
+    // console.log(`newHistory`, newHistory);
     setGameState((prev) =>
       prev
         ? {
@@ -217,7 +217,7 @@ export default function SudokuGame() {
     const gridNumbers = gameState.grid.map((row) => row.map((cell) => cell.value || 0));
     const possibleValues = getPossibleValues(gridNumbers, row, col);
 
-    console.log(`possibleValues`, possibleValues);
+    // console.log(`possibleValues`, possibleValues);
 
     if (possibleValues.length === 0) return;
 
