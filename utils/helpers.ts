@@ -18,3 +18,11 @@ export function deepCopy<T>(obj: T): T {
 
   return copy;
 }
+
+export function absoluteUrl(input = '') {
+  return process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}${input}`
+    : process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${input}`
+      : `${process.env.NEXT_PUBLIC_BASE_URL}${input}`;
+}
