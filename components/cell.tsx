@@ -26,7 +26,7 @@ export function Cell({
   className,
 }: CellProps) {
   const baseClasses =
-    'size-16 flex items-center justify-center border border-green-900/30 relative text-green-900';
+    'size-10 sm:size-12 md:size-16 flex items-center justify-center border border-green-900/30 relative text-green-900';
   const highlightClasses = isSelected
     ? 'bg-green-300/70'
     : isHighlighted
@@ -36,8 +36,8 @@ export function Cell({
         : '';
   const errorClasses = cell.hasError ? 'bg-green-100 text-red-500' : '';
   const valueClasses = cell.isInitial
-    ? 'text-3xl font-medium text-inherit'
-    : 'text-3xl font-medium text-inherit';
+    ? 'text-xl sm:text-3xl font-medium text-inherit'
+    : 'text-xl sm:text-3xl font-medium text-inherit';
 
   return (
     <button

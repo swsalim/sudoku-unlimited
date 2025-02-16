@@ -322,36 +322,34 @@ export default function SudokuGame() {
         }
       />
 
-      <div className="flex gap-8">
-        <div className="flex-grow">
-          <div className="grid w-fit grid-cols-9 border-4 border-green-900 bg-green-50/50">
-            {gameState.grid.map((row, rowIndex) =>
-              row.map((cell, colIndex) => {
-                const highlighted = isHighlighted(rowIndex, colIndex);
-                const sameNumber = isSameNumber(rowIndex, colIndex);
-                return (
-                  <Cell
-                    key={`${rowIndex}-${colIndex}`}
-                    cell={cell}
-                    isSelected={
-                      gameState.selectedCell?.row === rowIndex &&
-                      gameState.selectedCell?.col === colIndex
-                    }
-                    isHighlighted={highlighted}
-                    isSameNumber={sameNumber}
-                    onClick={() => handleCellClick(rowIndex, colIndex)}
-                    tabIndex={0}
-                    role="gridcell"
-                    aria-selected={
-                      gameState.selectedCell?.row === rowIndex &&
-                      gameState.selectedCell?.col === colIndex
-                    }
-                    className={`${colIndex % 3 === 2 && colIndex !== 8 ? 'border-r-4 border-r-green-900' : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? 'border-b-4 border-b-green-900' : ''}`}
-                  />
-                );
-              }),
-            )}
-          </div>
+      <div className="flex flex-col gap-5 sm:flex-row sm:gap-8">
+        <div className="grid w-fit grid-cols-9 border-4 border-green-900 bg-green-50/50">
+          {gameState.grid.map((row, rowIndex) =>
+            row.map((cell, colIndex) => {
+              const highlighted = isHighlighted(rowIndex, colIndex);
+              const sameNumber = isSameNumber(rowIndex, colIndex);
+              return (
+                <Cell
+                  key={`${rowIndex}-${colIndex}`}
+                  cell={cell}
+                  isSelected={
+                    gameState.selectedCell?.row === rowIndex &&
+                    gameState.selectedCell?.col === colIndex
+                  }
+                  isHighlighted={highlighted}
+                  isSameNumber={sameNumber}
+                  onClick={() => handleCellClick(rowIndex, colIndex)}
+                  tabIndex={0}
+                  role="gridcell"
+                  aria-selected={
+                    gameState.selectedCell?.row === rowIndex &&
+                    gameState.selectedCell?.col === colIndex
+                  }
+                  className={`${colIndex % 3 === 2 && colIndex !== 8 ? 'border-r-4 border-r-green-900' : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? 'border-b-4 border-b-green-900' : ''}`}
+                />
+              );
+            }),
+          )}
         </div>
 
         <Controls
