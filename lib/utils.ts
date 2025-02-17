@@ -20,6 +20,7 @@ export function deepCopy<T>(obj: T): T {
 
   const copy = {} as T;
   Object.keys(obj as object).forEach((key) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     copy[key as keyof T] = deepCopy((obj as any)[key]);
   });
 
