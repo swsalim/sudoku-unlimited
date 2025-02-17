@@ -24,25 +24,25 @@ export function Controls({
   return (
     <div className="flex flex-grow flex-col gap-4">
       <div className="flex gap-2">
-        <Button variant="outline" size="icon" onClick={onUndo} className="h-14 w-full">
-          <RotateCcw className="!size-6" />
+        <Button variant="outline" size="icon" onClick={onUndo} className="h-10 w-full md:h-14">
+          <RotateCcw className="md:!size-6" />
         </Button>
-        <Button variant="outline" size="icon" onClick={onErase} className="h-14 w-full">
-          <Eraser className="!size-6" />
+        <Button variant="outline" size="icon" onClick={onErase} className="h-10 w-full md:h-14">
+          <Eraser className="md:!size-6" />
         </Button>
         <Button
           variant="outline"
           size="icon"
           onClick={onToggleNotes}
           data-state={isNotesMode ? 'on' : 'off'}
-          className="relative h-14 w-full">
-          <Pencil className="!size-6" />
+          className="relative h-10 w-full md:h-14">
+          <Pencil className="md:!size-6" />
           <span className="absolute -right-4 -top-4 rounded-full bg-gray-100 p-2 text-xs text-gray-700">
             {isNotesMode ? 'ON' : 'OFF'}
           </span>
         </Button>
-        <Button variant="outline" size="icon" onClick={onHint} className="h-14 w-full">
-          <HelpCircle className="!size-6" />
+        <Button variant="outline" size="icon" onClick={onHint} className="h-10 w-full md:h-14">
+          <HelpCircle className="md:!size-6" />
         </Button>
       </div>
 

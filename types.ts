@@ -20,6 +20,7 @@ export interface GameState {
   difficulty: string;
   isPaused: boolean;
   history: Grid[];
+  solution: SudokuSolution;
 }
 
 // export type Difficulty =
@@ -38,3 +39,5 @@ export enum Difficulty {
   MASTER = 'Master',
   EXTREME = 'Extreme',
 }
+
+export type SudokuSolution = number[][];

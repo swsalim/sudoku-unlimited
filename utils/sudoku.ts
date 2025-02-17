@@ -1,4 +1,5 @@
-import { Difficulty, Grid } from '../types';
+import { Difficulty, Grid, SudokuSolution } from '../types';
+import { deepCopy } from './helpers';
 
 // Helper to shuffle array
 function shuffleArray<T>(array: T[]): T[] {
@@ -25,43 +26,47 @@ function generateSolution(): number[][] {
     }
   }
 
-  // Fill the rest using backtracking
-  fillRemaining(grid, 0, 3);
+  // Fill the rest using backtracking (iterative approach)
+  if (!fillRemaining(grid)) {
+    // If filling fails, try again
+    return generateSolution();
+  }
+
   return grid;
 }
 
-function fillRemaining(grid: number[][], row: number, col: number): boolean {
-  if (col >= 9 && row < 8) {
-    row++;
-    col = 0;
-  }
-  if (row >= 9 && col >= 9) return true;
-  if (row < 3) {
-    if (col < 3) col = 3;
-  } else if (row < 6) {
-    if (col === Math.floor(row / 3) * 3) col += 3;
-  } else {
-    if (col === 6) {
-      row++;
-      col = 0;
-      if (row >= 9) return true;
+function fillRemaining(grid: number[][]): boolean {
+  const emptyCell = findEmptyCell(grid);
+  if (!emptyCell) return true; // puzzle is solved
+
+  const [row, col] = emptyCell;
+  const numbers = shuffleArray([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+  for (const num of numbers) {
+    if (isValidPlacement(grid, row, col, num)) {
+      grid[row][col] = num;
+      if (fillRemaining(grid)) return true;
+      grid[row][col] = 0; // backtrack
     }
   }
 
-  for (let num = 1; num <= 9; num++) {
-    if (isValidMove(grid, row, col, num)) {
-      grid[row][col] = num;
-      if (fillRemaining(grid, row, col + 1)) return true;
-      grid[row][col] = 0;
-    }
-  }
   return false;
 }
 
+function findEmptyCell(grid: number[][]): [number, number] | null {
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      if (grid[row][col] === 0) {
+        return [row, col];
+      }
+    }
+  }
+  return null;
+}
+
 // Create puzzle by removing numbers from solution
-export function generatePuzzle(difficulty: Difficulty): number[][] {
-  const solution = generateSolution();
-  const puzzle = solution.map((row) => [...row]);
+function generatePuzzle(solution: SudokuSolution, difficulty: Difficulty): number[][] {
+  const puzzle = deepCopy(solution);
 
   // Define cells to remove based on difficulty
   const cellsToRemove = {
@@ -81,7 +86,7 @@ export function generatePuzzle(difficulty: Difficulty): number[][] {
     }
   }
 
-  // Randomly remove numbers while ensuring unique solution
+  // Randomly remove numbers
   shuffleArray(positions);
   let removed = 0;
   for (const [row, col] of positions) {
@@ -109,32 +114,15 @@ function hasUniqueSolution(grid: number[][]): boolean {
   function solve(grid: number[][]): void {
     if (solutions.length > 1) return; // Stop if multiple solutions found
 
-    let row = -1;
-    let col = -1;
-    let isEmpty = false;
-
-    // Find empty cell
-    for (let i = 0; i < 9; i++) {
-      for (let j = 0; j < 9; j++) {
-        if (grid[i][j] === 0) {
-          row = i;
-          col = j;
-          isEmpty = true;
-          break;
-        }
-      }
-      if (isEmpty) break;
-    }
-
-    // No empty cells means we found a solution
-    if (!isEmpty) {
+    const emptyCell = findEmptyCell(grid);
+    if (!emptyCell) {
       solutions.push(grid.map((row) => [...row]));
       return;
     }
 
-    // Try numbers 1-9
+    const [row, col] = emptyCell;
     for (let num = 1; num <= 9; num++) {
-      if (isValidMove(grid, row, col, num)) {
+      if (isValidPlacement(grid, row, col, num)) {
         grid[row][col] = num;
         solve(grid);
         grid[row][col] = 0;
@@ -146,15 +134,32 @@ function hasUniqueSolution(grid: number[][]): boolean {
   return solutions.length === 1;
 }
 
-export function isValidMove(grid: number[][], row: number, col: number, num: number): boolean {
+export function isValidMove(
+  grid: number[][],
+  row: number,
+  col: number,
+  num: number,
+  solution: SudokuSolution,
+): boolean {
+  // First, check if the move conflicts with existing numbers in the row, column, or 3x3 box
+  if (!isValidPlacement(grid, row, col, num)) {
+    return false;
+  }
+
+  // Then, check if the move matches the solution
+  return solution[row][col] === num;
+}
+
+// Add this helper function to check placement without considering the solution
+function isValidPlacement(grid: number[][], row: number, col: number, num: number): boolean {
   // Check row
   for (let x = 0; x < 9; x++) {
-    if (x !== col && grid[row][x] === num) return false;
+    if (grid[row][x] === num) return false;
   }
 
   // Check column
   for (let x = 0; x < 9; x++) {
-    if (x !== row && grid[x][col] === num) return false;
+    if (grid[x][col] === num) return false;
   }
 
   // Check 3x3 box
@@ -162,10 +167,7 @@ export function isValidMove(grid: number[][], row: number, col: number, num: num
   const startCol = Math.floor(col / 3) * 3;
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
-      const currentRow = startRow + i;
-      const currentCol = startCol + j;
-      if (currentRow !== row && currentCol !== col && grid[currentRow][currentCol] === num)
-        return false;
+      if (grid[i + startRow][j + startCol] === num) return false;
     }
   }
 
@@ -179,7 +181,7 @@ export function getPossibleValues(grid: number[][], row: number, col: number): n
   if (grid[row][col] !== 0) return possible;
 
   for (let num = 1; num <= 9; num++) {
-    if (isValidMove(grid, row, col, num)) {
+    if (isValidPlacement(grid, row, col, num)) {
       possible.push(num);
     }
   }
@@ -189,57 +191,29 @@ export function getPossibleValues(grid: number[][], row: number, col: number): n
 
 // Check if the entire grid is valid
 export function isValidGrid(grid: number[][]): boolean {
-  // Check rows
   for (let row = 0; row < 9; row++) {
-    const seen = new Set();
     for (let col = 0; col < 9; col++) {
       const num = grid[row][col];
-      if (num !== 0) {
-        if (seen.has(num)) return false;
-        seen.add(num);
+      if (num !== 0 && !isValidPlacement(grid, row, col, num)) {
+        return false;
       }
     }
   }
-
-  // Check columns
-  for (let col = 0; col < 9; col++) {
-    const seen = new Set();
-    for (let row = 0; row < 9; row++) {
-      const num = grid[row][col];
-      if (num !== 0) {
-        if (seen.has(num)) return false;
-        seen.add(num);
-      }
-    }
-  }
-
-  // Check boxes
-  for (let box = 0; box < 9; box++) {
-    const seen = new Set();
-    const rowStart = Math.floor(box / 3) * 3;
-    const colStart = (box % 3) * 3;
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        const num = grid[rowStart + i][colStart + j];
-        if (num !== 0) {
-          if (seen.has(num)) return false;
-          seen.add(num);
-        }
-      }
-    }
-  }
-
   return true;
 }
 
-export function generateGrid(difficulty: Difficulty): Grid {
-  const puzzle = generatePuzzle(difficulty);
-  return puzzle.map((row) =>
-    row.map((value) => ({
-      value: value === 0 ? null : value,
-      notes: new Set(),
-      isInitial: value !== 0,
-      hasError: false,
-    })),
-  );
+export function generateGrid(difficulty: Difficulty): { grid: Grid; solution: SudokuSolution } {
+  const solution = generateSolution();
+  const puzzle = generatePuzzle(solution, difficulty);
+  return {
+    grid: puzzle.map((row) =>
+      row.map((value) => ({
+        value: value === 0 ? null : value,
+        notes: new Set(),
+        isInitial: value !== 0,
+        hasError: false,
+      })),
+    ),
+    solution,
+  };
 }

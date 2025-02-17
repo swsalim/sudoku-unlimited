@@ -114,13 +114,22 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
         newNotes.add(number);
       }
       cell.notes = newNotes;
+
+      setGameState((prev) =>
+        prev
+          ? {
+              ...prev,
+              grid: newGrid,
+            }
+          : null,
+      );
     } else {
       // Convert the current grid state to numbers for validation
       const gridNumbers = gameState.grid.map((row) =>
         row.map((cell) => (cell.value === null ? 0 : cell.value)),
       );
-      // Check if the move would be valid
-      const isValid = isValidMove(gridNumbers, row, col, number);
+      // Check if the move is valid
+      const isValid = isValidMove(gridNumbers, row, col, number, gameState.solution);
 
       cell.value = number;
       cell.notes = new Set();
@@ -155,8 +164,6 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     }
 
     saveToHistory(oldState);
-    // console.log(moveHistory);
-    // console.log(`gameState`, gameState);
   };
 
   const handleUndo = () => {
@@ -253,10 +260,11 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
   };
 
   const startNewGame = (difficulty: Difficulty) => {
-    const newGrid = generateGrid(difficulty);
+    const { grid, solution } = generateGrid(difficulty);
 
     const initialState: GameState = {
-      grid: newGrid,
+      grid,
+      solution,
       difficulty,
       selectedCell: null,
       isPaused: false,
@@ -270,7 +278,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     setGameState(initialState);
     setMoveHistory([
       {
-        grid: newGrid,
+        grid,
         selectedCell: null,
         isNotesMode: false,
         mistakes: 0,
@@ -319,7 +327,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     <div className="">
       <div className="mx-auto max-w-4xl p-4">
         <GameHeader
-          difficulty={gameState.difficulty}
+          difficulty={gameState.difficulty.toLowerCase()}
           mistakes={gameState.mistakes}
           maxMistakes={gameState.maxMistakes}
           score={gameState.score}
