@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
 
+import { AnalyticsWrapper } from '@/components/Analytics';
 import Footer from '@/components/footer';
 
 import './globals.css';
@@ -33,6 +34,7 @@ export default function RootLayout({
         className={`${quicksand.variable} font-sans font-medium antialiased`}
         suppressHydrationWarning>
         {children}
+        <AnalyticsWrapper />
         <Footer />
       </body>
     </html>
