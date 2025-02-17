@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
 
-import { AnalyticsWrapper } from '@/components/Analytics';
+import { AnalyticsWrapper } from '@/components/analytics';
 import Footer from '@/components/footer';
 
 import './globals.css';
