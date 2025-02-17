@@ -1,13 +1,11 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { useMediaQuery } from '@/hooks/use-media-query';
-import { Difficulty } from '@/types';
 import { Pause, Play } from 'lucide-react';
 
+import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { cn } from '@/lib/utils';
-
-import { absoluteUrl } from '@/utils/helpers';
+import { absoluteUrl } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -19,6 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+
+import { Difficulty } from '../types';
 
 interface GameHeaderProps {
   difficulty: string;
@@ -47,14 +47,14 @@ export function GameHeader({
     <div className="mb-4 flex items-center justify-between">
       <div className="flex items-center gap-2 md:gap-4">
         {!isMobile && (
-          <span className="flex flex-row items-center gap-2 text-sm text-muted-foreground">
+          <span className="flex flex-row items-center gap-2 text-sm font-medium text-muted-foreground">
             Difficulty:
             <div className="flex">
               {validDifficulties.map((d) => (
                 <Button key={d} variant="ghost" asChild>
                   <Link
                     href={absoluteUrl(`/${d}`)}
-                    className={cn(d === difficulty && 'font-bold', 'capitalize')}>
+                    className={cn(d === difficulty && 'font-black text-gray-900', 'capitalize')}>
                     {d}
                   </Link>
                 </Button>
@@ -81,14 +81,14 @@ export function GameHeader({
             </Select>
           </div>
         )}
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm font-semibold text-muted-foreground">
           Mistakes:{' '}
-          <span className="font-semibold text-foreground">
+          <span className="font-black text-foreground">
             {mistakes}/{maxMistakes}
           </span>
         </span>
-        <span className="text-sm text-muted-foreground">
-          Score: <span className="font-semibold text-foreground">{score}</span>
+        <span className="text-sm font-semibold text-muted-foreground">
+          Score: <span className="font-black text-foreground">{score}</span>
         </span>
       </div>
       <div className="flex items-center gap-0 md:gap-2">

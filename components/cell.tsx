@@ -36,8 +36,8 @@ export function Cell({
         : '';
   const errorClasses = cell.hasError ? 'bg-green-100 text-red-500' : '';
   const valueClasses = cell.isInitial
-    ? 'text-xl sm:text-3xl font-medium text-inherit'
-    : 'text-xl sm:text-3xl font-medium text-inherit';
+    ? 'text-xl sm:text-3xl font-semibold text-inherit'
+    : 'text-xl sm:text-3xl font-semibold text-inherit';
 
   return (
     <button

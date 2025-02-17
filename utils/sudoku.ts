@@ -1,5 +1,6 @@
-import { Difficulty, Grid, SudokuSolution } from '../types';
-import { deepCopy } from './helpers';
+import { Difficulty, Grid, SudokuSolution } from '@/types';
+
+import { deepCopy } from '@/lib/utils';
 
 // Helper to shuffle array
 function shuffleArray<T>(array: T[]): T[] {

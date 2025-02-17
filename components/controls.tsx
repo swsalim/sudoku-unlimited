@@ -51,7 +51,7 @@ export function Controls({
           <Button
             key={num}
             variant="outline"
-            className="h-9 w-9 text-xl font-medium sm:h-16 sm:w-full"
+            className="h-9 w-9 text-xl font-semibold sm:h-16 sm:w-full sm:text-2xl"
             onClick={() => onNumberClick(num)}>
             {num}
           </Button>

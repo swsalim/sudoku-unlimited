@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Difficulty, GameState, Grid } from '@/types';
 
-import { deepCopy } from '@/utils/helpers';
+import { deepCopy } from '@/lib/utils';
+
 import { generateGrid, getPossibleValues, isValidMove } from '@/utils/sudoku';
 
 import { Cell } from '@/components/cell';
@@ -62,109 +63,98 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     }
   }, [gameState]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!gameState || gameState.isPaused || !gameState.selectedCell) return;
-
-      if (e.key >= '1' && e.key <= '9') {
-        handleNumberInput(Number.parseInt(e.key));
-      } else if (e.key === 'Delete' || e.key === 'Backspace') {
-        handleErase();
-      } else if (e.key.toLowerCase() === 'n') {
-        setGameState((prev) => (prev ? { ...prev, isNotesMode: !prev.isNotesMode } : null));
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [gameState]);
-
   const handleCellClick = (row: number, col: number) => {
     if (!gameState || gameState.isPaused) return;
     setGameState((prev) => (prev ? { ...prev, selectedCell: { row, col } } : null));
   };
 
-  const saveToHistory = (state: GameMove) => {
-    // console.log(deepCopy(state));
-    setMoveHistory((prev) => [...prev, deepCopy(state)]);
-  };
+  const saveToHistory = useCallback(
+    (state: GameMove) => {
+      // console.log(deepCopy(state));
+      setMoveHistory((prev) => [...prev, deepCopy(state)]);
+    },
+    [setMoveHistory],
+  );
 
-  const handleNumberInput = (number: number) => {
-    if (!gameState || !gameState.selectedCell || gameState.isPaused) return;
+  const handleNumberInput = useCallback(
+    (number: number) => {
+      if (!gameState || !gameState.selectedCell || gameState.isPaused) return;
 
-    const { row, col } = gameState.selectedCell;
-    const newGrid = deepCopy(gameState.grid);
-    const cell = newGrid[row][col];
+      const { row, col } = gameState.selectedCell;
+      const newGrid = deepCopy(gameState.grid);
+      const cell = newGrid[row][col];
 
-    if (cell.isInitial) return;
+      if (cell.isInitial) return;
 
-    const oldState: GameMove = {
-      grid: deepCopy(gameState.grid),
-      selectedCell: { ...gameState.selectedCell },
-      isNotesMode: gameState.isNotesMode,
-      mistakes: gameState.mistakes,
-      score: gameState.score,
-    };
+      const oldState: GameMove = {
+        grid: deepCopy(gameState.grid),
+        selectedCell: { ...gameState.selectedCell },
+        isNotesMode: gameState.isNotesMode,
+        mistakes: gameState.mistakes,
+        score: gameState.score,
+      };
 
-    if (gameState.isNotesMode) {
-      const newNotes = new Set(cell.notes);
-      if (newNotes.has(number)) {
-        newNotes.delete(number);
-      } else {
-        newNotes.add(number);
-      }
-      cell.notes = newNotes;
-
-      setGameState((prev) =>
-        prev
-          ? {
-              ...prev,
-              grid: newGrid,
-            }
-          : null,
-      );
-    } else {
-      // Convert the current grid state to numbers for validation
-      const gridNumbers = gameState.grid.map((row) =>
-        row.map((cell) => (cell.value === null ? 0 : cell.value)),
-      );
-      // Check if the move is valid
-      const isValid = isValidMove(gridNumbers, row, col, number, gameState.solution);
-
-      cell.value = number;
-      cell.notes = new Set();
-      cell.hasError = !isValid;
-
-      if (!isValid) {
-        setGameState((prev) =>
-          prev
-            ? {
-                ...prev,
-                grid: newGrid,
-                mistakes: prev.mistakes + 1,
-                score: Math.max(0, prev.score - 10),
-              }
-            : null,
-        );
-
-        if (gameState.mistakes + 1 >= gameState.maxMistakes) {
-          setShowGameOver(true);
+      if (gameState.isNotesMode) {
+        const newNotes = new Set(cell.notes);
+        if (newNotes.has(number)) {
+          newNotes.delete(number);
+        } else {
+          newNotes.add(number);
         }
-      } else {
+        cell.notes = newNotes;
+
         setGameState((prev) =>
           prev
             ? {
                 ...prev,
                 grid: newGrid,
-                score: prev.score + 10,
               }
             : null,
         );
-      }
-    }
+      } else {
+        // Convert the current grid state to numbers for validation
+        const gridNumbers = gameState.grid.map((row) =>
+          row.map((cell) => (cell.value === null ? 0 : cell.value)),
+        );
+        // Check if the move is valid
+        const isValid = isValidMove(gridNumbers, row, col, number, gameState.solution);
 
-    saveToHistory(oldState);
-  };
+        cell.value = number;
+        cell.notes = new Set();
+        cell.hasError = !isValid;
+
+        if (!isValid) {
+          setGameState((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  grid: newGrid,
+                  mistakes: prev.mistakes + 1,
+                  score: Math.max(0, prev.score - 10),
+                }
+              : null,
+          );
+
+          if (gameState.mistakes + 1 >= gameState.maxMistakes) {
+            setShowGameOver(true);
+          }
+        } else {
+          setGameState((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  grid: newGrid,
+                  score: prev.score + 10,
+                }
+              : null,
+          );
+        }
+      }
+
+      saveToHistory(oldState);
+    },
+    [gameState, setGameState, saveToHistory],
+  );
 
   const handleUndo = () => {
     if (moveHistory.length <= 1) return; // Cannot undo initial state
@@ -191,7 +181,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     setMoveHistory(newHistory);
   };
 
-  const handleErase = () => {
+  const handleErase = useCallback(() => {
     if (!gameState || gameState.isPaused || !gameState.selectedCell) return;
     const { row, col } = gameState.selectedCell;
 
@@ -210,7 +200,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
 
     setGameState((prev) => (prev ? { ...prev, grid: newGrid } : null));
     saveToHistory(oldState);
-  };
+  }, [gameState, setGameState, saveToHistory]);
 
   const handleHint = () => {
     if (!gameState || !gameState.selectedCell) return;
@@ -258,6 +248,23 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
       score: newScore,
     });
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!gameState || gameState.isPaused || !gameState.selectedCell) return;
+
+      if (e.key >= '1' && e.key <= '9') {
+        handleNumberInput(Number.parseInt(e.key));
+      } else if (e.key === 'Delete' || e.key === 'Backspace') {
+        handleErase();
+      } else if (e.key.toLowerCase() === 'n') {
+        setGameState((prev) => (prev ? { ...prev, isNotesMode: !prev.isNotesMode } : null));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [gameState, handleErase, handleNumberInput]);
 
   const startNewGame = (difficulty: Difficulty) => {
     const { grid, solution } = generateGrid(difficulty);

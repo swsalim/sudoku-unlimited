@@ -1,5 +1,6 @@
 import { Difficulty } from '@/types';
 
+import { Container } from '@/components/container';
 import { SudokuGame } from '@/components/sudoku-game';
 
 export default function HomePage() {
@@ -8,7 +9,7 @@ export default function HomePage() {
       <SudokuGame initialDifficulty={Difficulty.EASY} />
 
       <section className="prose mt-12 max-w-none bg-green-50/50">
-        <div className="mx-auto max-w-4xl px-4 py-8">
+        <Container>
           <h1>How to Play Sudoku</h1>
 
           <p>
@@ -80,7 +81,7 @@ export default function HomePage() {
             Now that you know the basics, start with an easy Sudoku puzzle and gradually challenge
             yourself with harder levels. Have fun solving!
           </p>
-        </div>
+        </Container>
       </section>
       {/*
       <AlertDialog open={showGameOver}>

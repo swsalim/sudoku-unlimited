@@ -1,17 +1,12 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Quicksand } from 'next/font/google';
 
 import Footer from '@/components/footer';
 
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const quicksand = Quicksand({
+  variable: '--font-quicksand',
   subsets: ['latin'],
 });
 
@@ -35,7 +30,7 @@ export default function RootLayout({
           async></script>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${quicksand.variable} font-sans font-medium antialiased`}
         suppressHydrationWarning>
         {children}
         <Footer />

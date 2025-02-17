@@ -1,3 +1,17 @@
+export type SiteConfig = {
+  title: string;
+  description: string;
+  siteName: string;
+  url: URL;
+  openGraph: {
+    image: string;
+    imageAlt: string;
+    width: string;
+    height: string;
+  };
+  creator: string;
+};
+
 export type CellValue = number | null;
 export type Notes = Set<number>;
 

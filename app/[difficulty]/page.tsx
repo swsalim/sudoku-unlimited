@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 
 import { Difficulty } from '@/types';
 
-import { absoluteUrl } from '@/utils/helpers';
+import { absoluteUrl } from '@/lib/utils';
 
 import { SudokuGame } from '@/components/sudoku-game';
 
