@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
 
+import { absoluteUrl } from '@/lib/utils';
+
 import { AnalyticsWrapper } from '@/components/analytics';
 import Footer from '@/components/footer';
 
@@ -15,6 +17,9 @@ export const metadata: Metadata = {
   title: 'Play Free Sudoku Unlimited online - solve web sudoku puzzles',
   description:
     'Play free Sudoku online from Easy to Expert level on Sudoku.com. Select a difficulty level of a web sudoku puzzle to challenge yourself and enjoy the game!',
+  alternates: {
+    canonical: absoluteUrl('/'),
+  },
 };
 
 export default function RootLayout({
