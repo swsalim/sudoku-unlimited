@@ -14,7 +14,7 @@ export default function Footer({ className, ...props }: FooterProps) {
         <p className="text-gray-700">
           &copy; {currentYear}{' '}
           <a
-            href="https://www.yuurrific.com?ref=flipanimage"
+            href="https://www.yuurrific.com?ref=sudokuunlimited"
             className="font-semibold text-violet-700 transition hover:text-violet-900"
             target="_blank">
             Yuurrific

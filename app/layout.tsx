@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
 
-import { absoluteUrl } from '@/lib/utils';
+import { siteConfig } from '@/config/site';
 
 import { AnalyticsWrapper } from '@/components/analytics';
 import Footer from '@/components/footer';
+import Navbar from '@/components/navbar';
 
 import './globals.css';
 
@@ -14,11 +15,50 @@ const quicksand = Quicksand({
 });
 
 export const metadata: Metadata = {
-  title: 'Play Free Sudoku Unlimited online - solve web sudoku puzzles',
-  description:
-    'Play free Sudoku online from Easy to Expert level on Sudoku.com. Select a difficulty level of a web sudoku puzzle to challenge yourself and enjoy the game!',
+  title: {
+    default: siteConfig.title,
+    template: `%s · ${siteConfig.siteName}`,
+  },
+  description: siteConfig.description,
+  metadataBase: siteConfig.url,
   alternates: {
-    canonical: absoluteUrl('/'),
+    canonical: '/',
+  },
+  authors: [
+    {
+      name: 'Yuyu',
+      url: 'https://www.yuurrific.com',
+    },
+  ],
+  openGraph: {
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    images: [
+      {
+        url: siteConfig.openGraph.image,
+        width: siteConfig.openGraph.width,
+        height: siteConfig.openGraph.height,
+        alt: siteConfig.openGraph.imageAlt,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  icons: {
+    icon: '/icons/favicon-32x32.png',
+    shortcut: '/icons/apple-touch-icon.png',
+    apple: '/icons/apple-touch-icon.png',
+  },
+  twitter: {
+    title: siteConfig.title,
+    description: siteConfig.description,
+    card: 'summary_large_image',
+    creator: siteConfig.creator,
+    images: [siteConfig.openGraph.image],
+  },
+  robots: {
+    index: true,
   },
 };
 
@@ -42,7 +82,8 @@ export default function RootLayout({
       <body
         className={`${quicksand.variable} font-sans font-medium antialiased`}
         suppressHydrationWarning>
-        {children}
+        <Navbar />
+        <main className="flex grow flex-col justify-center">{children}</main>
         <AnalyticsWrapper />
         <Footer />
       </body>

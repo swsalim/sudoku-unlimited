@@ -5,7 +5,7 @@ import { SudokuGame } from '@/components/sudoku-game';
 
 export default function HomePage() {
   return (
-    <div className="">
+    <>
       <SudokuGame initialDifficulty={Difficulty.EASY} />
 
       <section className="prose mt-12 max-w-none bg-green-50/50">
@@ -100,6 +100,6 @@ export default function HomePage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog> */}
-    </div>
+    </>
   );
 }
