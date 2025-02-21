@@ -34,6 +34,10 @@ export default function RootLayout({
           src="https://beamanalytics.b-cdn.net/beam.min.js"
           data-token="c2fbac7b-0b09-48f0-b925-7a5a61de2a3b"
           async></script>
+        <script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="15wDlBoHgMA4DHDxuC/6uA"
+          defer></script>
       </head>
       <body
         className={`${quicksand.variable} font-sans font-medium antialiased`}
