@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import Confetti from 'react-confetti';
 
 import { Difficulty, GameState, Grid } from '@/types';
 
@@ -39,6 +40,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [time, setTime] = useState(0);
   const [showGameOver, setShowGameOver] = useState(false);
+  const [showVictory, setShowVictory] = useState(false);
   const [moveHistory, setMoveHistory] = useState<GameMove[]>([]);
 
   useEffect(() => {
@@ -294,6 +296,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     ]);
     setTime(0);
     setShowGameOver(false);
+    setShowVictory(false);
   };
 
   const formatTime = (seconds: number) => {
@@ -325,6 +328,24 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     return boxRow === selectedBoxRow && boxCol === selectedBoxCol;
   };
 
+  const checkGameCompletion = useCallback(() => {
+    if (!gameState || showVictory) return;
+
+    // Check if all cells are filled and valid
+    const isComplete = gameState.grid.every((row) =>
+      row.every((cell) => cell.value !== null && !cell.hasError),
+    );
+
+    if (isComplete) {
+      setShowVictory(true);
+      setGameState((prev) => (prev ? { ...prev, isPaused: true } : null));
+    }
+  }, [gameState, showVictory]);
+
+  useEffect(() => {
+    checkGameCompletion();
+  }, [gameState?.grid, checkGameCompletion, showVictory]);
+
   if (!gameState) {
     // return <div>Loading...</div>;
     return <SudokuGameSkeleton />;
@@ -332,6 +353,16 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
 
   return (
     <div className="">
+      {showVictory && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, pointerEvents: 'none' }}>
+          <Confetti
+            width={typeof window !== 'undefined' ? window.innerWidth : 300}
+            height={typeof window !== 'undefined' ? window.innerHeight : 300}
+            numberOfPieces={300}
+            recycle={false}
+          />
+        </div>
+      )}
       <div className="mx-auto max-w-4xl p-4">
         <GameHeader
           difficulty={gameState.difficulty.toLowerCase()}
@@ -396,6 +427,23 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
             <AlertDialogDescription>
               You&rsquo;ve reached the maximum number of mistakes. Would you like to start a new
               game?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => startNewGame(gameState.difficulty as Difficulty)}>
+              New Game
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={showVictory}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Congratulations!</AlertDialogTitle>
+            <AlertDialogDescription>
+              You&rsquo;ve completed the puzzle! Your final score is {gameState.score} points and
+              you completed it in {formatTime(time)}. Would you like to start a new game?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
