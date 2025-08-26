@@ -78,6 +78,11 @@ const projects: Project[] = [
     name: 'Keyword Gap',
     target: '_blank',
   },
+  {
+    url: 'https://www.whatismyscreensize.com/?ref=sudokuunlimited.com',
+    name: 'What is my screen size?',
+    target: '_blank',
+  },
 ];
 
 interface FooterProps extends ComponentProps<'footer'> {
