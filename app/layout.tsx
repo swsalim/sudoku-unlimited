@@ -87,8 +87,8 @@ export default function RootLayout({
         <AnalyticsWrapper />
         <Footer />
         <script
-          src="https://app.tinyadz.com/scripts/ads.js?siteId=680e62b603dfc972f26f101d"
-          type="module"
+          src="https://cdn.apitiny.net/scripts/v2.0/main.js"
+          data-site-id="680e62b603dfc972f26f101d"
           async></script>
       </body>
     </html>
