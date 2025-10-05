@@ -79,11 +79,6 @@ export default function RootLayout({
           data-key="15wDlBoHgMA4DHDxuC/6uA"
           defer></script>
         <script async src="https://cdn.seline.com/seline.js" data-token="9b914a331a40d42"></script>
-        <script
-          defer
-          data-website-id="68d7a4d9b2fb7282b5fb95ca"
-          data-domain="sudokuunlimited.com"
-          src="https://datafa.st/js/script.js"></script>
       </head>
       <body
         className={`${quicksand.variable} font-sans font-medium antialiased`}
