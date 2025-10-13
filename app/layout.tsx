@@ -3,7 +3,6 @@ import { Quicksand } from 'next/font/google';
 
 import { siteConfig } from '@/config/site';
 
-import { AnalyticsWrapper } from '@/components/analytics';
 import Footer from '@/components/footer';
 import Navbar from '@/components/navbar';
 
@@ -85,7 +84,6 @@ export default function RootLayout({
         suppressHydrationWarning>
         <Navbar />
         <main className="flex grow flex-col justify-center">{children}</main>
-        <AnalyticsWrapper />
         <Footer />
         <script
           src="https://cdn.apitiny.net/scripts/v2.0/main.js"
