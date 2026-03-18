@@ -15,7 +15,9 @@ export default function Navbar() {
     <>
       <div
         className={`sticky top-[-1px] w-full ${
-          scrolled ? 'border-b border-stone-200/80 bg-white/70 backdrop-blur-xl' : 'bg-transparent'
+          scrolled
+            ? 'border-b border-stone-200/80 bg-white/70 backdrop-blur-xl'
+            : 'bg-transparent'
         } z-30 transition-all`}>
         <Container className="flex h-16 items-center justify-between py-0">
           <Link href="/" className="flex items-center gap-x-2">

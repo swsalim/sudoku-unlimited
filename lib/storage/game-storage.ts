@@ -125,6 +125,7 @@ export function hydrateSave(saved: SavedGameState): {
     isNotesMode: boolean;
     mistakes: number;
     score: number;
+    combo: number;
   }>;
 } {
   const { gameState: s, time, moveHistory } = saved;
@@ -145,6 +146,7 @@ export function hydrateSave(saved: SavedGameState): {
     moveHistory: moveHistory.map((m) => ({
       ...m,
       grid: serializableToGrid(m.grid),
+      combo: (m as { combo?: number }).combo ?? 0,
     })),
   };
 }

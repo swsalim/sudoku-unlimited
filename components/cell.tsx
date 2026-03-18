@@ -26,17 +26,19 @@ export function Cell({
   className,
 }: CellProps) {
   const baseClasses =
-    'size-8 md:size-14 flex items-center justify-center border border-stone-300 relative text-stone-800 transition-colors';
+    'size-8 md:size-14 flex items-center justify-center border relative transition-colors text-[color:var(--sudoku-cell-text)] border-[color:var(--sudoku-cell-border)] bg-[color:var(--sudoku-cell-bg)] rounded-[var(--sudoku-cell-radius)]';
   const highlightClasses = isSelected
-    ? 'bg-emerald-200'
+    ? 'bg-[color:var(--sudoku-cell-selected-bg)]'
     : isHighlighted
-      ? 'bg-stone-100'
+      ? 'bg-[color:var(--sudoku-cell-highlighted-bg)]'
       : isSameNumber
-        ? 'bg-amber-50'
+        ? 'bg-[color:var(--sudoku-cell-same-number-bg)]'
         : '';
-  const errorClasses = cell.hasError ? 'bg-red-50 text-red-600' : '';
+  const errorClasses = cell.hasError
+    ? 'bg-[color:var(--sudoku-cell-error-bg)] text-[color:var(--sudoku-cell-error-text)]'
+    : '';
   const valueClasses = cell.isInitial
-    ? 'text-sm sm:text-xl md:text-2xl lg:text-3xl font-semibold text-inherit'
+    ? 'text-sm sm:text-xl md:text-2xl lg:text-3xl font-semibold text-[color:var(--sudoku-cell-initial-text)]'
     : 'text-sm sm:text-xl md:text-2xl lg:text-3xl font-semibold text-inherit';
 
   return (
@@ -54,7 +56,7 @@ export function Cell({
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
             <span
               key={num}
-              className="flex h-full w-full items-center justify-center text-[10px] leading-tight text-stone-500 sm:text-xs md:text-sm">
+              className="flex h-full w-full items-center justify-center text-[10px] leading-tight text-[color:var(--sudoku-cell-notes-text)] sm:text-xs md:text-sm">
               {cell.notes.has(num) ? num : ''}
             </span>
           ))}

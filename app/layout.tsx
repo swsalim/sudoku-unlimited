@@ -5,6 +5,7 @@ import { siteConfig } from '@/config/site';
 
 import Footer from '@/components/footer';
 import Navbar from '@/components/navbar';
+import { ThemeProvider } from '@/components/theme-provider';
 
 import './globals.css';
 
@@ -87,6 +88,7 @@ export default function RootLayout({
       <body
         className={`${petrona.variable} ${figtree.variable} font-sans font-medium antialiased`}
         suppressHydrationWarning>
+        <ThemeProvider />
         <Navbar />
         <main className="flex grow flex-col justify-center">{children}</main>
         <Footer />

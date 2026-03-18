@@ -14,6 +14,8 @@ interface ControlsProps {
   onNumberClick: (num: number) => void;
   onNewGame: () => void;
   onReset: () => void;
+  hintsAvailable?: number;
+  hintRefreshMessage?: string;
 }
 
 export function Controls({
@@ -25,7 +27,11 @@ export function Controls({
   onNumberClick,
   onNewGame,
   onReset,
+  hintsAvailable = Infinity,
+  hintRefreshMessage = '',
 }: ControlsProps) {
+  const hasHints = hintsAvailable > 0;
+
   return (
     <div className="flex flex-grow flex-col gap-4">
       <div className="flex gap-2">
@@ -36,7 +42,7 @@ export function Controls({
             selineTrack('controls_undo_click');
             onUndo();
           }}
-          className="h-12 w-full md:h-14"
+          className="h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]"
           title="Undo last move">
           <RotateCcw className="md:!size-6" />
         </Button>
@@ -47,7 +53,7 @@ export function Controls({
             selineTrack('controls_erase_click');
             onErase();
           }}
-          className="h-12 w-full md:h-14"
+          className="h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]"
           title="Clear selected cell">
           <Eraser className="md:!size-6" />
         </Button>
@@ -65,14 +71,16 @@ export function Controls({
               : 'Notes mode off – tap to switch and add small numbers to track possibilities'
           }
           className={cn(
-            'relative h-12 w-full md:h-14',
-            isNotesMode && 'border-emerald-400 bg-emerald-50 text-emerald-700',
+            'relative h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]',
+            isNotesMode && 'border-[color:var(--app-accent)] bg-[color:var(--app-muted-bg)] text-[color:var(--app-accent-strong)]',
           )}>
           <Pencil className="md:!size-6" />
           <span
             className={cn(
               'absolute -bottom-1 -right-1 rounded-full px-1.5 py-0.5 text-[10px] font-bold',
-              isNotesMode ? 'bg-emerald-500 text-white' : 'bg-stone-200 text-stone-600',
+              isNotesMode
+                ? 'bg-[color:var(--app-accent)] text-white'
+                : 'bg-[color:var(--app-muted-bg)] text-stone-600',
             )}>
             {isNotesMode ? 'ON' : 'OFF'}
           </span>
@@ -81,21 +89,38 @@ export function Controls({
           variant="outline"
           size="icon"
           onClick={() => {
+            if (!hasHints) return;
             selineTrack('controls_hint_click');
             onHint();
           }}
-          className="h-12 w-full md:h-14"
-          title="Show possible numbers for the selected cell">
+          disabled={!hasHints}
+          className={cn(
+            'relative h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]',
+            !hasHints && 'cursor-not-allowed opacity-60',
+          )}
+          title={
+            hasHints
+              ? 'Show possible numbers for the selected cell'
+              : hintRefreshMessage || 'No hints left. Complete puzzles to earn more.'
+          }>
           <HelpCircle className="md:!size-6" />
+          {hintsAvailable < Infinity && (
+            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-stone-700 px-1 text-[10px] font-bold text-white">
+              {hintsAvailable}
+            </span>
+          )}
         </Button>
       </div>
+      {!hasHints && hintRefreshMessage && (
+        <p className="text-center text-xs text-stone-500">{hintRefreshMessage}</p>
+      )}
 
       <div className="flex flex-row flex-wrap gap-1 md:grid md:grid-cols-3 md:gap-2">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
           <Button
             key={num}
             variant="outline"
-            className="h-11 w-11 text-xl font-semibold md:h-16 md:w-full md:text-2xl"
+            className="h-11 w-11 text-xl font-semibold md:h-16 md:w-full md:text-2xl border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]"
             onClick={() => {
               selineTrack('controls_number_click', { value: num });
               onNumberClick(num);
@@ -107,7 +132,7 @@ export function Controls({
 
       <div className="flex gap-4">
         <Button
-          className="flex-1 bg-emerald-600 font-semibold text-white hover:bg-emerald-700"
+          className="flex-1 font-semibold text-white bg-[color:var(--app-accent)] hover:opacity-95"
           onClick={() => {
             selineTrack('controls_new_game_click');
             onNewGame();
@@ -116,7 +141,7 @@ export function Controls({
         </Button>
         <Button
           variant="outline"
-          className="flex-1 font-semibold"
+          className="flex-1 font-semibold border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]"
           onClick={() => {
             selineTrack('controls_reset_click');
             onReset();

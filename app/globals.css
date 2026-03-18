@@ -25,7 +25,7 @@
 
 @layer base {
   body {
-    background: linear-gradient(165deg, #faf8f5 0%, #f5f0e8 50%, #efe9e0 100%);
+    background: var(--app-page-bg);
     min-height: 100vh;
   }
   :root {
@@ -54,6 +54,31 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* App theme tokens (defaults) */
+    --app-page-bg: linear-gradient(165deg, #faf8f5 0%, #f5f0e8 50%, #efe9e0 100%);
+    --app-surface-bg: #ffffff;
+    --app-surface-border: rgba(231, 229, 228, 0.8);
+    --app-muted-bg: rgba(245, 245, 244, 0.8);
+    --app-accent: hsl(142 71% 45%);
+    --app-accent-strong: hsl(142 76% 36%);
+
+    /* Sudoku theme tokens (defaults) */
+    --sudoku-board-bg: #fafaf9;
+    --sudoku-board-border: #e7e5e4;
+    --sudoku-cell-bg: #ffffff;
+    --sudoku-cell-border: #d6d3d1;
+    --sudoku-cell-selected-bg: #a7f3d0;
+    --sudoku-cell-highlighted-bg: #f5f5f4;
+    --sudoku-cell-same-number-bg: #fffbeb;
+    --sudoku-cell-error-bg: #fef2f2;
+    --sudoku-cell-error-text: #dc2626;
+    --sudoku-cell-notes-text: #78716c;
+    --sudoku-cell-text: #1c1917;
+    --sudoku-cell-initial-text: #0c0a09;
+    --sudoku-cell-radius: 0rem;
+    --sudoku-board-font: var(--font-figtree);
+    --sudoku-accent: hsl(142 71% 45%);
   }
   .dark {
     --background: 20 14.3% 4.1%;
@@ -80,6 +105,31 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* App defaults in dark (still overridden by selected theme) */
+    --app-page-bg: radial-gradient(1200px 500px at 20% 0%, #1c1917 0%, #0c0a09 55%, #050505 100%);
+    --app-surface-bg: #0f0d0c;
+    --app-surface-border: rgba(68, 64, 60, 0.8);
+    --app-muted-bg: rgba(28, 25, 23, 0.9);
+    --app-accent: hsl(142 71% 45%);
+    --app-accent-strong: hsl(142 76% 36%);
+
+    /* Sudoku defaults in dark (still overridden by selected theme) */
+    --sudoku-board-bg: #0c0a09;
+    --sudoku-board-border: #292524;
+    --sudoku-cell-bg: #0f0d0c;
+    --sudoku-cell-border: #44403c;
+    --sudoku-cell-selected-bg: #064e3b;
+    --sudoku-cell-highlighted-bg: #1c1917;
+    --sudoku-cell-same-number-bg: #3f2d0b;
+    --sudoku-cell-error-bg: #2b0b0b;
+    --sudoku-cell-error-text: #fb7185;
+    --sudoku-cell-notes-text: #a8a29e;
+    --sudoku-cell-text: #fafaf9;
+    --sudoku-cell-initial-text: #ffffff;
+    --sudoku-cell-radius: 0rem;
+    --sudoku-board-font: var(--font-figtree);
+    --sudoku-accent: hsl(142 71% 45%);
   }
 }
 

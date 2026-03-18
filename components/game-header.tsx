@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { BarChart2, Leaf, Pause, Play, Sparkles, Trophy } from 'lucide-react';
+import { BarChart2, Leaf, Paintbrush, Pause, Play, Sparkles, Trophy } from 'lucide-react';
 
+import { selineTrack } from '@/lib/analytics';
 import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { cn } from '@/lib/utils';
 import { absoluteUrl } from '@/lib/utils';
-import { selineTrack } from '@/lib/analytics';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -33,6 +33,7 @@ interface GameHeaderProps {
   onPauseToggle: () => void;
   onOpenAchievements?: () => void;
   onOpenStats?: () => void;
+  onOpenThemes?: () => void;
   onZenModeToggle?: () => void;
   onDailyToggle?: () => void;
 }
@@ -49,6 +50,7 @@ export function GameHeader({
   onPauseToggle,
   onOpenAchievements,
   onOpenStats,
+  onOpenThemes,
   onZenModeToggle,
   onDailyToggle,
 }: GameHeaderProps) {
@@ -57,10 +59,10 @@ export function GameHeader({
   const validDifficulties = Object.values(Difficulty).map((d) => d.toLowerCase());
 
   return (
-    <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/60 pb-4">
+    <div className="mb-5 flex flex-col flex-wrap items-center justify-between gap-3 border-b pb-4 border-[color:var(--app-surface-border)]">
       <div className="flex flex-wrap items-center gap-2 md:gap-3">
         {!isMobile && (
-          <div className="flex items-center gap-1 rounded-xl bg-stone-100/80 p-1">
+          <div className="flex items-center gap-1 rounded-xl p-1 bg-[color:var(--app-muted-bg)]">
             {validDifficulties.map((d) => (
               <Button key={d} variant="ghost" size="sm" asChild className="h-8 px-3">
                 <Link
@@ -68,7 +70,7 @@ export function GameHeader({
                   className={cn(
                     'text-xs font-semibold capitalize',
                     d === difficulty
-                      ? 'bg-white text-stone-900 shadow-sm'
+                      ? 'bg-[color:var(--app-surface-bg)] text-stone-900 shadow-sm'
                       : 'text-stone-500 hover:text-stone-700',
                   )}>
                   {d}
@@ -103,19 +105,19 @@ export function GameHeader({
         )}
         {isZenMode ? (
           <span
-            className="flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700"
+            className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold bg-[color:var(--app-muted-bg)] text-[color:var(--app-accent-strong)]"
             title="Zen mode: No game over from mistakes.">
             <Leaf className="h-3.5 w-3.5 shrink-0" />
             <span className="hidden sm:inline">Zen mode</span>
             <span className="sm:hidden">Zen</span>
           </span>
         ) : (
-          <span className="rounded-lg bg-stone-100/80 px-2.5 py-1.5 text-xs font-semibold text-stone-600">
+          <span className="rounded-lg px-2.5 py-3 text-xs font-semibold text-stone-600 bg-[color:var(--app-muted-bg)]">
             {mistakes}/{maxMistakes} mistakes · {score} pts
           </span>
         )}
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex w-full flex-wrap items-center justify-center gap-1">
         <span className="font-mono text-sm font-semibold tabular-nums text-stone-600">{time}</span>
         <span className="h-4 w-px bg-stone-200" aria-hidden />
         {onDailyToggle && (
@@ -163,6 +165,19 @@ export function GameHeader({
             title="Statistics"
             className="text-stone-500 hover:text-stone-900">
             <BarChart2 className="h-4 w-4" />
+          </Button>
+        )}
+        {onOpenThemes && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+              selineTrack('header_themes_click');
+              onOpenThemes();
+            }}
+            title="Themes"
+            className="text-stone-500 hover:text-stone-900">
+            <Paintbrush className="h-4 w-4" />
           </Button>
         )}
         {onOpenAchievements && (
