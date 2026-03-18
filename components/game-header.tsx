@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   Select,
   SelectContent,
@@ -59,8 +60,9 @@ export function GameHeader({
   const validDifficulties = Object.values(Difficulty).map((d) => d.toLowerCase());
 
   return (
-    <div className="mb-5 flex flex-col flex-wrap items-center justify-between gap-3 border-b pb-4 border-[color:var(--app-surface-border)]">
-      <div className="flex flex-wrap items-center gap-2 md:gap-3">
+    <TooltipProvider delayDuration={150}>
+      <div className="mb-5 flex flex-col flex-wrap items-center justify-between gap-3 border-b pb-4 border-[color:var(--app-surface-border)]">
+        <div className="flex flex-wrap items-center gap-2 md:gap-3">
         {!isMobile && (
           <div className="flex items-center gap-1 rounded-xl p-1 bg-[color:var(--app-muted-bg)]">
             {validDifficulties.map((d) => (
@@ -104,13 +106,16 @@ export function GameHeader({
           </div>
         )}
         {isZenMode ? (
-          <span
-            className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold bg-[color:var(--app-muted-bg)] text-[color:var(--app-accent-strong)]"
-            title="Zen mode: No game over from mistakes.">
-            <Leaf className="h-3.5 w-3.5 shrink-0" />
-            <span className="hidden sm:inline">Zen mode</span>
-            <span className="sm:hidden">Zen</span>
-          </span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold bg-[color:var(--app-muted-bg)] text-[color:var(--app-accent-strong)]">
+                <Leaf className="h-3.5 w-3.5 shrink-0" />
+                <span className="hidden sm:inline">Zen mode</span>
+                <span className="sm:hidden">Zen</span>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>Zen mode: No game over from mistakes.</TooltipContent>
+          </Tooltip>
         ) : (
           <span className="rounded-lg px-2.5 py-3 text-xs font-semibold text-stone-600 bg-[color:var(--app-muted-bg)]">
             {mistakes}/{maxMistakes} mistakes · {score} pts
@@ -121,89 +126,115 @@ export function GameHeader({
         <span className="font-mono text-sm font-semibold tabular-nums text-stone-600">{time}</span>
         <span className="h-4 w-px bg-stone-200" aria-hidden />
         {onDailyToggle && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => {
-              selineTrack('header_daily_toggle', { isDailyMode: !isDailyMode });
-              onDailyToggle();
-            }}
-            title={
-              isDailyMode
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  selineTrack('header_daily_toggle', { isDailyMode: !isDailyMode });
+                  onDailyToggle();
+                }}
+                className={isDailyMode ? 'text-emerald-600' : 'text-stone-500'}>
+                <Sparkles className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {isDailyMode
                 ? 'Daily challenge is on. You are playing today’s fixed puzzle.'
-                : 'Switch to the seeded daily challenge for this difficulty. Same puzzle for everyone today.'
-            }
-            className={isDailyMode ? 'text-emerald-600' : 'text-stone-500'}>
-            <Sparkles className="h-4 w-4" />
-          </Button>
+                : 'Switch to the seeded daily challenge. Same puzzle for everyone today.'}
+            </TooltipContent>
+          </Tooltip>
         )}
         {onZenModeToggle && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => {
-              selineTrack('header_zen_toggle', { isZenMode: !isZenMode });
-              onZenModeToggle();
-            }}
-            title={
-              isZenMode
-                ? 'Zen mode is on. No game over from mistakes — take your time.'
-                : 'Zen mode: Turn on to play without game over. Mistakes won’t end your game — relax and focus on solving.'
-            }
-            className={isZenMode ? 'text-emerald-600' : 'text-stone-500'}>
-            <Leaf className="h-4 w-4" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  selineTrack('header_zen_toggle', { isZenMode: !isZenMode });
+                  onZenModeToggle();
+                }}
+                className={isZenMode ? 'text-emerald-600' : 'text-stone-500'}>
+                <Leaf className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {isZenMode
+                ? 'Zen mode is on. No game over from mistakes.'
+                : 'Zen mode: Play without game over. Mistakes won’t end your game.'}
+            </TooltipContent>
+          </Tooltip>
         )}
         {onOpenStats && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => {
-              selineTrack('header_stats_click');
-              onOpenStats();
-            }}
-            title="Statistics"
-            className="text-stone-500 hover:text-stone-900">
-            <BarChart2 className="h-4 w-4" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  selineTrack('header_stats_click');
+                  onOpenStats();
+                }}
+                className="text-stone-500 hover:text-stone-900">
+                <BarChart2 className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Statistics</TooltipContent>
+          </Tooltip>
         )}
         {onOpenThemes && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => {
-              selineTrack('header_themes_click');
-              onOpenThemes();
-            }}
-            title="Themes"
-            className="text-stone-500 hover:text-stone-900">
-            <Paintbrush className="h-4 w-4" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  selineTrack('header_themes_click');
+                  onOpenThemes();
+                }}
+                className="text-stone-500 hover:text-stone-900">
+                <Paintbrush className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Themes</TooltipContent>
+          </Tooltip>
         )}
         {onOpenAchievements && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => {
-              selineTrack('header_achievements_click');
-              onOpenAchievements();
-            }}
-            title="Achievements"
-            className="text-stone-500 hover:text-stone-900">
-            <Trophy className="h-4 w-4" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  selineTrack('header_achievements_click');
+                  onOpenAchievements();
+                }}
+                className="text-stone-500 hover:text-stone-900">
+                <Trophy className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Achievements</TooltipContent>
+          </Tooltip>
         )}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => {
-            selineTrack('header_pause_toggle', { isPaused: !isPaused });
-            onPauseToggle();
-          }}
-          className="text-stone-500 hover:text-stone-900">
-          {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                selineTrack('header_pause_toggle', { isPaused: !isPaused });
+                onPauseToggle();
+              }}
+              className="text-stone-500 hover:text-stone-900">
+              {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>{isPaused ? 'Resume' : 'Pause'}</TooltipContent>
+        </Tooltip>
       </div>
-    </div>
+      </div>
+    </TooltipProvider>
   );
 }

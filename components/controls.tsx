@@ -4,6 +4,7 @@ import { selineTrack } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface ControlsProps {
   onUndo: () => void;
@@ -31,86 +32,108 @@ export function Controls({
   hintRefreshMessage = '',
 }: ControlsProps) {
   const hasHints = hintsAvailable > 0;
+  const hintTooltip = hasHints
+    ? 'Show possible numbers for the selected cell'
+    : hintRefreshMessage || 'No hints left. Complete puzzles to earn more.';
 
   return (
-    <div className="flex flex-grow flex-col gap-4">
-      <div className="flex gap-2">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => {
-            selineTrack('controls_undo_click');
-            onUndo();
-          }}
-          className="h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]"
-          title="Undo last move">
-          <RotateCcw className="md:!size-6" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => {
-            selineTrack('controls_erase_click');
-            onErase();
-          }}
-          className="h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]"
-          title="Clear selected cell">
-          <Eraser className="md:!size-6" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => {
-            selineTrack('controls_toggle_notes_click', { isNotesMode: !isNotesMode });
-            onToggleNotes();
-          }}
-          data-state={isNotesMode ? 'on' : 'off'}
-          title={
-            isNotesMode
-              ? 'Notes mode on – tap a number to add or remove it as a possibility'
-              : 'Notes mode off – tap to switch and add small numbers to track possibilities'
-          }
-          className={cn(
-            'relative h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]',
-            isNotesMode && 'border-[color:var(--app-accent)] bg-[color:var(--app-muted-bg)] text-[color:var(--app-accent-strong)]',
-          )}>
-          <Pencil className="md:!size-6" />
-          <span
-            className={cn(
-              'absolute -bottom-1 -right-1 rounded-full px-1.5 py-0.5 text-[10px] font-bold',
-              isNotesMode
-                ? 'bg-[color:var(--app-accent)] text-white'
-                : 'bg-[color:var(--app-muted-bg)] text-stone-600',
-            )}>
-            {isNotesMode ? 'ON' : 'OFF'}
-          </span>
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => {
-            if (!hasHints) return;
-            selineTrack('controls_hint_click');
-            onHint();
-          }}
-          disabled={!hasHints}
-          className={cn(
-            'relative h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]',
-            !hasHints && 'cursor-not-allowed opacity-60',
-          )}
-          title={
-            hasHints
-              ? 'Show possible numbers for the selected cell'
-              : hintRefreshMessage || 'No hints left. Complete puzzles to earn more.'
-          }>
-          <HelpCircle className="md:!size-6" />
-          {hintsAvailable < Infinity && (
-            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-stone-700 px-1 text-[10px] font-bold text-white">
-              {hintsAvailable}
-            </span>
-          )}
-        </Button>
-      </div>
+    <TooltipProvider delayDuration={150}>
+      <div className="flex flex-grow flex-col gap-4">
+        <div className="flex gap-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => {
+                  selineTrack('controls_undo_click');
+                  onUndo();
+                }}
+                className="h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]">
+                <RotateCcw className="md:!size-6" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Undo last move</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => {
+                  selineTrack('controls_erase_click');
+                  onErase();
+                }}
+                className="h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]">
+                <Eraser className="md:!size-6" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Clear selected cell</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => {
+                  selineTrack('controls_toggle_notes_click', { isNotesMode: !isNotesMode });
+                  onToggleNotes();
+                }}
+                data-state={isNotesMode ? 'on' : 'off'}
+                className={cn(
+                  'relative h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]',
+                  isNotesMode &&
+                    'border-[color:var(--app-accent)] bg-[color:var(--app-muted-bg)] text-[color:var(--app-accent-strong)]',
+                )}>
+                <Pencil className="md:!size-6" />
+                <span
+                  className={cn(
+                    'absolute -bottom-1 -right-1 rounded-full px-1.5 py-0.5 text-[10px] font-bold',
+                    isNotesMode
+                      ? 'bg-[color:var(--app-accent)] text-white'
+                      : 'bg-[color:var(--app-muted-bg)] text-stone-600',
+                  )}>
+                  {isNotesMode ? 'ON' : 'OFF'}
+                </span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {isNotesMode
+                ? 'Notes mode on — tap a number to add/remove it'
+                : 'Notes mode off — track possibilities with small numbers'}
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="w-full">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => {
+                    if (!hasHints) return;
+                    selineTrack('controls_hint_click');
+                    onHint();
+                  }}
+                  disabled={!hasHints}
+                  className={cn(
+                    'relative h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]',
+                    !hasHints && 'cursor-not-allowed opacity-60',
+                  )}>
+                  <HelpCircle className="md:!size-6" />
+                  {hintsAvailable < Infinity && (
+                    <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-stone-700 px-1 text-[10px] font-bold text-white">
+                      {hintsAvailable}
+                    </span>
+                  )}
+                </Button>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>{hintTooltip}</TooltipContent>
+          </Tooltip>
+        </div>
       {!hasHints && hintRefreshMessage && (
         <p className="text-center text-xs text-stone-500">{hintRefreshMessage}</p>
       )}
@@ -130,26 +153,33 @@ export function Controls({
         ))}
       </div>
 
-      <div className="flex gap-4">
-        <Button
-          className="flex-1 font-semibold text-white bg-[color:var(--app-accent)] hover:opacity-95"
-          onClick={() => {
-            selineTrack('controls_new_game_click');
-            onNewGame();
-          }}>
-          New Game
-        </Button>
-        <Button
-          variant="outline"
-          className="flex-1 font-semibold border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]"
-          onClick={() => {
-            selineTrack('controls_reset_click');
-            onReset();
-          }}
-          title="Reset current puzzle — clear all entries and start over with the same grid">
-          Reset
-        </Button>
+        <div className="flex gap-4">
+          <Button
+            className="flex-1 font-semibold text-white bg-[color:var(--app-accent)] hover:opacity-95"
+            onClick={() => {
+              selineTrack('controls_new_game_click');
+              onNewGame();
+            }}>
+            New Game
+          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                className="flex-1 font-semibold border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]"
+                onClick={() => {
+                  selineTrack('controls_reset_click');
+                  onReset();
+                }}>
+                Reset
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              Reset current puzzle — clear all entries and start over with the same grid
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 }
