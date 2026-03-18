@@ -26,7 +26,7 @@ export function Cell({
   className,
 }: CellProps) {
   const baseClasses =
-    'size-11 md:size-14 flex items-center justify-center border border-stone-300 relative text-stone-800 transition-colors';
+    'size-8 md:size-14 flex items-center justify-center border border-stone-300 relative text-stone-800 transition-colors';
   const highlightClasses = isSelected
     ? 'bg-emerald-200'
     : isHighlighted
