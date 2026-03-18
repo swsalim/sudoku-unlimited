@@ -1,7 +1,7 @@
 import { Eraser, HelpCircle, Pencil, RotateCcw } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
 import { selineTrack } from '@/lib/analytics';
+import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 
@@ -95,7 +95,7 @@ export function Controls({
           <Button
             key={num}
             variant="outline"
-            className="h-12 w-12 text-xl font-semibold md:h-16 md:w-full md:text-2xl"
+            className="h-11 w-11 text-xl font-semibold md:h-16 md:w-full md:text-2xl"
             onClick={() => {
               selineTrack('controls_number_click', { value: num });
               onNumberClick(num);
@@ -105,7 +105,7 @@ export function Controls({
         ))}
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-4">
         <Button
           className="flex-1 bg-emerald-600 font-semibold text-white hover:bg-emerald-700"
           onClick={() => {
