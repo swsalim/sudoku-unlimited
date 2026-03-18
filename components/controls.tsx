@@ -1,6 +1,7 @@
 import { Eraser, HelpCircle, Pencil, RotateCcw } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { selineTrack } from '@/lib/analytics';
 
 import { Button } from '@/components/ui/button';
 
@@ -31,7 +32,10 @@ export function Controls({
         <Button
           variant="outline"
           size="icon"
-          onClick={onUndo}
+          onClick={() => {
+            selineTrack('controls_undo_click');
+            onUndo();
+          }}
           className="h-12 w-full md:h-14"
           title="Undo last move">
           <RotateCcw className="md:!size-6" />
@@ -39,7 +43,10 @@ export function Controls({
         <Button
           variant="outline"
           size="icon"
-          onClick={onErase}
+          onClick={() => {
+            selineTrack('controls_erase_click');
+            onErase();
+          }}
           className="h-12 w-full md:h-14"
           title="Clear selected cell">
           <Eraser className="md:!size-6" />
@@ -47,7 +54,10 @@ export function Controls({
         <Button
           variant="outline"
           size="icon"
-          onClick={onToggleNotes}
+          onClick={() => {
+            selineTrack('controls_toggle_notes_click', { isNotesMode: !isNotesMode });
+            onToggleNotes();
+          }}
           data-state={isNotesMode ? 'on' : 'off'}
           title={
             isNotesMode
@@ -70,7 +80,10 @@ export function Controls({
         <Button
           variant="outline"
           size="icon"
-          onClick={onHint}
+          onClick={() => {
+            selineTrack('controls_hint_click');
+            onHint();
+          }}
           className="h-12 w-full md:h-14"
           title="Show possible numbers for the selected cell">
           <HelpCircle className="md:!size-6" />
@@ -83,7 +96,10 @@ export function Controls({
             key={num}
             variant="outline"
             className="h-12 w-12 text-xl font-semibold md:h-16 md:w-full md:text-2xl"
-            onClick={() => onNumberClick(num)}>
+            onClick={() => {
+              selineTrack('controls_number_click', { value: num });
+              onNumberClick(num);
+            }}>
             {num}
           </Button>
         ))}
@@ -92,13 +108,19 @@ export function Controls({
       <div className="flex gap-2">
         <Button
           className="flex-1 bg-emerald-600 font-semibold text-white hover:bg-emerald-700"
-          onClick={onNewGame}>
+          onClick={() => {
+            selineTrack('controls_new_game_click');
+            onNewGame();
+          }}>
           New Game
         </Button>
         <Button
           variant="outline"
           className="flex-1 font-semibold"
-          onClick={onReset}
+          onClick={() => {
+            selineTrack('controls_reset_click');
+            onReset();
+          }}
           title="Reset current puzzle — clear all entries and start over with the same grid">
           Reset
         </Button>

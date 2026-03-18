@@ -6,6 +6,7 @@ import { BarChart2, Leaf, Pause, Play, Sparkles, Trophy } from 'lucide-react';
 import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { cn } from '@/lib/utils';
 import { absoluteUrl } from '@/lib/utils';
+import { selineTrack } from '@/lib/analytics';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -78,7 +79,12 @@ export function GameHeader({
         )}
         {isMobile && (
           <div className="flex flex-row items-center text-sm text-muted-foreground">
-            <Select defaultValue={difficulty} onValueChange={(value) => router.push(`/${value}`)}>
+            <Select
+              defaultValue={difficulty}
+              onValueChange={(value) => {
+                selineTrack('header_difficulty_change', { from: difficulty, to: value });
+                router.push(`/${value}`);
+              }}>
               <SelectTrigger className="w-[100px]">
                 <SelectValue placeholder="Select difficulty" />
               </SelectTrigger>
@@ -116,7 +122,10 @@ export function GameHeader({
           <Button
             variant="ghost"
             size="icon"
-            onClick={onDailyToggle}
+            onClick={() => {
+              selineTrack('header_daily_toggle', { isDailyMode: !isDailyMode });
+              onDailyToggle();
+            }}
             title={
               isDailyMode
                 ? 'Daily challenge is on. You are playing today’s fixed puzzle.'
@@ -130,7 +139,10 @@ export function GameHeader({
           <Button
             variant="ghost"
             size="icon"
-            onClick={onZenModeToggle}
+            onClick={() => {
+              selineTrack('header_zen_toggle', { isZenMode: !isZenMode });
+              onZenModeToggle();
+            }}
             title={
               isZenMode
                 ? 'Zen mode is on. No game over from mistakes — take your time.'
@@ -141,16 +153,39 @@ export function GameHeader({
           </Button>
         )}
         {onOpenStats && (
-          <Button variant="ghost" size="icon" onClick={onOpenStats} title="Statistics" className="text-stone-500 hover:text-stone-900">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+              selineTrack('header_stats_click');
+              onOpenStats();
+            }}
+            title="Statistics"
+            className="text-stone-500 hover:text-stone-900">
             <BarChart2 className="h-4 w-4" />
           </Button>
         )}
         {onOpenAchievements && (
-          <Button variant="ghost" size="icon" onClick={onOpenAchievements} title="Achievements" className="text-stone-500 hover:text-stone-900">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+              selineTrack('header_achievements_click');
+              onOpenAchievements();
+            }}
+            title="Achievements"
+            className="text-stone-500 hover:text-stone-900">
             <Trophy className="h-4 w-4" />
           </Button>
         )}
-        <Button variant="ghost" size="icon" onClick={onPauseToggle} className="text-stone-500 hover:text-stone-900">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => {
+            selineTrack('header_pause_toggle', { isPaused: !isPaused });
+            onPauseToggle();
+          }}
+          className="text-stone-500 hover:text-stone-900">
           {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
         </Button>
       </div>
