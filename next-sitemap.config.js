@@ -7,7 +7,7 @@ const NEXT_SSG_FILES = [
   '/*.js$',
 ];
 
-const exclude = ['/dashboard*', '/404', '/api*', '/login', '/server-sitemap.xml'];
+const exclude = ['/dashboard*', '/404', '/api*', '/login', '/server-sitemap.xml', '/dev-demo'];
 
 const siteUrl =
   process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
@@ -19,7 +19,7 @@ const siteUrl =
 const config = {
   siteUrl,
   generateRobotsTxt: true, // (optional)
-  generateIndexSitemap: true,
+  generateIndexSitemap: false,
   sitemapSize: 7000,
   exclude,
   robotsTxtOptions: {

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Quicksand } from 'next/font/google';
+import { Figtree, Petrona } from 'next/font/google';
 
 import { siteConfig } from '@/config/site';
 
@@ -8,8 +8,13 @@ import Navbar from '@/components/navbar';
 
 import './globals.css';
 
-const quicksand = Quicksand({
-  variable: '--font-quicksand',
+const petrona = Petrona({
+  variable: '--font-petrona',
+  subsets: ['latin'],
+});
+
+const figtree = Figtree({
+  variable: '--font-figtree',
   subsets: ['latin'],
 });
 
@@ -80,7 +85,7 @@ export default function RootLayout({
         <script async src="https://cdn.seline.com/seline.js" data-token="9b914a331a40d42"></script>
       </head>
       <body
-        className={`${quicksand.variable} font-sans font-medium antialiased`}
+        className={`${petrona.variable} ${figtree.variable} font-sans font-medium antialiased`}
         suppressHydrationWarning>
         <Navbar />
         <main className="flex grow flex-col justify-center">{children}</main>

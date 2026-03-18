@@ -26,18 +26,18 @@ export function Cell({
   className,
 }: CellProps) {
   const baseClasses =
-    'size-10 sm:size-12 md:size-16 flex items-center justify-center border border-green-900/30 relative text-green-900';
+    'size-14 flex items-center justify-center border border-stone-300 relative text-stone-800 transition-colors';
   const highlightClasses = isSelected
-    ? 'bg-green-300/70'
+    ? 'bg-emerald-200'
     : isHighlighted
-      ? 'bg-green-100'
+      ? 'bg-stone-100'
       : isSameNumber
-        ? 'bg-green-100/50'
+        ? 'bg-amber-50'
         : '';
-  const errorClasses = cell.hasError ? 'bg-green-100 text-red-500' : '';
+  const errorClasses = cell.hasError ? 'bg-red-50 text-red-600' : '';
   const valueClasses = cell.isInitial
-    ? 'text-xl sm:text-3xl font-semibold text-inherit'
-    : 'text-xl sm:text-3xl font-semibold text-inherit';
+    ? 'text-sm sm:text-xl md:text-2xl lg:text-3xl font-semibold text-inherit'
+    : 'text-sm sm:text-xl md:text-2xl lg:text-3xl font-semibold text-inherit';
 
   return (
     <button
@@ -54,7 +54,7 @@ export function Cell({
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
             <span
               key={num}
-              className="flex h-full w-full items-center justify-center text-sm leading-tight text-green-700">
+              className="flex h-full w-full items-center justify-center text-[10px] leading-tight text-stone-500 sm:text-xs md:text-sm">
               {cell.notes.has(num) ? num : ''}
             </span>
           ))}

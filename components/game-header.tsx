@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { Pause, Play } from 'lucide-react';
+import { BarChart2, Leaf, Pause, Play, Sparkles, Trophy } from 'lucide-react';
 
 import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { cn } from '@/lib/utils';
@@ -27,7 +27,13 @@ interface GameHeaderProps {
   score: number;
   time: string;
   isPaused: boolean;
+  isZenMode?: boolean;
+  isDailyMode?: boolean;
   onPauseToggle: () => void;
+  onOpenAchievements?: () => void;
+  onOpenStats?: () => void;
+  onZenModeToggle?: () => void;
+  onDailyToggle?: () => void;
 }
 
 export function GameHeader({
@@ -37,30 +43,38 @@ export function GameHeader({
   score,
   time,
   isPaused,
+  isZenMode = false,
+  isDailyMode = false,
   onPauseToggle,
+  onOpenAchievements,
+  onOpenStats,
+  onZenModeToggle,
+  onDailyToggle,
 }: GameHeaderProps) {
   const router = useRouter();
   const { isMobile } = useMediaQuery();
   const validDifficulties = Object.values(Difficulty).map((d) => d.toLowerCase());
 
   return (
-    <div className="mb-4 flex items-center justify-between">
-      <div className="flex items-center gap-2 md:gap-4">
+    <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/60 pb-4">
+      <div className="flex flex-wrap items-center gap-2 md:gap-3">
         {!isMobile && (
-          <span className="flex flex-row items-center gap-2 text-sm font-medium text-muted-foreground">
-            Difficulty:
-            <div className="flex">
-              {validDifficulties.map((d) => (
-                <Button key={d} variant="ghost" asChild>
-                  <Link
-                    href={absoluteUrl(`/${d}`)}
-                    className={cn(d === difficulty && 'font-black text-gray-900', 'capitalize')}>
-                    {d}
-                  </Link>
-                </Button>
-              ))}
-            </div>
-          </span>
+          <div className="flex items-center gap-1 rounded-xl bg-stone-100/80 p-1">
+            {validDifficulties.map((d) => (
+              <Button key={d} variant="ghost" size="sm" asChild className="h-8 px-3">
+                <Link
+                  href={absoluteUrl(`/${d}`)}
+                  className={cn(
+                    'text-xs font-semibold capitalize',
+                    d === difficulty
+                      ? 'bg-white text-stone-900 shadow-sm'
+                      : 'text-stone-500 hover:text-stone-700',
+                  )}>
+                  {d}
+                </Link>
+              </Button>
+            ))}
+          </div>
         )}
         {isMobile && (
           <div className="flex flex-row items-center text-sm text-muted-foreground">
@@ -81,19 +95,62 @@ export function GameHeader({
             </Select>
           </div>
         )}
-        <span className="text-sm font-semibold text-muted-foreground">
-          Mistakes:{' '}
-          <span className="font-black text-foreground">
-            {mistakes}/{maxMistakes}
+        {isZenMode ? (
+          <span
+            className="flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700"
+            title="Zen mode: No game over from mistakes.">
+            <Leaf className="h-3.5 w-3.5 shrink-0" />
+            <span className="hidden sm:inline">Zen mode</span>
+            <span className="sm:hidden">Zen</span>
           </span>
-        </span>
-        <span className="text-sm font-semibold text-muted-foreground">
-          Score: <span className="font-black text-foreground">{score}</span>
-        </span>
+        ) : (
+          <span className="rounded-lg bg-stone-100/80 px-2.5 py-1.5 text-xs font-semibold text-stone-600">
+            {mistakes}/{maxMistakes} mistakes · {score} pts
+          </span>
+        )}
       </div>
-      <div className="flex items-center gap-0 md:gap-2">
-        <span className="font-mono text-sm">{time}</span>
-        <Button variant="ghost" size="icon" onClick={onPauseToggle}>
+      <div className="flex items-center gap-1">
+        <span className="font-mono text-sm font-semibold tabular-nums text-stone-600">{time}</span>
+        <span className="h-4 w-px bg-stone-200" aria-hidden />
+        {onDailyToggle && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onDailyToggle}
+            title={
+              isDailyMode
+                ? 'Daily challenge is on. You are playing today’s fixed puzzle.'
+                : 'Switch to the seeded daily challenge for this difficulty. Same puzzle for everyone today.'
+            }
+            className={isDailyMode ? 'text-emerald-600' : 'text-stone-500'}>
+            <Sparkles className="h-4 w-4" />
+          </Button>
+        )}
+        {onZenModeToggle && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onZenModeToggle}
+            title={
+              isZenMode
+                ? 'Zen mode is on. No game over from mistakes — take your time.'
+                : 'Zen mode: Turn on to play without game over. Mistakes won’t end your game — relax and focus on solving.'
+            }
+            className={isZenMode ? 'text-emerald-600' : 'text-stone-500'}>
+            <Leaf className="h-4 w-4" />
+          </Button>
+        )}
+        {onOpenStats && (
+          <Button variant="ghost" size="icon" onClick={onOpenStats} title="Statistics" className="text-stone-500 hover:text-stone-900">
+            <BarChart2 className="h-4 w-4" />
+          </Button>
+        )}
+        {onOpenAchievements && (
+          <Button variant="ghost" size="icon" onClick={onOpenAchievements} title="Achievements" className="text-stone-500 hover:text-stone-900">
+            <Trophy className="h-4 w-4" />
+          </Button>
+        )}
+        <Button variant="ghost" size="icon" onClick={onPauseToggle} className="text-stone-500 hover:text-stone-900">
           {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
         </Button>
       </div>

@@ -59,8 +59,9 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['var(--font-quicksand)'],
-        mono: ['var(--font-quicksand)'],
+        sans: ['var(--font-figtree)', 'sans-serif'],
+        heading: ['var(--font-petrona)', 'sans-serif'],
+        mono: ['var(--font-figtree)', 'monospace'],
       },
     },
   },

@@ -1,17 +1,29 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Confetti from 'react-confetti';
 
 import { Difficulty, GameState, Grid } from '@/types';
 
+import { recordGameAndCheckAchievements } from '@/lib/achievements/utils';
+import {
+  clearSavedGame,
+  hydrateSave,
+  loadGame,
+  type SavedGameState,
+  saveGame,
+} from '@/lib/storage/game-storage';
+import { getZenMode, setZenMode } from '@/lib/storage/zen-storage';
 import { deepCopy } from '@/lib/utils';
 
-import { generateGrid, getPossibleValues, isValidMove } from '@/utils/sudoku';
+import { generateGrid, generateSeededGrid, getPossibleValues, isValidMove } from '@/utils/sudoku';
 
+import { AchievementToast } from '@/components/achievement-toast';
+import { AchievementsDialog } from '@/components/achievements-dialog';
 import { Cell } from '@/components/cell';
 import { Controls } from '@/components/controls';
 import { GameHeader } from '@/components/game-header';
+import { StatisticsDialog } from '@/components/statistics-dialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,6 +33,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { ZenModeToast } from '@/components/zen-mode-toast';
 
 import SudokuGameSkeleton from './sudoku-game-skeleton';
 
@@ -36,16 +49,93 @@ interface SudokuGameProps {
   initialDifficulty: Difficulty;
 }
 
+function formatTime(seconds: number) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+}
+
 export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [time, setTime] = useState(0);
   const [showGameOver, setShowGameOver] = useState(false);
   const [showVictory, setShowVictory] = useState(false);
   const [moveHistory, setMoveHistory] = useState<GameMove[]>([]);
+  const [savedGameOffer, setSavedGameOffer] = useState<SavedGameState | null>(null);
+  const [hintsUsed, setHintsUsed] = useState(0);
+  const [usedNotes, setUsedNotes] = useState(false);
+  const [newlyUnlockedAchievements, setNewlyUnlockedAchievements] = useState<string[]>([]);
+  const [showAchievements, setShowAchievements] = useState(false);
+  const [showStats, setShowStats] = useState(false);
+  const [isZenMode, setIsZenMode] = useState(false);
+  const [showZenToast, setShowZenToast] = useState(false);
+  const [isDailyMode, setIsDailyMode] = useState(false);
+  const isInitialLoad = useRef(true);
+
+  const handleZenToastDismiss = useCallback(() => setShowZenToast(false), []);
+
+  // Load zen mode preference on mount
+  useEffect(() => {
+    setIsZenMode(getZenMode());
+  }, []);
+
+  const handleShareResult = useCallback(() => {
+    if (typeof window === 'undefined' || !gameState) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set('difficulty', gameState.difficulty.toLowerCase());
+    url.searchParams.set('time', String(time));
+    url.searchParams.set('score', String(gameState.score));
+    url.searchParams.set('mistakes', String(gameState.mistakes));
+    if (isDailyMode) {
+      url.searchParams.set('daily', '1');
+    }
+    const text = `I just solved a ${gameState.difficulty.toLowerCase()} Sudoku on sudoku.unlimited in ${formatTime(time)} with score ${
+      gameState.score
+    }. Try the same run:\n${url.toString()}`;
+    navigator.clipboard?.writeText(text).catch(() => {
+      // ignore clipboard errors
+    });
+  }, [gameState, time, isDailyMode]);
 
   useEffect(() => {
-    startNewGame(initialDifficulty);
+    if (isInitialLoad.current) {
+      isInitialLoad.current = false;
+      const saved = loadGame();
+      if (saved) {
+        setSavedGameOffer(saved);
+      } else {
+        startNewGame(initialDifficulty);
+        setSavedGameOffer(null);
+      }
+    } else {
+      // User switched difficulty - start fresh
+      clearSavedGame();
+      setSavedGameOffer(null);
+      startNewGame(initialDifficulty);
+    }
+    // We intentionally omit startNewGame from deps to avoid recreating
+    // puzzles unnecessarily; this effect should only react to difficulty.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialDifficulty]);
+
+  // Auto-save when game state changes (only for in-progress games)
+  useEffect(() => {
+    if (!gameState || !moveHistory.length || showGameOver || showVictory || savedGameOffer) {
+      return;
+    }
+    saveGame({
+      gameState,
+      time,
+      moveHistory,
+    });
+  }, [gameState, time, moveHistory, showGameOver, showVictory, savedGameOffer]);
+
+  // Clear save when game ends (victory or game over)
+  useEffect(() => {
+    if (showGameOver || showVictory) {
+      clearSavedGame();
+    }
+  }, [showGameOver, showVictory]);
 
   useEffect(() => {
     if (!gameState) return;
@@ -60,10 +150,11 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
   }, [gameState]);
 
   useEffect(() => {
-    if (gameState && gameState.mistakes >= gameState.maxMistakes) {
+    // Zen mode: no game over from mistakes
+    if (gameState && !isZenMode && gameState.mistakes >= gameState.maxMistakes) {
       setShowGameOver(true);
     }
-  }, [gameState]);
+  }, [gameState, isZenMode]);
 
   const handleCellClick = (row: number, col: number) => {
     if (!gameState || gameState.isPaused) return;
@@ -97,6 +188,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
       };
 
       if (gameState.isNotesMode) {
+        setUsedNotes(true);
         const newNotes = new Set(cell.notes);
         if (newNotes.has(number)) {
           newNotes.delete(number);
@@ -206,6 +298,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
 
   const handleHint = () => {
     if (!gameState || !gameState.selectedCell) return;
+    setHintsUsed((prev) => prev + 1);
     const { row, col } = gameState.selectedCell;
     const cell = gameState.grid[row][col];
 
@@ -268,9 +361,52 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [gameState, handleErase, handleNumberInput]);
 
-  const startNewGame = (difficulty: Difficulty) => {
-    const { grid, solution } = generateGrid(difficulty);
+  const getDailySeed = (difficulty: Difficulty) => {
+    const today = new Date();
+    const yyyyMmDd = today.toISOString().slice(0, 10); // e.g. 2026-03-18
+    return `${yyyyMmDd}-${difficulty}`;
+  };
 
+  const startNewGame = (difficulty: Difficulty, options?: { dailyMode?: boolean }) => {
+    clearSavedGame();
+    setSavedGameOffer(null);
+
+    const useDaily = options?.dailyMode ?? isDailyMode;
+    const generated = useDaily
+      ? generateSeededGrid(difficulty, getDailySeed(difficulty))
+      : generateGrid(difficulty);
+    let { grid } = generated;
+    const { solution } = generated;
+
+    // Dev helper: on /dev-demo, start with a nearly complete board (2 empty cells)
+    if (typeof window !== 'undefined' && window.location.pathname === '/dev-demo') {
+      const solvedGrid: Grid = solution.map((row) =>
+        row.map((value) => ({
+          value,
+          notes: new Set<number>(),
+          isInitial: true,
+          hasError: false,
+        })),
+      );
+
+      const empties = [
+        { row: 4, col: 4 },
+        { row: 7, col: 7 },
+      ];
+
+      for (const { row, col } of empties) {
+        solvedGrid[row][col] = {
+          value: null,
+          notes: new Set<number>(),
+          isInitial: false,
+          hasError: false,
+        };
+      }
+
+      grid = solvedGrid;
+    }
+
+    const maxMistakesAllowed = isZenMode ? 999 : 3;
     const initialState: GameState = {
       grid,
       solution,
@@ -279,7 +415,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
       isPaused: false,
       isNotesMode: false,
       mistakes: 0,
-      maxMistakes: 3,
+      maxMistakes: maxMistakesAllowed,
       score: 0,
       history: [],
     };
@@ -297,12 +433,47 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     setTime(0);
     setShowGameOver(false);
     setShowVictory(false);
+    setHintsUsed(0);
+    setUsedNotes(false);
+    setNewlyUnlockedAchievements([]);
   };
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  const resetGame = () => {
+    if (!gameState) return;
+
+    const resetGrid: Grid = gameState.grid.map((row) =>
+      row.map((cell) =>
+        cell.isInitial
+          ? { ...cell, notes: new Set(), hasError: false }
+          : { value: null, notes: new Set(), isInitial: false, hasError: false },
+      ),
+    );
+
+    const initialState: GameState = {
+      ...gameState,
+      grid: resetGrid,
+      selectedCell: null,
+      isPaused: false,
+      isNotesMode: false,
+      mistakes: 0,
+      score: 0,
+    };
+
+    setGameState(initialState);
+    setMoveHistory([
+      {
+        grid: deepCopy(resetGrid),
+        selectedCell: null,
+        isNotesMode: false,
+        mistakes: 0,
+        score: 0,
+      },
+    ]);
+    setTime(0);
+    setShowGameOver(false);
+    setShowVictory(false);
+    setHintsUsed(0);
+    setUsedNotes(false);
   };
 
   const isHighlighted = (row: number, col: number) => {
@@ -346,77 +517,157 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     checkGameCompletion();
   }, [gameState?.grid, checkGameCompletion, showVictory]);
 
+  // Record game and check achievements on victory
+  useEffect(() => {
+    if (!showVictory || !gameState) return;
+    const ids = recordGameAndCheckAchievements({
+      difficulty: gameState.difficulty,
+      timeSeconds: time,
+      mistakes: gameState.mistakes,
+      hintsUsed,
+      usedNotes,
+    });
+    if (ids.length > 0) {
+      setNewlyUnlockedAchievements(ids);
+    }
+  }, [showVictory, gameState, time, hintsUsed, usedNotes]);
+
   if (!gameState) {
-    // return <div>Loading...</div>;
-    return <SudokuGameSkeleton />;
+    return (
+      <div className="min-h-[calc(100vh-8rem)]">
+        <div className="relative z-10">
+          <SudokuGameSkeleton />
+          <AlertDialog open={!!savedGameOffer}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Resume saved game?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  You have an in-progress {savedGameOffer?.gameState.difficulty} puzzle
+                  {savedGameOffer ? ` (${formatTime(savedGameOffer.time)})` : ''}. Resume or start a
+                  new game?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogAction
+                  onClick={() => {
+                    if (!savedGameOffer) return;
+                    const { gameState: gs, time: t, moveHistory: mh } = hydrateSave(savedGameOffer);
+                    setGameState(gs);
+                    setTime(t);
+                    setMoveHistory(mh);
+                    setSavedGameOffer(null);
+                  }}>
+                  Resume
+                </AlertDialogAction>
+                <AlertDialogAction
+                  onClick={() => {
+                    clearSavedGame();
+                    setSavedGameOffer(null);
+                    startNewGame(initialDifficulty);
+                  }}>
+                  Start New
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="">
-      {showVictory && (
+    <div className="min-h-[calc(100vh-8rem)]">
+      <div className="relative z-10">
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, pointerEvents: 'none' }}>
           <Confetti
             width={typeof window !== 'undefined' ? window.innerWidth : 300}
             height={typeof window !== 'undefined' ? window.innerHeight : 300}
-            numberOfPieces={300}
-            recycle={false}
+            numberOfPieces={showVictory ? 300 : 0}
+            recycle={!showVictory}
           />
         </div>
-      )}
-      <div className="mx-auto max-w-4xl p-4">
-        <GameHeader
-          difficulty={gameState.difficulty.toLowerCase()}
-          mistakes={gameState.mistakes}
-          maxMistakes={gameState.maxMistakes}
-          score={gameState.score}
-          time={formatTime(time)}
-          isPaused={gameState.isPaused}
-          onPauseToggle={() =>
-            setGameState((prev) => (prev ? { ...prev, isPaused: !prev.isPaused } : null))
-          }
-        />
+        <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
+          <div className="relative rounded-2xl border border-stone-200/80 bg-white p-3 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.15)] sm:p-6">
+            <GameHeader
+              difficulty={gameState.difficulty.toLowerCase()}
+              mistakes={gameState.mistakes}
+              maxMistakes={gameState.maxMistakes}
+              score={gameState.score}
+              time={formatTime(time)}
+              isPaused={gameState.isPaused}
+              isZenMode={isZenMode}
+              isDailyMode={isDailyMode}
+              onPauseToggle={() =>
+                setGameState((prev) => (prev ? { ...prev, isPaused: !prev.isPaused } : null))
+              }
+              onOpenAchievements={() => setShowAchievements(true)}
+              onOpenStats={() => setShowStats(true)}
+              onDailyToggle={() => {
+                const nextDaily = !isDailyMode;
+                setIsDailyMode(nextDaily);
+                startNewGame(gameState.difficulty as Difficulty, { dailyMode: nextDaily });
+              }}
+              onZenModeToggle={() => {
+                const next = !isZenMode;
+                setIsZenMode(next);
+                setZenMode(next);
+                if (next) {
+                  setShowZenToast(true);
+                } else {
+                  setShowZenToast(false);
+                }
+                if (gameState) {
+                  setGameState((prev) => (prev ? { ...prev, maxMistakes: next ? 999 : 3 } : null));
+                }
+              }}
+            />
 
-        <div className="flex flex-col gap-5 sm:flex-row sm:gap-8">
-          <div className="grid w-fit grid-cols-9 border-4 border-green-900 bg-green-50/50">
-            {gameState.grid.map((row, rowIndex) =>
-              row.map((cell, colIndex) => {
-                const highlighted = isHighlighted(rowIndex, colIndex);
-                const sameNumber = isSameNumber(rowIndex, colIndex);
-                return (
-                  <Cell
-                    key={`${rowIndex}-${colIndex}`}
-                    cell={cell}
-                    isSelected={
-                      gameState.selectedCell?.row === rowIndex &&
-                      gameState.selectedCell?.col === colIndex
-                    }
-                    isHighlighted={highlighted}
-                    isSameNumber={sameNumber}
-                    onClick={() => handleCellClick(rowIndex, colIndex)}
-                    tabIndex={0}
-                    role="gridcell"
-                    aria-selected={
-                      gameState.selectedCell?.row === rowIndex &&
-                      gameState.selectedCell?.col === colIndex
-                    }
-                    className={`${colIndex % 3 === 2 && colIndex !== 8 ? 'border-r-4 border-r-green-900' : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? 'border-b-4 border-b-green-900' : ''}`}
-                  />
-                );
-              }),
-            )}
+            <div className="flex flex-col items-center gap-6 md:flex-row md:items-start md:gap-8">
+              <div className="grid w-fit max-w-full shrink-0 grid-cols-9 overflow-hidden rounded-xl border-2 border-stone-200 bg-stone-50/80 shadow-inner">
+                {gameState.grid.map((row, rowIndex) =>
+                  row.map((cell, colIndex) => {
+                    const highlighted = isHighlighted(rowIndex, colIndex);
+                    const sameNumber = isSameNumber(rowIndex, colIndex);
+                    return (
+                      <Cell
+                        key={`${rowIndex}-${colIndex}`}
+                        cell={cell}
+                        isSelected={
+                          gameState.selectedCell?.row === rowIndex &&
+                          gameState.selectedCell?.col === colIndex
+                        }
+                        isHighlighted={highlighted}
+                        isSameNumber={sameNumber}
+                        onClick={() => handleCellClick(rowIndex, colIndex)}
+                        tabIndex={0}
+                        role="gridcell"
+                        aria-selected={
+                          gameState.selectedCell?.row === rowIndex &&
+                          gameState.selectedCell?.col === colIndex
+                        }
+                        className={`${colIndex % 3 === 2 && colIndex !== 8 ? 'border-r-2 border-r-stone-400 sm:border-r-[3px]' : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? 'border-b-2 border-b-stone-400 sm:border-b-[3px]' : ''}`}
+                      />
+                    );
+                  }),
+                )}
+              </div>
+
+              <Controls
+                onUndo={handleUndo}
+                onErase={handleErase}
+                onToggleNotes={() =>
+                  setGameState((prev) =>
+                    prev ? { ...prev, isNotesMode: !prev.isNotesMode } : null,
+                  )
+                }
+                onHint={handleHint}
+                isNotesMode={gameState.isNotesMode}
+                onNumberClick={handleNumberInput}
+                onNewGame={() => startNewGame(gameState.difficulty as Difficulty)}
+                onReset={resetGame}
+              />
+            </div>
           </div>
-
-          <Controls
-            onUndo={handleUndo}
-            onErase={handleErase}
-            onToggleNotes={() =>
-              setGameState((prev) => (prev ? { ...prev, isNotesMode: !prev.isNotesMode } : null))
-            }
-            onHint={handleHint}
-            isNotesMode={gameState.isNotesMode}
-            onNumberClick={handleNumberInput}
-            onNewGame={() => startNewGame(gameState.difficulty as Difficulty)}
-          />
         </div>
       </div>
 
@@ -447,12 +698,25 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
+            <AlertDialogAction onClick={handleShareResult}>Copy share link</AlertDialogAction>
             <AlertDialogAction onClick={() => startNewGame(gameState.difficulty as Difficulty)}>
               New Game
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {newlyUnlockedAchievements.length > 0 && (
+        <AchievementToast
+          achievementIds={newlyUnlockedAchievements}
+          onDismiss={() => setNewlyUnlockedAchievements([])}
+        />
+      )}
+
+      {showZenToast && <ZenModeToast onDismiss={handleZenToastDismiss} />}
+
+      <AchievementsDialog open={showAchievements} onOpenChange={setShowAchievements} />
+      <StatisticsDialog open={showStats} onOpenChange={setShowStats} />
     </div>
   );
 }

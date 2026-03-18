@@ -1,14 +1,17 @@
 import { Difficulty } from '@/types';
 
 import { Container } from '@/components/container';
+import { HomeFaqSection } from '@/components/home-faq-section';
+import { HomeSchemaScript } from '@/components/schemas';
 import { SudokuGame } from '@/components/sudoku-game';
 
 export default function HomePage() {
   return (
     <>
+      <HomeSchemaScript />
       <SudokuGame initialDifficulty={Difficulty.EASY} />
 
-      <section className="prose mt-12 max-w-none bg-green-50/50">
+      <section className="prose mt-12 max-w-none">
         <Container>
           <h1>How to Play Sudoku</h1>
 
@@ -83,6 +86,7 @@ export default function HomePage() {
           </p>
         </Container>
       </section>
+      <HomeFaqSection />
       {/*
       <AlertDialog open={showGameOver}>
         <AlertDialogContent>

@@ -15,31 +15,19 @@ export default function Navbar() {
     <>
       <div
         className={`sticky top-[-1px] w-full ${
-          scrolled
-            ? 'border-b border-gray-200 bg-white/50 backdrop-blur-xl dark:border-gray-700 dark:bg-gray-900/50'
-            : 'bg-white/0'
+          scrolled ? 'border-b border-stone-200/80 bg-white/70 backdrop-blur-xl' : 'bg-transparent'
         } z-30 transition-all`}>
         <Container className="flex h-16 items-center justify-between py-0">
-          <Link href="/" className="flex items-center gap-x-2 text-xl">
-            <span className="hidden text-lg font-bold md:block">{siteConfig.siteName}</span>
-            <span className="flex items-center justify-center rounded-lg bg-gray-900 p-2 text-sm font-black text-gray-50 md:hidden">
-              Su
+          <Link href="/" className="flex items-center gap-x-2">
+            <span className="font-heading text-2xl font-extrabold tracking-tight text-stone-900 md:text-xl">
+              {siteConfig.siteName}
             </span>
           </Link>
-          <div className="flex flex-shrink-0 gap-x-4">
-            <a
-              href="https://pfpresizer.com?ref=sudokuunlimited"
-              target="_blank"
-              className="font-medium text-gray-700 transition hover:text-violet-600 dark:text-gray-300 dark:hover:text-violet-400">
-              Resize Image
-            </a>
-            <a
-              href="https://www.flipanimage.xyz?ref=sudokuunlimited"
-              target="_blank"
-              className="font-medium text-gray-700 transition hover:text-violet-600 dark:text-gray-300 dark:hover:text-violet-400">
-              Flip Image
-            </a>
-          </div>
+          <Link
+            href="/about"
+            className="text-sm font-medium text-stone-600 underline-offset-4 hover:text-stone-900 hover:underline">
+            About
+          </Link>
         </Container>
       </div>
     </>

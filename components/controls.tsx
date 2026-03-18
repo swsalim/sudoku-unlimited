@@ -1,5 +1,7 @@
 import { Eraser, HelpCircle, Pencil, RotateCcw } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
+
 import { Button } from '@/components/ui/button';
 
 interface ControlsProps {
@@ -10,6 +12,7 @@ interface ControlsProps {
   isNotesMode: boolean;
   onNumberClick: (num: number) => void;
   onNewGame: () => void;
+  onReset: () => void;
 }
 
 export function Controls({
@@ -20,14 +23,25 @@ export function Controls({
   isNotesMode,
   onNumberClick,
   onNewGame,
+  onReset,
 }: ControlsProps) {
   return (
     <div className="flex flex-grow flex-col gap-4">
       <div className="flex gap-2">
-        <Button variant="outline" size="icon" onClick={onUndo} className="h-10 w-full md:h-14">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={onUndo}
+          className="h-12 w-full md:h-14"
+          title="Undo last move">
           <RotateCcw className="md:!size-6" />
         </Button>
-        <Button variant="outline" size="icon" onClick={onErase} className="h-10 w-full md:h-14">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={onErase}
+          className="h-12 w-full md:h-14"
+          title="Clear selected cell">
           <Eraser className="md:!size-6" />
         </Button>
         <Button
@@ -35,32 +49,60 @@ export function Controls({
           size="icon"
           onClick={onToggleNotes}
           data-state={isNotesMode ? 'on' : 'off'}
-          className="relative h-10 w-full md:h-14">
+          title={
+            isNotesMode
+              ? 'Notes mode on – tap a number to add or remove it as a possibility'
+              : 'Notes mode off – tap to switch and add small numbers to track possibilities'
+          }
+          className={cn(
+            'relative h-12 w-full md:h-14',
+            isNotesMode && 'border-emerald-400 bg-emerald-50 text-emerald-700',
+          )}>
           <Pencil className="md:!size-6" />
-          <span className="absolute -right-4 -top-4 rounded-full bg-gray-100 p-2 text-xs text-gray-700">
+          <span
+            className={cn(
+              'absolute -bottom-1 -right-1 rounded-full px-1.5 py-0.5 text-[10px] font-bold',
+              isNotesMode ? 'bg-emerald-500 text-white' : 'bg-stone-200 text-stone-600',
+            )}>
             {isNotesMode ? 'ON' : 'OFF'}
           </span>
         </Button>
-        <Button variant="outline" size="icon" onClick={onHint} className="h-10 w-full md:h-14">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={onHint}
+          className="h-12 w-full md:h-14"
+          title="Show possible numbers for the selected cell">
           <HelpCircle className="md:!size-6" />
         </Button>
       </div>
 
-      <div className="flex flex-row flex-wrap gap-1 sm:grid sm:grid-cols-3 sm:gap-2">
+      <div className="flex flex-row flex-wrap gap-1 md:grid md:grid-cols-3 md:gap-2">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
           <Button
             key={num}
             variant="outline"
-            className="h-9 w-9 text-xl font-semibold sm:h-16 sm:w-full sm:text-2xl"
+            className="h-12 w-12 text-xl font-semibold md:h-16 md:w-full md:text-2xl"
             onClick={() => onNumberClick(num)}>
             {num}
           </Button>
         ))}
       </div>
 
-      <Button className="w-full" onClick={onNewGame}>
-        New Game
-      </Button>
+      <div className="flex gap-2">
+        <Button
+          className="flex-1 bg-emerald-600 font-semibold text-white hover:bg-emerald-700"
+          onClick={onNewGame}>
+          New Game
+        </Button>
+        <Button
+          variant="outline"
+          className="flex-1 font-semibold"
+          onClick={onReset}
+          title="Reset current puzzle — clear all entries and start over with the same grid">
+          Reset
+        </Button>
+      </div>
     </div>
   );
 }

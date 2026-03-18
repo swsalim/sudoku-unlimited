@@ -2,10 +2,39 @@ import { Difficulty, Grid, SudokuSolution } from '@/types';
 
 import { deepCopy } from '@/lib/utils';
 
-// Helper to shuffle array
+// Simple deterministic PRNG for seeded puzzles
+class SeededRng {
+  private seed: number;
+
+  constructor(seedString: string) {
+    // djb2 string hash
+    let hash = 5381;
+    for (let i = 0; i < seedString.length; i++) {
+      hash = (hash * 33) ^ seedString.charCodeAt(i);
+    }
+    this.seed = hash >>> 0;
+  }
+
+  next() {
+    // Linear congruential generator
+    this.seed = (1664525 * this.seed + 1013904223) >>> 0;
+    return this.seed / 0xffffffff;
+  }
+}
+
+// Helper to shuffle array (non‑seeded)
 function shuffleArray<T>(array: T[]): T[] {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Helper to shuffle array with seeded RNG
+function shuffleArrayWithRng<T>(array: T[], rng: SeededRng): T[] {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(rng.next() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
@@ -36,6 +65,29 @@ function generateSolution(): number[][] {
   return grid;
 }
 
+// Generate a valid Sudoku solution with a seeded RNG
+function generateSeededSolution(rng: SeededRng): number[][] {
+  const grid: number[][] = Array(9)
+    .fill(0)
+    .map(() => Array(9).fill(0));
+
+  // Fill diagonal 3x3 boxes first (they are independent)
+  for (let box = 0; box < 9; box += 3) {
+    const numbers = shuffleArrayWithRng([1, 2, 3, 4, 5, 6, 7, 8, 9], rng);
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        grid[box + i][box + j] = numbers[i * 3 + j];
+      }
+    }
+  }
+
+  if (!fillRemainingWithRng(grid, rng)) {
+    return generateSeededSolution(rng);
+  }
+
+  return grid;
+}
+
 function fillRemaining(grid: number[][]): boolean {
   const emptyCell = findEmptyCell(grid);
   if (!emptyCell) return true; // puzzle is solved
@@ -48,6 +100,24 @@ function fillRemaining(grid: number[][]): boolean {
       grid[row][col] = num;
       if (fillRemaining(grid)) return true;
       grid[row][col] = 0; // backtrack
+    }
+  }
+
+  return false;
+}
+
+function fillRemainingWithRng(grid: number[][], rng: SeededRng): boolean {
+  const emptyCell = findEmptyCell(grid);
+  if (!emptyCell) return true;
+
+  const [row, col] = emptyCell;
+  const numbers = shuffleArrayWithRng([1, 2, 3, 4, 5, 6, 7, 8, 9], rng);
+
+  for (const num of numbers) {
+    if (isValidPlacement(grid, row, col, num)) {
+      grid[row][col] = num;
+      if (fillRemainingWithRng(grid, rng)) return true;
+      grid[row][col] = 0;
     }
   }
 
@@ -97,6 +167,49 @@ function generatePuzzle(solution: SudokuSolution, difficulty: Difficulty): numbe
     puzzle[row][col] = 0;
 
     // If removing this number creates multiple solutions, put it back
+    if (!hasUniqueSolution(puzzle)) {
+      puzzle[row][col] = temp;
+      continue;
+    }
+
+    removed++;
+  }
+
+  return puzzle;
+}
+
+// Create seeded puzzle by removing numbers from solution
+function generateSeededPuzzle(
+  solution: SudokuSolution,
+  difficulty: Difficulty,
+  rng: SeededRng,
+): number[][] {
+  const puzzle = deepCopy(solution);
+
+  const cellsToRemove = {
+    [Difficulty.EASY]: 30,
+    [Difficulty.MEDIUM]: 40,
+    [Difficulty.HARD]: 50,
+    [Difficulty.EXPERT]: 55,
+    [Difficulty.MASTER]: 60,
+    [Difficulty.EXTREME]: 65,
+  }[difficulty];
+
+  const positions: Array<[number, number]> = [];
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      positions.push([i, j]);
+    }
+  }
+
+  shuffleArrayWithRng(positions, rng);
+  let removed = 0;
+  for (const [row, col] of positions) {
+    if (removed >= cellsToRemove) break;
+
+    const temp = puzzle[row][col];
+    puzzle[row][col] = 0;
+
     if (!hasUniqueSolution(puzzle)) {
       puzzle[row][col] = temp;
       continue;
@@ -206,6 +319,26 @@ export function isValidGrid(grid: number[][]): boolean {
 export function generateGrid(difficulty: Difficulty): { grid: Grid; solution: SudokuSolution } {
   const solution = generateSolution();
   const puzzle = generatePuzzle(solution, difficulty);
+  return {
+    grid: puzzle.map((row) =>
+      row.map((value) => ({
+        value: value === 0 ? null : value,
+        notes: new Set(),
+        isInitial: value !== 0,
+        hasError: false,
+      })),
+    ),
+    solution,
+  };
+}
+
+export function generateSeededGrid(
+  difficulty: Difficulty,
+  seed: string,
+): { grid: Grid; solution: SudokuSolution } {
+  const rng = new SeededRng(seed);
+  const solution = generateSeededSolution(rng);
+  const puzzle = generateSeededPuzzle(solution, difficulty, rng);
   return {
     grid: puzzle.map((row) =>
       row.map((value) => ({
