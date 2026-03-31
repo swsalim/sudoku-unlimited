@@ -2,9 +2,13 @@ import Link from 'next/link';
 
 export default function ExpertSudoku() {
   return (
-    <article className="prose mt-12 max-w-none" aria-labelledby="expert-sudoku-heading">
-      <div className="mx-auto max-w-4xl px-4 py-8">
-        <h1 id="expert-sudoku-heading" className="font-heading text-4xl font-black">
+    <article
+      className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50"
+      aria-labelledby="expert-sudoku-heading">
+      <div className="mx-auto max-w-4xl px-4 py-20">
+        <h1
+          id="expert-sudoku-heading"
+          className="font-heading text-4xl font-black dark:text-stone-50">
           Expert Sudoku Puzzles – Free Advanced Games Online
         </h1>
         <p>
@@ -16,7 +20,9 @@ export default function ExpertSudoku() {
           their strategic thinking.
         </p>
 
-        <h2 id="expert-sudoku-techniques" className="font-heading text-2xl font-bold">
+        <h2
+          id="expert-sudoku-techniques"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Pro-Level Techniques for Expert Sudoku
         </h2>
         <p>
@@ -28,33 +34,35 @@ export default function ExpertSudoku() {
           are essential at the expert level.
         </p>
 
-        <h2 id="x-wing-swordfish-explained" className="font-heading text-2xl font-bold">
+        <h2
+          id="x-wing-swordfish-explained"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           X-Wing and Swordfish in Practice
         </h2>
         <p>
           An X-Wing pattern forms when, for a given number, you find exactly two possible cells in
           each of two rows, and those cells line up in the same two columns. That number cannot
           appear anywhere else in those columns. Swordfish works the same way but across three rows
-          or three columns—it is more complex to spot but can clear many candidates at once. Practice
-          recognizing these shapes on <Link href="/hard">hard Sudoku</Link> puzzles before tackling
-          expert grids.
+          or three columns—it is more complex to spot but can clear many candidates at once.
+          Practice recognizing these shapes on <Link href="/hard">hard Sudoku</Link> puzzles before
+          tackling expert grids.
         </p>
 
-        <h2 id="expert-sudoku-tips" className="font-heading text-2xl font-bold">
+        <h2 id="expert-sudoku-tips" className="font-heading text-2xl font-bold dark:text-stone-50">
           Tips for Expert Sudoku
         </h2>
         <ul>
           <li>
-            <strong>Keep pencil marks updated.</strong> Expert puzzles have few givens, so candidates
-            change frequently as you place numbers—stale marks lead to errors.
+            <strong>Keep pencil marks updated.</strong> Expert puzzles have few givens, so
+            candidates change frequently as you place numbers—stale marks lead to errors.
           </li>
           <li>
             <strong>Work methodically.</strong> Scan the entire grid before making a move; sometimes
             the critical elimination is in a row or column you have not looked at lately.
           </li>
           <li>
-            <strong>Expect 30–60 minutes or more per puzzle.</strong> Expert Sudoku rewards patience.
-            If you hit a wall, take a break and return with fresh eyes.
+            <strong>Expect 30–60 minutes or more per puzzle.</strong> Expert Sudoku rewards
+            patience. If you hit a wall, take a break and return with fresh eyes.
           </li>
           <li>
             Ready for the next tier? Try <Link href="/master">master Sudoku</Link> when expert grids
@@ -62,7 +70,9 @@ export default function ExpertSudoku() {
           </li>
         </ul>
 
-        <h2 id="what-makes-expert-different" className="font-heading text-2xl font-bold">
+        <h2
+          id="what-makes-expert-different"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           What Makes Expert Sudoku Different
         </h2>
         <p>
@@ -74,7 +84,7 @@ export default function ExpertSudoku() {
           <Link href="/master">master Sudoku</Link> and its advanced wing techniques.
         </p>
 
-        <h2 id="try-other-levels" className="font-heading text-2xl font-bold">
+        <h2 id="try-other-levels" className="font-heading text-2xl font-bold dark:text-stone-50">
           Try Other Difficulty Levels
         </h2>
         <p className="mb-0">

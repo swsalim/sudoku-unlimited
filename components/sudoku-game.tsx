@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Confetti from 'react-confetti';
 
-import { Difficulty, GameState, Grid } from '@/types';
+import { Difficulty, GameState, GameVariant, Grid } from '@/types';
 
 import { recordGameAndCheckAchievements } from '@/lib/achievements/utils';
 import {
@@ -22,7 +22,13 @@ import {
 import { getZenMode, setZenMode } from '@/lib/storage/zen-storage';
 import { deepCopy } from '@/lib/utils';
 
-import { generateGrid, generateSeededGrid, getPossibleValues, isValidMove } from '@/utils/sudoku';
+import { generateKillerGrid } from '@/utils/killer-sudoku';
+import {
+  generateGrid,
+  generateSeededGrid,
+  getPossibleValuesForVariant,
+  isValidMove,
+} from '@/utils/sudoku';
 
 import { AchievementToast } from '@/components/achievement-toast';
 import { AchievementsDialog } from '@/components/achievements-dialog';
@@ -63,6 +69,7 @@ interface GameMove {
 
 interface SudokuGameProps {
   initialDifficulty: Difficulty;
+  variant?: GameVariant;
 }
 
 function formatTime(seconds: number) {
@@ -71,7 +78,7 @@ function formatTime(seconds: number) {
   return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 }
 
-export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
+export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }: SudokuGameProps) {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [time, setTime] = useState(0);
   const [showGameOver, setShowGameOver] = useState(false);
@@ -119,13 +126,17 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     if (typeof window === 'undefined' || !gameState) return;
     const url = new URL(window.location.href);
     url.searchParams.set('difficulty', gameState.difficulty.toLowerCase());
+    if (gameState.variant === GameVariant.KILLER) {
+      url.searchParams.set('variant', 'killer');
+    }
     url.searchParams.set('time', String(time));
     url.searchParams.set('score', String(gameState.score));
     url.searchParams.set('mistakes', String(gameState.mistakes));
     if (isDailyMode) {
       url.searchParams.set('daily', '1');
     }
-    const text = `I just solved a ${gameState.difficulty.toLowerCase()} Sudoku on sudoku.unlimited in ${formatTime(time)} with score ${
+    const variantLabel = gameState.variant === GameVariant.KILLER ? 'killer sudoku' : 'sudoku';
+    const text = `I just solved a ${gameState.difficulty.toLowerCase()} ${variantLabel} on sudoku.unlimited in ${formatTime(time)} with score ${
       gameState.score
     }. Try the same run:\n${url.toString()}`;
     navigator.clipboard?.writeText(text).catch(() => {
@@ -248,7 +259,10 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
           row.map((cell) => (cell.value === null ? 0 : cell.value)),
         );
         // Check if the move is valid
-        const isValid = isValidMove(gridNumbers, row, col, number, gameState.solution);
+        const isValid = isValidMove(gridNumbers, row, col, number, gameState.solution, {
+          variant: gameState.variant,
+          cages: gameState.killerCages,
+        });
 
         cell.value = number;
         cell.notes = new Set();
@@ -363,7 +377,10 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     };
 
     const gridNumbers = gameState.grid.map((r) => r.map((c) => c.value || 0));
-    const possibleValues = getPossibleValues(gridNumbers, row, col);
+    const possibleValues = getPossibleValuesForVariant(gridNumbers, row, col, {
+      variant: gameState.variant,
+      cages: gameState.killerCages,
+    });
 
     // console.log(`possibleValues`, possibleValues);
 
@@ -422,9 +439,12 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     setSavedGameOffer(null);
 
     const useDaily = options?.dailyMode ?? isDailyMode;
-    const generated = useDaily
-      ? generateSeededGrid(difficulty, getDailySeed(difficulty))
-      : generateGrid(difficulty);
+    const generated =
+      variant === GameVariant.KILLER
+        ? generateKillerGrid(difficulty)
+        : useDaily
+          ? generateSeededGrid(difficulty, getDailySeed(difficulty))
+          : generateGrid(difficulty);
     let { grid } = generated;
     const { solution } = generated;
 
@@ -461,6 +481,11 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
       grid,
       solution,
       difficulty,
+      variant,
+      killerCages:
+        variant === GameVariant.KILLER
+          ? (generated as ReturnType<typeof generateKillerGrid>).cages
+          : undefined,
       selectedCell: null,
       isPaused: false,
       isNotesMode: false,
@@ -555,6 +580,21 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
     return boxRow === selectedBoxRow && boxCol === selectedBoxCol;
   };
 
+  const getCageAt = (row: number, col: number) => {
+    return gameState?.killerCages?.find((cage) =>
+      cage.cells.some((cell) => cell.row === row && cell.col === col),
+    );
+  };
+
+  const isCageStartCell = (
+    cage: NonNullable<GameState['killerCages']>[number],
+    row: number,
+    col: number,
+  ) => {
+    const firstCell = [...cage.cells].sort((a, b) => a.row * 9 + a.col - (b.row * 9 + b.col))[0];
+    return firstCell.row === row && firstCell.col === col;
+  };
+
   const checkGameCompletion = useCallback(() => {
     if (!gameState || showVictory) return;
 
@@ -602,7 +642,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
 
   if (!gameState) {
     return (
-      <div className="min-h-[calc(100vh-8rem)]">
+      <>
         <div className="relative z-10">
           <SudokuGameSkeleton />
           <AlertDialog open={!!savedGameOffer}>
@@ -639,12 +679,12 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
             </AlertDialogContent>
           </AlertDialog>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-[calc(100vh-8rem)]">
+    <>
       <div className="relative z-10">
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, pointerEvents: 'none' }}>
           <Confetti
@@ -655,7 +695,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
           />
         </div>
         <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
-          <div className="relative rounded-2xl border p-3 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.15)] sm:p-6 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)]">
+          <div className="relative rounded-2xl border border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] p-3 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.15)] sm:p-6">
             <GameHeader
               difficulty={gameState.difficulty.toLowerCase()}
               mistakes={gameState.mistakes}
@@ -668,14 +708,19 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
               onPauseToggle={() =>
                 setGameState((prev) => (prev ? { ...prev, isPaused: !prev.isPaused } : null))
               }
+              routeBase={variant === GameVariant.KILLER ? '/killer-sudoku' : ''}
               onOpenAchievements={() => setShowAchievements(true)}
               onOpenStats={() => setShowStats(true)}
               onOpenThemes={() => setShowThemes(true)}
-              onDailyToggle={() => {
-                const nextDaily = !isDailyMode;
-                setIsDailyMode(nextDaily);
-                startNewGame(gameState.difficulty as Difficulty, { dailyMode: nextDaily });
-              }}
+              onDailyToggle={
+                variant === GameVariant.KILLER
+                  ? undefined
+                  : () => {
+                      const nextDaily = !isDailyMode;
+                      setIsDailyMode(nextDaily);
+                      startNewGame(gameState.difficulty as Difficulty, { dailyMode: nextDaily });
+                    }
+              }
               onZenModeToggle={() => {
                 const next = !isZenMode;
                 setIsZenMode(next);
@@ -697,6 +742,7 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
                   row.map((cell, colIndex) => {
                     const highlighted = isHighlighted(rowIndex, colIndex);
                     const sameNumber = isSameNumber(rowIndex, colIndex);
+                    const cage = getCageAt(rowIndex, colIndex);
                     return (
                       <Cell
                         key={`${rowIndex}-${colIndex}`}
@@ -714,7 +760,32 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
                           gameState.selectedCell?.row === rowIndex &&
                           gameState.selectedCell?.col === colIndex
                         }
-                        className={`${colIndex % 3 === 2 && colIndex !== 8 ? 'border-r-2 border-r-stone-400 sm:border-r-[3px]' : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? 'border-b-2 border-b-stone-400 sm:border-b-[3px]' : ''}`}
+                        cageSum={
+                          cage && isCageStartCell(cage, rowIndex, colIndex) ? cage.sum : undefined
+                        }
+                        cageBorders={
+                          gameState.variant === GameVariant.KILLER && cage
+                            ? {
+                                top: !cage.cells.some(
+                                  (cageCell) =>
+                                    cageCell.row === rowIndex - 1 && cageCell.col === colIndex,
+                                ),
+                                right: !cage.cells.some(
+                                  (cageCell) =>
+                                    cageCell.row === rowIndex && cageCell.col === colIndex + 1,
+                                ),
+                                bottom: !cage.cells.some(
+                                  (cageCell) =>
+                                    cageCell.row === rowIndex + 1 && cageCell.col === colIndex,
+                                ),
+                                left: !cage.cells.some(
+                                  (cageCell) =>
+                                    cageCell.row === rowIndex && cageCell.col === colIndex - 1,
+                                ),
+                              }
+                            : undefined
+                        }
+                        className={`${colIndex % 3 === 2 && colIndex !== 8 ? (gameState.variant === GameVariant.KILLER ? 'border-r-[3px] border-r-violet-700/90 sm:border-r-4' : 'border-r-2 border-r-stone-400 sm:border-r-[3px]') : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? (gameState.variant === GameVariant.KILLER ? 'border-b-[3px] border-b-violet-700/90 sm:border-b-4' : 'border-b-2 border-b-stone-400 sm:border-b-[3px]') : ''}`}
                       />
                     );
                   }),
@@ -738,6 +809,13 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
                 hintRefreshMessage={hintRefreshMessage}
               />
             </div>
+
+            {gameState.variant === GameVariant.KILLER && (
+              <p className="mt-4 max-w-3xl text-center text-base text-stone-600 dark:text-stone-400 md:text-left">
+                Killer mode: each cage must sum to its corner clue, and numbers cannot repeat inside
+                the same cage.
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -807,6 +885,6 @@ export function SudokuGame({ initialDifficulty }: SudokuGameProps) {
       <AchievementsDialog open={showAchievements} onOpenChange={setShowAchievements} />
       <StatisticsDialog open={showStats} onOpenChange={setShowStats} />
       <ThemesDialog open={showThemes} onOpenChange={setShowThemes} />
-    </div>
+    </>
   );
 }

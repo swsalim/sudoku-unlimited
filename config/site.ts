@@ -10,7 +10,7 @@ export const siteConfig: SiteConfig = {
   url: new URL(absoluteUrl()),
   openGraph: {
     image: '/images/og-default.png',
-    imageAlt: 'Banner for rgbtopantone.com',
+    imageAlt: 'Sudoku Unlimited game preview banner',
     width: '1200',
     height: '630',
   },

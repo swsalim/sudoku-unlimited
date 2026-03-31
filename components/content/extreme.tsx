@@ -2,9 +2,13 @@ import Link from 'next/link';
 
 export default function ExtremeSudoku() {
   return (
-    <article className="prose mt-12 max-w-none" aria-labelledby="extreme-sudoku-heading">
-      <div className="mx-auto max-w-4xl px-4 py-8">
-        <h1 id="extreme-sudoku-heading" className="font-heading text-4xl font-black">
+    <article
+      className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50"
+      aria-labelledby="extreme-sudoku-heading">
+      <div className="mx-auto max-w-4xl px-4 py-20">
+        <h1
+          id="extreme-sudoku-heading"
+          className="font-heading text-4xl font-black dark:text-stone-50">
           Extreme Sudoku Puzzles – Free Ultra-Hard Games Online
         </h1>
         <p>
@@ -15,7 +19,9 @@ export default function ExtremeSudoku() {
           extreme Sudoku is a badge of honor for true Sudoku experts.
         </p>
 
-        <h2 id="extreme-sudoku-strategies" className="font-heading text-2xl font-bold">
+        <h2
+          id="extreme-sudoku-strategies"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Strategies to Conquer Extreme Sudoku
         </h2>
         <p>
@@ -26,21 +32,23 @@ export default function ExtremeSudoku() {
           solving an extreme Sudoku puzzle is one of the most satisfying achievements in the game.
         </p>
 
-        <h2 id="forcing-chains-nishio-explained" className="font-heading text-2xl font-bold">
+        <h2
+          id="forcing-chains-nishio-explained"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Forcing Chains and Nishio in Detail
         </h2>
         <p>
           With Forcing Chains, you follow two or more possible placements and see where they lead.
-          If every path produces a contradiction (e.g., a cell with no valid candidates), the starting
-          assumption is wrong. Nishio is similar but often starts from a single cell: assume a number
-          goes there, apply logic, and if you reach an impossible state, that number cannot go in that
-          cell. Both methods require exhaustive pencil marks and careful reasoning—mistakes are easy
-          when tracking long chains. Extreme puzzles may also combine <strong>XY-Wing</strong>,{' '}
-          <strong>W-Wing</strong>, and <strong>X-Wing</strong> in ways that <Link href="/master">master
-          Sudoku</Link> typically does not.
+          If every path produces a contradiction (e.g., a cell with no valid candidates), the
+          starting assumption is wrong. Nishio is similar but often starts from a single cell:
+          assume a number goes there, apply logic, and if you reach an impossible state, that number
+          cannot go in that cell. Both methods require exhaustive pencil marks and careful
+          reasoning—mistakes are easy when tracking long chains. Extreme puzzles may also combine{' '}
+          <strong>XY-Wing</strong>, <strong>W-Wing</strong>, and <strong>X-Wing</strong> in ways
+          that <Link href="/master">master Sudoku</Link> typically does not.
         </p>
 
-        <h2 id="extreme-sudoku-tips" className="font-heading text-2xl font-bold">
+        <h2 id="extreme-sudoku-tips" className="font-heading text-2xl font-bold dark:text-stone-50">
           Tips for Extreme Sudoku
         </h2>
         <ul>
@@ -49,12 +57,12 @@ export default function ExtremeSudoku() {
             them as a deep focus session, not a quick break.
           </li>
           <li>
-            <strong>Double-check every elimination.</strong> When using Forcing Chains or Nishio, one
-            missed candidate can invalidate your entire chain. Work slowly and verify each step.
+            <strong>Double-check every elimination.</strong> When using Forcing Chains or Nishio,
+            one missed candidate can invalidate your entire chain. Work slowly and verify each step.
           </li>
           <li>
-            <strong>Use undo liberally.</strong> If a chain leads nowhere or you lose track, undo and
-            try a different starting cell or number.
+            <strong>Use undo liberally.</strong> If a chain leads nowhere or you lose track, undo
+            and try a different starting cell or number.
           </li>
           <li>
             <strong>Take pride in the solve.</strong> Finishing an extreme Sudoku is a genuine
@@ -62,7 +70,9 @@ export default function ExtremeSudoku() {
           </li>
         </ul>
 
-        <h2 id="is-extreme-right-for-you" className="font-heading text-2xl font-bold">
+        <h2
+          id="is-extreme-right-for-you"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Is Extreme Sudoku Right for You?
         </h2>
         <p>
@@ -75,7 +85,7 @@ export default function ExtremeSudoku() {
           toughest grids.
         </p>
 
-        <h2 id="try-other-levels" className="font-heading text-2xl font-bold">
+        <h2 id="try-other-levels" className="font-heading text-2xl font-bold dark:text-stone-50">
           Try Other Difficulty Levels
         </h2>
         <p className="mb-0">

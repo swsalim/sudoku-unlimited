@@ -28,6 +28,16 @@ export const faqByDifficulty: Record<string, FaqItem[]> = {
       answer:
         'Yes. Easy Sudoku puzzles on Sudoku Unlimited are free to play online with no signup or download required. Play on your phone, tablet, or computer.',
     },
+    {
+      question: 'How long does an easy Sudoku puzzle usually take?',
+      answer:
+        'Most easy puzzles take around 5 to 15 minutes, depending on your experience and whether you use notes.',
+    },
+    {
+      question: 'What is the most common beginner mistake in easy Sudoku?',
+      answer:
+        'The most common mistake is placing a number too quickly without checking the full row, column, and 3x3 box. Slow, consistent scanning prevents early errors.',
+    },
   ],
   medium: [
     {
@@ -44,6 +54,16 @@ export const faqByDifficulty: Record<string, FaqItem[]> = {
       question: 'When should I move from easy to medium Sudoku?',
       answer:
         'Move to medium when easy puzzles feel quick to solve. Medium Sudoku is the natural step between beginner and advanced levels—perfect for building confidence and discovering new techniques.',
+    },
+    {
+      question: 'How long does medium Sudoku usually take?',
+      answer:
+        'Many players finish medium puzzles in 10 to 25 minutes. Times vary based on how comfortable you are with candidate elimination and pair techniques.',
+    },
+    {
+      question: 'Should I use notes on medium Sudoku?',
+      answer:
+        'Yes. Notes become very useful on medium because many cells have multiple candidates. Keeping candidates clean helps you spot hidden singles and pairs faster.',
     },
   ],
   hard: [
@@ -62,6 +82,16 @@ export const faqByDifficulty: Record<string, FaqItem[]> = {
       answer:
         'Hard Sudoku is best for experienced players who have mastered easy and medium levels. Start with easier puzzles if you are new to the game.',
     },
+    {
+      question: 'How do I get unstuck on hard Sudoku without guessing?',
+      answer:
+        'Re-check your candidate notes box by box, then look for interactions between rows, columns, and boxes. Hidden eliminations often appear after cleaning up old notes.',
+    },
+    {
+      question: 'How long does a hard Sudoku puzzle take?',
+      answer:
+        'Hard Sudoku commonly takes 20 to 45 minutes, though some grids can take longer if they require several advanced deductions.',
+    },
   ],
   expert: [
     {
@@ -78,6 +108,16 @@ export const faqByDifficulty: Record<string, FaqItem[]> = {
       question: 'How do I prepare for expert Sudoku?',
       answer:
         'Master hard Sudoku first. At expert level, clear pencil marks and consistent candidate elimination are essential. Take your time and avoid rushing.',
+    },
+    {
+      question: 'Do expert Sudoku puzzles require guessing?',
+      answer:
+        'A well-constructed expert puzzle can be solved logically. It may feel like guessing if candidates are incomplete, so accurate notes are critical.',
+    },
+    {
+      question: 'What is a good expert Sudoku strategy?',
+      answer:
+        'Cycle between candidate cleanup and advanced pattern checks. Look for X-Wing/Swordfish opportunities only after simpler eliminations are exhausted.',
     },
   ],
   master: [
@@ -96,6 +136,16 @@ export const faqByDifficulty: Record<string, FaqItem[]> = {
       answer:
         'Yes. Master Sudoku is designed for players who have outgrown expert. Solving one is a rewarding achievement for dedicated Sudoku enthusiasts.',
     },
+    {
+      question: 'How long can a master Sudoku puzzle take?',
+      answer:
+        'Master puzzles often take 40 minutes to well over an hour, depending on puzzle structure and how efficiently you track candidate chains.',
+    },
+    {
+      question: 'What should I do after making a mistake in master Sudoku?',
+      answer:
+        'Undo to the last confirmed logical step, then rebuild candidates in affected areas. Recovering methodically is faster than trying to patch uncertain placements.',
+    },
   ],
   extreme: [
     {
@@ -112,6 +162,16 @@ export const faqByDifficulty: Record<string, FaqItem[]> = {
       question: 'Who should attempt extreme Sudoku?',
       answer:
         'Extreme Sudoku is for true Sudoku experts who have mastered all other levels. Solving one is a badge of honor and one of the most satisfying achievements in the game.',
+    },
+    {
+      question: 'Can extreme Sudoku be solved purely with logic?',
+      answer:
+        'High-quality extreme puzzles are intended to be logically solvable, but they require deep chains, advanced pattern recognition, and disciplined candidate tracking.',
+    },
+    {
+      question: 'How should I practice for extreme Sudoku?',
+      answer:
+        'Build consistency on expert and master first, then practice advanced techniques one at a time. Reviewing finished grids helps you understand missed deduction paths.',
     },
   ],
 };

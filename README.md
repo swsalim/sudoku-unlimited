@@ -34,3 +34,13 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Killer Sudoku roadmap
+
+Current Killer Sudoku mode ships with prebuilt cage layouts and puzzle templates for fast delivery.
+For production-grade puzzle quality, the next phase is:
+
+- Build a cage topology generator with symmetry and distribution constraints.
+- Add a Killer-specific solver/uniqueness validator (cage sums + no-repeat-in-cage + classic constraints).
+- Define difficulty heuristics from cage structure and solving path complexity.
+- Curate and benchmark puzzle pools before replacing prebuilt templates.

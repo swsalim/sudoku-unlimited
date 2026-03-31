@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Figtree, Petrona } from 'next/font/google';
+import { Figtree, Fraunces } from 'next/font/google';
 
 import { siteConfig } from '@/config/site';
 
@@ -9,8 +9,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 
 import './globals.css';
 
-const petrona = Petrona({
-  variable: '--font-petrona',
+const fraunces = Fraunces({
+  variable: '--font-fraunces',
   subsets: ['latin'],
 });
 
@@ -86,11 +86,13 @@ export default function RootLayout({
         <script async src="https://cdn.seline.com/seline.js" data-token="9b914a331a40d42"></script>
       </head>
       <body
-        className={`${petrona.variable} ${figtree.variable} font-sans font-medium antialiased`}
+        className={`${fraunces.variable} ${figtree.variable} font-sans font-medium antialiased`}
         suppressHydrationWarning>
         <ThemeProvider />
         <Navbar />
-        <main className="flex grow flex-col justify-center">{children}</main>
+        <main className="flex min-h-[calc(100vh-8rem)] grow flex-col justify-center">
+          {children}
+        </main>
         <Footer />
         <script
           src="https://cdn.apitiny.net/scripts/v2.0/main.js"

@@ -2,9 +2,13 @@ import Link from 'next/link';
 
 export default function EasySudoku() {
   return (
-    <article className="prose mt-12 max-w-none" aria-labelledby="easy-sudoku-heading">
-      <div className="mx-auto max-w-4xl px-4 py-8">
-        <h1 id="easy-sudoku-heading" className="font-heading text-4xl font-black">
+    <article
+      className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50"
+      aria-labelledby="easy-sudoku-heading">
+      <div className="mx-auto max-w-4xl px-4 py-20">
+        <h1
+          id="easy-sudoku-heading"
+          className="font-heading text-4xl font-black dark:text-stone-50">
           Free Easy Sudoku Puzzles – The Best Place for Beginners
         </h1>
         <p>
@@ -14,7 +18,9 @@ export default function EasySudoku() {
           1–9 without repetition. Free to play online—no signup, no download.
         </p>
 
-        <h2 id="how-to-solve-easy-sudoku" className="font-heading text-2xl font-bold">
+        <h2
+          id="how-to-solve-easy-sudoku"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           How to Solve Easy Sudoku
         </h2>
         <p>
@@ -25,7 +31,9 @@ export default function EasySudoku() {
           puzzles quickly.
         </p>
 
-        <h2 id="why-play-easy-sudoku" className="font-heading text-2xl font-bold">
+        <h2
+          id="why-play-easy-sudoku"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Why Play Easy Sudoku Online
         </h2>
         <p>
@@ -33,7 +41,9 @@ export default function EasySudoku() {
           Playing free Sudoku online lets you practice anywhere—on your phone, tablet, or computer.
         </p>
 
-        <h2 id="tips-for-easy-sudoku" className="font-heading text-2xl font-bold">
+        <h2
+          id="tips-for-easy-sudoku"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Tips for Solving Easy Sudoku Faster
         </h2>
         <ul>
@@ -51,17 +61,22 @@ export default function EasySudoku() {
           </li>
         </ul>
 
-        <h2 id="common-mistakes-easy" className="font-heading text-2xl font-bold">
+        <h2
+          id="common-mistakes-easy"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Common Mistakes to Avoid
         </h2>
         <p>
           New players sometimes repeat numbers in a row or column by accident. Always double-check
-          that each number appears only once per row, column, and 3×3 box. Another pitfall is rushing
-          through obvious placements—taking a moment to scan the grid before each move reduces
-          mistakes and builds good habits for harder levels like <Link href="/medium">medium Sudoku</Link>.
+          that each number appears only once per row, column, and 3×3 box. Another pitfall is
+          rushing through obvious placements—taking a moment to scan the grid before each move
+          reduces mistakes and builds good habits for harder levels like{' '}
+          <Link href="/medium">medium Sudoku</Link>.
         </p>
 
-        <h2 id="why-easy-sudoku-is-great-for-beginners" className="font-heading text-2xl font-bold">
+        <h2
+          id="why-easy-sudoku-is-great-for-beginners"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Why Easy Sudoku Is Great for Beginners
         </h2>
         <p>
@@ -72,7 +87,7 @@ export default function EasySudoku() {
           causing frustration. Play free easy Sudoku online anytime; no download or account needed.
         </p>
 
-        <h2 id="try-other-levels" className="font-heading text-2xl font-bold">
+        <h2 id="try-other-levels" className="font-heading text-2xl font-bold dark:text-stone-50">
           Try Other Difficulty Levels
         </h2>
         <p className="mb-0">

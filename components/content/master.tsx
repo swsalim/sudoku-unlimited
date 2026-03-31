@@ -2,9 +2,13 @@ import Link from 'next/link';
 
 export default function MasterSudoku() {
   return (
-    <article className="prose mt-12 max-w-none" aria-labelledby="master-sudoku-heading">
-      <div className="mx-auto max-w-4xl px-4 py-8">
-        <h1 id="master-sudoku-heading" className="font-heading text-4xl font-black">
+    <article
+      className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50"
+      aria-labelledby="master-sudoku-heading">
+      <div className="mx-auto max-w-4xl px-4 py-20">
+        <h1
+          id="master-sudoku-heading"
+          className="font-heading text-4xl font-black dark:text-stone-50">
           Master Sudoku Puzzles – Free Elite-Level Games Online
         </h1>
         <p>
@@ -16,7 +20,9 @@ export default function MasterSudoku() {
           available—solving one is a rewarding achievement.
         </p>
 
-        <h2 id="master-sudoku-techniques" className="font-heading text-2xl font-bold">
+        <h2
+          id="master-sudoku-techniques"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Master-Level Sudoku Techniques
         </h2>
         <p>
@@ -27,7 +33,9 @@ export default function MasterSudoku() {
           who stay systematic and avoid rushing.
         </p>
 
-        <h2 id="xy-wing-w-wing-explained" className="font-heading text-2xl font-bold">
+        <h2
+          id="xy-wing-w-wing-explained"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           How XY-Wing and W-Wing Work
         </h2>
         <p>
@@ -40,7 +48,7 @@ export default function MasterSudoku() {
           those ready for <Link href="/extreme">extreme Sudoku</Link>.
         </p>
 
-        <h2 id="master-sudoku-tips" className="font-heading text-2xl font-bold">
+        <h2 id="master-sudoku-tips" className="font-heading text-2xl font-bold dark:text-stone-50">
           Tips for Master Sudoku
         </h2>
         <ul>
@@ -49,8 +57,8 @@ export default function MasterSudoku() {
             over an hour. Block out uninterrupted time.
           </li>
           <li>
-            <strong>Use the hint feature sparingly.</strong> One well-timed hint can unstick you, but
-            relying on it too often prevents you from building pattern-recognition skills.
+            <strong>Use the hint feature sparingly.</strong> One well-timed hint can unstick you,
+            but relying on it too often prevents you from building pattern-recognition skills.
           </li>
           <li>
             <strong>Review your work.</strong> At this level, a single misplaced number can hide for
@@ -62,7 +70,7 @@ export default function MasterSudoku() {
           </li>
         </ul>
 
-        <h2 id="the-master-mindset" className="font-heading text-2xl font-bold">
+        <h2 id="the-master-mindset" className="font-heading text-2xl font-bold dark:text-stone-50">
           The Master Sudoku Mindset
         </h2>
         <p>
@@ -74,7 +82,7 @@ export default function MasterSudoku() {
           <Link href="/extreme">extreme Sudoku</Link> if you crave even more.
         </p>
 
-        <h2 id="try-other-levels" className="font-heading text-2xl font-bold">
+        <h2 id="try-other-levels" className="font-heading text-2xl font-bold dark:text-stone-50">
           Try Other Difficulty Levels
         </h2>
         <p className="mb-0">

@@ -1,4 +1,5 @@
 import { Difficulty } from '@/types';
+import Link from 'next/link';
 
 import { Container } from '@/components/container';
 import { HomeFaqSection } from '@/components/home-faq-section';
@@ -83,6 +84,10 @@ export default function HomePage() {
           <p>
             Now that you know the basics, start with an easy Sudoku puzzle and gradually challenge
             yourself with harder levels. Have fun solving!
+          </p>
+          <p>
+            Want a different ruleset? Try <Link href="/killer-sudoku">Killer Sudoku</Link> for
+            cage-sum puzzles.
           </p>
         </Container>
       </section>

@@ -60,7 +60,7 @@ export default {
       },
       fontFamily: {
         sans: ['var(--font-figtree)', 'sans-serif'],
-        heading: ['var(--font-petrona)', 'sans-serif'],
+        heading: ['var(--font-fraunces)', 'sans-serif'],
         mono: ['var(--font-figtree)', 'monospace'],
       },
     },

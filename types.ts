@@ -20,6 +20,7 @@ export interface Cell {
   notes: Notes;
   isInitial: boolean;
   hasError: boolean;
+  cageId?: string;
 }
 
 export type Grid = Cell[][];
@@ -35,6 +36,8 @@ export interface GameState {
   isPaused: boolean;
   history: Grid[];
   solution: SudokuSolution;
+  variant?: GameVariant;
+  killerCages?: KillerCage[];
 }
 
 // export type Difficulty =
@@ -55,3 +58,14 @@ export enum Difficulty {
 }
 
 export type SudokuSolution = number[][];
+
+export enum GameVariant {
+  CLASSIC = 'classic',
+  KILLER = 'killer',
+}
+
+export interface KillerCage {
+  id: string;
+  sum: number;
+  cells: Array<{ row: number; col: number }>;
+}

@@ -2,9 +2,13 @@ import Link from 'next/link';
 
 export default function MediumSudoku() {
   return (
-    <article className="prose mt-12 max-w-none" aria-labelledby="medium-sudoku-heading">
-      <div className="mx-auto max-w-4xl px-4 py-8">
-        <h1 id="medium-sudoku-heading" className="font-heading text-4xl font-black">
+    <article
+      className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50"
+      aria-labelledby="medium-sudoku-heading">
+      <div className="mx-auto max-w-4xl px-4 py-20">
+        <h1
+          id="medium-sudoku-heading"
+          className="font-heading text-4xl font-black dark:text-stone-50">
           Medium Sudoku Puzzles – Free Intermediate-Level Games Online
         </h1>
         <p>
@@ -16,7 +20,9 @@ export default function MediumSudoku() {
           beginner and advanced Sudoku.
         </p>
 
-        <h2 id="strategies-for-medium-sudoku" className="font-heading text-2xl font-bold">
+        <h2
+          id="strategies-for-medium-sudoku"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Strategies to Solve Medium Sudoku
         </h2>
         <p>
@@ -27,18 +33,20 @@ export default function MediumSudoku() {
           column, or box. Stay patient and methodical to solve these free medium Sudoku puzzles.
         </p>
 
-        <h2 id="understanding-naked-pairs" className="font-heading text-2xl font-bold">
+        <h2
+          id="understanding-naked-pairs"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Understanding Naked Pairs and Hidden Singles
         </h2>
         <p>
-          When you see two cells in a row that both allow only 4 and 7, those two numbers must go
-          in those cells—so you can remove 4 and 7 from all other cells in that row. Hidden singles
-          are trickier: a number might appear as a candidate in several cells, but only one of those
-          cells is valid once you account for other rows and columns. Learning to spot these patterns
-          is the key to mastering medium-level puzzles.
+          When you see two cells in a row that both allow only 4 and 7, those two numbers must go in
+          those cells—so you can remove 4 and 7 from all other cells in that row. Hidden singles are
+          trickier: a number might appear as a candidate in several cells, but only one of those
+          cells is valid once you account for other rows and columns. Learning to spot these
+          patterns is the key to mastering medium-level puzzles.
         </p>
 
-        <h2 id="medium-sudoku-tips" className="font-heading text-2xl font-bold">
+        <h2 id="medium-sudoku-tips" className="font-heading text-2xl font-bold dark:text-stone-50">
           Tips for Medium Sudoku
         </h2>
         <ul>
@@ -57,18 +65,20 @@ export default function MediumSudoku() {
           </li>
         </ul>
 
-        <h2 id="what-to-expect-from-medium-sudoku" className="font-heading text-2xl font-bold">
+        <h2
+          id="what-to-expect-from-medium-sudoku"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           What to Expect from Medium Sudoku
         </h2>
         <p>
           Medium Sudoku puzzles usually have around 28–35 given numbers—enough to keep the logic
           straightforward but fewer than easy, so you must think ahead. A typical medium puzzle
-          takes 10–20 minutes and introduces the patterns you will rely on in <Link href="/hard">hard
-          Sudoku</Link> and beyond. Free medium Sudoku online is perfect for commutes, coffee
-          breaks, or winding down. No signup required.
+          takes 10–20 minutes and introduces the patterns you will rely on in{' '}
+          <Link href="/hard">hard Sudoku</Link> and beyond. Free medium Sudoku online is perfect for
+          commutes, coffee breaks, or winding down. No signup required.
         </p>
 
-        <h2 id="try-other-levels" className="font-heading text-2xl font-bold">
+        <h2 id="try-other-levels" className="font-heading text-2xl font-bold dark:text-stone-50">
           Try Other Difficulty Levels
         </h2>
         <p className="mb-0">

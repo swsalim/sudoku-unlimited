@@ -49,7 +49,7 @@ export function Controls({
                   selineTrack('controls_undo_click');
                   onUndo();
                 }}
-                className="h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]">
+                className="h-12 w-full border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)] md:h-14">
                 <RotateCcw className="md:!size-6" />
               </Button>
             </TooltipTrigger>
@@ -65,7 +65,7 @@ export function Controls({
                   selineTrack('controls_erase_click');
                   onErase();
                 }}
-                className="h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]">
+                className="h-12 w-full border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)] md:h-14">
                 <Eraser className="md:!size-6" />
               </Button>
             </TooltipTrigger>
@@ -83,7 +83,7 @@ export function Controls({
                 }}
                 data-state={isNotesMode ? 'on' : 'off'}
                 className={cn(
-                  'relative h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]',
+                  'relative h-12 w-full border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)] md:h-14',
                   isNotesMode &&
                     'border-[color:var(--app-accent)] bg-[color:var(--app-muted-bg)] text-[color:var(--app-accent-strong)]',
                 )}>
@@ -93,7 +93,7 @@ export function Controls({
                     'absolute -bottom-1 -right-1 rounded-full px-1.5 py-0.5 text-[10px] font-bold',
                     isNotesMode
                       ? 'bg-[color:var(--app-accent)] text-white'
-                      : 'bg-[color:var(--app-muted-bg)] text-stone-600',
+                      : 'bg-[color:var(--app-muted-bg)] text-stone-600 dark:text-stone-400',
                   )}>
                   {isNotesMode ? 'ON' : 'OFF'}
                 </span>
@@ -119,7 +119,7 @@ export function Controls({
                   }}
                   disabled={!hasHints}
                   className={cn(
-                    'relative h-12 w-full md:h-14 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]',
+                    'relative h-12 w-full border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)] md:h-14',
                     !hasHints && 'cursor-not-allowed opacity-60',
                   )}>
                   <HelpCircle className="md:!size-6" />
@@ -134,28 +134,28 @@ export function Controls({
             <TooltipContent>{hintTooltip}</TooltipContent>
           </Tooltip>
         </div>
-      {!hasHints && hintRefreshMessage && (
-        <p className="text-center text-xs text-stone-500">{hintRefreshMessage}</p>
-      )}
+        {!hasHints && hintRefreshMessage && (
+          <p className="text-center text-xs text-stone-500">{hintRefreshMessage}</p>
+        )}
 
-      <div className="flex flex-row flex-wrap gap-1 md:grid md:grid-cols-3 md:gap-2">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-          <Button
-            key={num}
-            variant="outline"
-            className="h-11 w-11 text-xl font-semibold md:h-16 md:w-full md:text-2xl border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]"
-            onClick={() => {
-              selineTrack('controls_number_click', { value: num });
-              onNumberClick(num);
-            }}>
-            {num}
-          </Button>
-        ))}
-      </div>
+        <div className="flex flex-row flex-wrap gap-1 md:grid md:grid-cols-3 md:gap-2">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+            <Button
+              key={num}
+              variant="outline"
+              className="h-11 w-11 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] text-xl font-semibold hover:bg-[color:var(--app-muted-bg)] md:h-16 md:w-full md:text-2xl"
+              onClick={() => {
+                selineTrack('controls_number_click', { value: num });
+                onNumberClick(num);
+              }}>
+              {num}
+            </Button>
+          ))}
+        </div>
 
         <div className="flex gap-4">
           <Button
-            className="flex-1 font-semibold text-white bg-[color:var(--app-accent)] hover:opacity-95"
+            className="flex-1 bg-[color:var(--app-accent)] font-semibold text-white hover:opacity-95"
             onClick={() => {
               selineTrack('controls_new_game_click');
               onNewGame();
@@ -166,7 +166,7 @@ export function Controls({
             <TooltipTrigger asChild>
               <Button
                 variant="outline"
-                className="flex-1 font-semibold border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] hover:bg-[color:var(--app-muted-bg)]"
+                className="flex-1 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] font-semibold hover:bg-[color:var(--app-muted-bg)]"
                 onClick={() => {
                   selineTrack('controls_reset_click');
                   onReset();

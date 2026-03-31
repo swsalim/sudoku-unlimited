@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 
 export default function SudokuGameSkeleton() {
   return (
-    <div className="min-h-[calc(100vh-8rem)]">
+    <>
       <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
         <div className="rounded-2xl bg-white/90 p-5 shadow-[0_8px_40px_rgba(0,0,0,0.08)] sm:p-6">
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/60 pb-4">
@@ -54,6 +54,6 @@ export default function SudokuGameSkeleton() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

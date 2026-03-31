@@ -1,11 +1,11 @@
-import { faqByDifficulty } from '@/lib/schema/difficulty-schema';
+import { killerFaqByDifficulty } from '@/lib/schema/killer-schema';
 
-interface DifficultyFaqSectionProps {
+interface KillerFaqSectionProps {
   difficulty: string;
 }
 
-export function DifficultyFaqSection({ difficulty }: DifficultyFaqSectionProps) {
-  const faqs = faqByDifficulty[difficulty];
+export function KillerFaqSection({ difficulty }: KillerFaqSectionProps) {
+  const faqs = killerFaqByDifficulty[difficulty] ?? killerFaqByDifficulty.easy;
 
   if (!faqs?.length) {
     return null;
@@ -14,10 +14,10 @@ export function DifficultyFaqSection({ difficulty }: DifficultyFaqSectionProps) 
   return (
     <section
       className="prose mt-8 max-w-none bg-green-50/50 dark:bg-green-900/50"
-      aria-labelledby="faq-heading">
+      aria-labelledby="killer-faq-heading">
       <div className="mx-auto max-w-4xl px-4 py-8">
-        <h2 id="faq-heading" className="font-heading text-2xl font-bold dark:text-stone-50">
-          Frequently Asked Questions
+        <h2 id="killer-faq-heading" className="font-heading text-2xl font-bold dark:text-stone-50">
+          Killer Sudoku FAQ
         </h2>
         <dl className="mt-6 space-y-6">
           {faqs.map(({ question, answer }) => (

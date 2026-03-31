@@ -2,9 +2,13 @@ import Link from 'next/link';
 
 export default function HardSudoku() {
   return (
-    <article className="prose mt-12 max-w-none" aria-labelledby="hard-sudoku-heading">
-      <div className="mx-auto max-w-4xl px-4 py-8">
-        <h1 id="hard-sudoku-heading" className="font-heading text-4xl font-black">
+    <article
+      className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50"
+      aria-labelledby="hard-sudoku-heading">
+      <div className="mx-auto max-w-4xl px-4 py-20">
+        <h1
+          id="hard-sudoku-heading"
+          className="font-heading text-4xl font-black dark:text-stone-50">
           Hard Sudoku Puzzles – Free Challenging Games Online
         </h1>
         <p>
@@ -16,7 +20,9 @@ export default function HardSudoku() {
           deduction.
         </p>
 
-        <h2 id="advanced-techniques-hard" className="font-heading text-2xl font-bold">
+        <h2
+          id="advanced-techniques-hard"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           Advanced Techniques for Hard Sudoku
         </h2>
         <p>
@@ -27,18 +33,20 @@ export default function HardSudoku() {
           or column. Logical deduction is key; rushing leads to mistakes, so take your time.
         </p>
 
-        <h2 id="hard-sudoku-step-by-step" className="font-heading text-2xl font-bold">
+        <h2
+          id="hard-sudoku-step-by-step"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           A Step-by-Step Approach to Hard Sudoku
         </h2>
         <p>
           Start by filling in all obvious placements using basic elimination. When you run out of
           easy moves, switch to pencil marks and fill in candidates for every empty cell. From
-          there, look for pointing pairs and box-line reduction opportunities—these often unlock
-          new placements. If you are still stuck, re-scan for naked pairs and hidden singles; hard
+          there, look for pointing pairs and box-line reduction opportunities—these often unlock new
+          placements. If you are still stuck, re-scan for naked pairs and hidden singles; hard
           puzzles often combine multiple techniques in sequence.
         </p>
 
-        <h2 id="hard-sudoku-tips" className="font-heading text-2xl font-bold">
+        <h2 id="hard-sudoku-tips" className="font-heading text-2xl font-bold dark:text-stone-50">
           Tips for Hard Sudoku
         </h2>
         <ul>
@@ -51,25 +59,27 @@ export default function HardSudoku() {
             error can block progress.
           </li>
           <li>
-            If hard puzzles feel overwhelming, spend more time on <Link href="/medium">medium
-            Sudoku</Link>. If you solve them comfortably, consider <Link href="/expert">expert
-            Sudoku</Link>.
+            If hard puzzles feel overwhelming, spend more time on{' '}
+            <Link href="/medium">medium Sudoku</Link>. If you solve them comfortably, consider{' '}
+            <Link href="/expert">expert Sudoku</Link>.
           </li>
         </ul>
 
-        <h2 id="hard-sudoku-vs-easier-levels" className="font-heading text-2xl font-bold">
+        <h2
+          id="hard-sudoku-vs-easier-levels"
+          className="font-heading text-2xl font-bold dark:text-stone-50">
           How Hard Sudoku Differs from Easier Levels
         </h2>
         <p>
-          Hard Sudoku typically has 24–28 given numbers—significantly fewer than <Link
-          href="/easy">easy Sudoku</Link> or <Link href="/medium">medium Sudoku</Link>. You cannot
-          rely on simple scanning; pointing pairs and box-line reduction become necessary. Hard
-          puzzles are a stepping stone to <Link href="/expert">expert Sudoku</Link>, where X-Wing
-          and Swordfish come into play. Free hard Sudoku online lets you practice at your own pace
-          with no registration.
+          Hard Sudoku typically has 24–28 given numbers—significantly fewer than{' '}
+          <Link href="/easy">easy Sudoku</Link> or <Link href="/medium">medium Sudoku</Link>. You
+          cannot rely on simple scanning; pointing pairs and box-line reduction become necessary.
+          Hard puzzles are a stepping stone to <Link href="/expert">expert Sudoku</Link>, where
+          X-Wing and Swordfish come into play. Free hard Sudoku online lets you practice at your own
+          pace with no registration.
         </p>
 
-        <h2 id="try-other-levels" className="font-heading text-2xl font-bold">
+        <h2 id="try-other-levels" className="font-heading text-2xl font-bold dark:text-stone-50">
           Try Other Difficulty Levels
         </h2>
         <p className="mb-0">

@@ -4,8 +4,8 @@ import { projects } from '@/config/projects';
 
 import { absoluteUrl } from '@/lib/utils';
 
-import { AboutSchemaScript } from '@/components/schemas';
 import { Container } from '@/components/container';
+import { AboutSchemaScript } from '@/components/schemas';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -32,9 +32,11 @@ export default function AboutPage() {
   return (
     <div className="flex grow flex-col">
       <AboutSchemaScript />
-      <section className="prose max-w-none py-12">
+      <section className="prose max-w-none py-12 dark:prose-invert">
         <Container>
-          <h1 className="font-heading text-4xl font-black">About Sudoku Unlimited</h1>
+          <h1 className="font-heading text-4xl font-black dark:text-stone-50">
+            About Sudoku Unlimited
+          </h1>
           <p>
             Sudoku Unlimited is a free online Sudoku game that you can play directly in your
             browser—no signup required. Choose from multiple difficulty levels, from Easy to
@@ -42,7 +44,7 @@ export default function AboutPage() {
             a beginner or an experienced solver, you&rsquo;ll find a level that suits you.
           </p>
 
-          <h2 className="font-heading text-2xl font-bold">About the Creator</h2>
+          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">About the Creator</h2>
           <p>
             I&rsquo;m Yuyu. I am a front-end developer based in Singapore. I am passionate about
             creating user-friendly and visually appealing websites, and I enjoy incorporating
@@ -56,7 +58,7 @@ export default function AboutPage() {
             .
           </p>
 
-          <h2 className="font-heading text-2xl font-bold">Other Projects</h2>
+          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">Other Projects</h2>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
             {projects.map((project) => (
               <a

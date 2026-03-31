@@ -12,6 +12,13 @@ interface CellProps {
   role: string;
   'aria-selected': boolean;
   className?: string;
+  cageSum?: number;
+  cageBorders?: {
+    top: boolean;
+    right: boolean;
+    bottom: boolean;
+    left: boolean;
+  };
 }
 
 export function Cell({
@@ -24,6 +31,8 @@ export function Cell({
   role,
   'aria-selected': ariaSelected,
   className,
+  cageSum,
+  cageBorders,
 }: CellProps) {
   const baseClasses =
     'size-8 md:size-14 flex items-center justify-center border relative transition-colors text-[color:var(--sudoku-cell-text)] border-[color:var(--sudoku-cell-border)] bg-[color:var(--sudoku-cell-bg)] rounded-[var(--sudoku-cell-radius)]';
@@ -49,6 +58,47 @@ export function Cell({
       tabIndex={tabIndex}
       role={role}
       aria-selected={ariaSelected}>
+      {cageBorders?.top && (
+        <span
+          className="pointer-events-none absolute left-0 right-0 top-0 h-[2px]"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(to right, rgb(14 165 233 / 0.95) 0 8px, transparent 8px 14px)',
+          }}
+        />
+      )}
+      {cageBorders?.right && (
+        <span
+          className="pointer-events-none absolute bottom-0 right-0 top-0 w-[2px]"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(to bottom, rgb(14 165 233 / 0.95) 0 8px, transparent 8px 14px)',
+          }}
+        />
+      )}
+      {cageBorders?.bottom && (
+        <span
+          className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px]"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(to right, rgb(14 165 233 / 0.95) 0 8px, transparent 8px 14px)',
+          }}
+        />
+      )}
+      {cageBorders?.left && (
+        <span
+          className="pointer-events-none absolute bottom-0 left-0 top-0 w-[2px]"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(to bottom, rgb(14 165 233 / 0.95) 0 8px, transparent 8px 14px)',
+          }}
+        />
+      )}
+      {typeof cageSum === 'number' && (
+        <span className="absolute left-0.5 top-0.5 text-[9px] font-semibold leading-none text-stone-600">
+          {cageSum}
+        </span>
+      )}
       {cell.value ? (
         <span className={valueClasses}>{cell.value}</span>
       ) : (

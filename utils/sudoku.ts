@@ -1,4 +1,4 @@
-import { Difficulty, Grid, SudokuSolution } from '@/types';
+import { Difficulty, GameVariant, Grid, KillerCage, SudokuSolution } from '@/types';
 
 import { deepCopy } from '@/lib/utils';
 
@@ -254,9 +254,17 @@ export function isValidMove(
   col: number,
   num: number,
   solution: SudokuSolution,
+  options?: { variant?: GameVariant; cages?: KillerCage[] },
 ): boolean {
   // First, check if the move conflicts with existing numbers in the row, column, or 3x3 box
   if (!isValidPlacement(grid, row, col, num)) {
+    return false;
+  }
+
+  if (
+    options?.variant === GameVariant.KILLER &&
+    !isValidKillerPlacement(grid, row, col, num, options.cages ?? [])
+  ) {
     return false;
   }
 
@@ -301,6 +309,69 @@ export function getPossibleValues(grid: number[][], row: number, col: number): n
   }
 
   return possible;
+}
+
+export function getPossibleValuesForVariant(
+  grid: number[][],
+  row: number,
+  col: number,
+  options?: { variant?: GameVariant; cages?: KillerCage[] },
+): number[] {
+  const possible: number[] = [];
+
+  if (grid[row][col] !== 0) return possible;
+
+  for (let num = 1; num <= 9; num++) {
+    if (!isValidPlacement(grid, row, col, num)) continue;
+    if (
+      options?.variant === GameVariant.KILLER &&
+      !isValidKillerPlacement(grid, row, col, num, options.cages ?? [])
+    ) {
+      continue;
+    }
+    possible.push(num);
+  }
+
+  return possible;
+}
+
+function isValidKillerPlacement(
+  grid: number[][],
+  row: number,
+  col: number,
+  num: number,
+  cages: KillerCage[],
+): boolean {
+  if (!cages.length) return true;
+  const cage = getCageForCell(cages, row, col);
+  if (!cage) return true;
+
+  let sum = 0;
+  let hasEmpty = false;
+  for (const cageCell of cage.cells) {
+    const value = cageCell.row === row && cageCell.col === col ? num : grid[cageCell.row][cageCell.col];
+    if (value === 0) {
+      hasEmpty = true;
+      continue;
+    }
+    for (const peer of cage.cells) {
+      if (peer.row === cageCell.row && peer.col === cageCell.col) continue;
+      const peerValue =
+        peer.row === row && peer.col === col ? num : (grid[peer.row][peer.col] === 0 ? null : grid[peer.row][peer.col]);
+      if (peerValue !== null && peerValue === value) {
+        return false;
+      }
+    }
+    sum += value;
+  }
+
+  if (sum > cage.sum) return false;
+  if (!hasEmpty && sum !== cage.sum) return false;
+  return true;
+}
+
+function getCageForCell(cages: KillerCage[], row: number, col: number): KillerCage | undefined {
+  return cages.find((cage) => cage.cells.some((cell) => cell.row === row && cell.col === col));
 }
 
 // Check if the entire grid is valid

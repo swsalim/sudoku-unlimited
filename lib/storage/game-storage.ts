@@ -1,4 +1,4 @@
-import { GameState, Grid } from '@/types';
+import { GameState, GameVariant, Grid } from '@/types';
 
 const STORAGE_KEY = 'sudoku-save';
 
@@ -25,6 +25,12 @@ export interface SavedGameState {
     difficulty: string;
     isPaused: boolean;
     history: SerializableGrid[];
+    variant?: string;
+    killerCages?: Array<{
+      id: string;
+      sum: number;
+      cells: Array<{ row: number; col: number }>;
+    }>;
   };
   time: number;
   moveHistory: Array<{
@@ -141,6 +147,9 @@ export function hydrateSave(saved: SavedGameState): {
       difficulty: s.difficulty,
       isPaused: s.isPaused,
       history: s.history.map(serializableToGrid),
+      variant:
+        s.variant === GameVariant.KILLER || s.variant === GameVariant.CLASSIC ? s.variant : undefined,
+      killerCages: s.killerCages,
     },
     time,
     moveHistory: moveHistory.map((m) => ({
