@@ -95,7 +95,7 @@ export function Cell({
         />
       )}
       {typeof cageSum === 'number' && (
-        <span className="absolute left-0.5 top-0.5 text-[9px] font-semibold leading-none text-stone-600">
+        <span className="absolute left-1 top-1 text-xs font-semibold leading-none text-stone-600 dark:text-stone-400">
           {cageSum}
         </span>
       )}

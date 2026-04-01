@@ -785,7 +785,7 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
                               }
                             : undefined
                         }
-                        className={`${colIndex % 3 === 2 && colIndex !== 8 ? (gameState.variant === GameVariant.KILLER ? 'border-r-[3px] border-r-violet-700/90 sm:border-r-4' : 'border-r-2 border-r-stone-400 sm:border-r-[3px]') : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? (gameState.variant === GameVariant.KILLER ? 'border-b-[3px] border-b-violet-700/90 sm:border-b-4' : 'border-b-2 border-b-stone-400 sm:border-b-[3px]') : ''}`}
+                        className={`${colIndex % 3 === 2 && colIndex !== 8 ? (gameState.variant === GameVariant.KILLER ? 'border-r-2 border-r-stone-500 sm:border-r-[3px]' : 'border-r-2 border-r-stone-400 sm:border-r-2') : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? (gameState.variant === GameVariant.KILLER ? 'border-b-2 border-b-stone-500 sm:border-b-[3px]' : 'border-b-2 border-b-stone-400 sm:border-b-[3px]') : ''}`}
                       />
                     );
                   }),

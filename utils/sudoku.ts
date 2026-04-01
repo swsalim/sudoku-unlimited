@@ -387,6 +387,283 @@ export function isValidGrid(grid: number[][]): boolean {
   return true;
 }
 
+export type SolverValidationResult =
+  | { valid: true }
+  | {
+      valid: false;
+      reason: 'invalid_shape' | 'invalid_values' | 'conflict';
+      message: string;
+    };
+
+export type SolvePuzzleResult =
+  | { status: 'solved'; solution: number[][] }
+  | { status: 'invalid'; message: string }
+  | { status: 'unsolvable'; message: string };
+
+export type SolverTechnique = 'naked_single' | 'hidden_single';
+
+export type SolverStep = {
+  technique: SolverTechnique;
+  row: number;
+  col: number;
+  value: number;
+  explanation: string;
+};
+
+function isPlacementValidForPuzzle(grid: number[][], row: number, col: number, num: number): boolean {
+  for (let c = 0; c < 9; c++) {
+    if (c !== col && grid[row][c] === num) return false;
+  }
+
+  for (let r = 0; r < 9; r++) {
+    if (r !== row && grid[r][col] === num) return false;
+  }
+
+  const startRow = Math.floor(row / 3) * 3;
+  const startCol = Math.floor(col / 3) * 3;
+  for (let r = startRow; r < startRow + 3; r++) {
+    for (let c = startCol; c < startCol + 3; c++) {
+      if ((r !== row || c !== col) && grid[r][c] === num) return false;
+    }
+  }
+
+  return true;
+}
+
+function getBestEmptyCell(grid: number[][]): [number, number, number[]] | null {
+  let best: [number, number, number[]] | null = null;
+
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      if (grid[row][col] !== 0) continue;
+      const candidates: number[] = [];
+      for (let num = 1; num <= 9; num++) {
+        if (isPlacementValidForPuzzle(grid, row, col, num)) {
+          candidates.push(num);
+        }
+      }
+      if (candidates.length === 0) return [row, col, []];
+      if (!best || candidates.length < best[2].length) {
+        best = [row, col, candidates];
+      }
+    }
+  }
+
+  return best;
+}
+
+function getCellCandidates(grid: number[][], row: number, col: number): number[] {
+  if (grid[row][col] !== 0) return [];
+  const candidates: number[] = [];
+  for (let num = 1; num <= 9; num++) {
+    if (isPlacementValidForPuzzle(grid, row, col, num)) {
+      candidates.push(num);
+    }
+  }
+  return candidates;
+}
+
+function findNakedSingle(grid: number[][]): SolverStep | null {
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      if (grid[row][col] !== 0) continue;
+      const candidates = getCellCandidates(grid, row, col);
+      if (candidates.length === 1) {
+        const value = candidates[0];
+        return {
+          technique: 'naked_single',
+          row,
+          col,
+          value,
+          explanation: `R${row + 1}C${col + 1} must be ${value} because it is the only candidate for that cell.`,
+        };
+      }
+    }
+  }
+  return null;
+}
+
+function findHiddenSingleInRow(grid: number[][]): SolverStep | null {
+  for (let row = 0; row < 9; row++) {
+    for (let value = 1; value <= 9; value++) {
+      const positions: number[] = [];
+      for (let col = 0; col < 9; col++) {
+        if (grid[row][col] === 0 && isPlacementValidForPuzzle(grid, row, col, value)) {
+          positions.push(col);
+        }
+      }
+      if (positions.length === 1) {
+        const col = positions[0];
+        return {
+          technique: 'hidden_single',
+          row,
+          col,
+          value,
+          explanation: `In row ${row + 1}, digit ${value} fits only at C${col + 1}.`,
+        };
+      }
+    }
+  }
+  return null;
+}
+
+function findHiddenSingleInColumn(grid: number[][]): SolverStep | null {
+  for (let col = 0; col < 9; col++) {
+    for (let value = 1; value <= 9; value++) {
+      const positions: number[] = [];
+      for (let row = 0; row < 9; row++) {
+        if (grid[row][col] === 0 && isPlacementValidForPuzzle(grid, row, col, value)) {
+          positions.push(row);
+        }
+      }
+      if (positions.length === 1) {
+        const row = positions[0];
+        return {
+          technique: 'hidden_single',
+          row,
+          col,
+          value,
+          explanation: `In column ${col + 1}, digit ${value} fits only at R${row + 1}.`,
+        };
+      }
+    }
+  }
+  return null;
+}
+
+function findHiddenSingleInBox(grid: number[][]): SolverStep | null {
+  for (let boxRow = 0; boxRow < 3; boxRow++) {
+    for (let boxCol = 0; boxCol < 3; boxCol++) {
+      for (let value = 1; value <= 9; value++) {
+        const positions: Array<[number, number]> = [];
+        for (let row = boxRow * 3; row < boxRow * 3 + 3; row++) {
+          for (let col = boxCol * 3; col < boxCol * 3 + 3; col++) {
+            if (grid[row][col] === 0 && isPlacementValidForPuzzle(grid, row, col, value)) {
+              positions.push([row, col]);
+            }
+          }
+        }
+        if (positions.length === 1) {
+          const [row, col] = positions[0];
+          return {
+            technique: 'hidden_single',
+            row,
+            col,
+            value,
+            explanation: `In box (${boxRow + 1}, ${boxCol + 1}), digit ${value} fits only at R${row + 1}C${col + 1}.`,
+          };
+        }
+      }
+    }
+  }
+  return null;
+}
+
+function findHiddenSingle(grid: number[][]): SolverStep | null {
+  return findHiddenSingleInRow(grid) ?? findHiddenSingleInColumn(grid) ?? findHiddenSingleInBox(grid);
+}
+
+export function getNextLogicalStep(input: number[][]): SolverStep | null {
+  const validation = validatePuzzle(input);
+  if (!validation.valid) return null;
+
+  const grid = input.map((row) => [...row]);
+  return findNakedSingle(grid) ?? findHiddenSingle(grid);
+}
+
+export function getAllLogicalSteps(input: number[][], maxSteps = 200): SolverStep[] {
+  const validation = validatePuzzle(input);
+  if (!validation.valid) return [];
+
+  const grid = input.map((row) => [...row]);
+  const steps: SolverStep[] = [];
+
+  for (let i = 0; i < maxSteps; i++) {
+    const step = findNakedSingle(grid) ?? findHiddenSingle(grid);
+    if (!step) break;
+    steps.push(step);
+    grid[step.row][step.col] = step.value;
+  }
+
+  return steps;
+}
+
+function solveWithBacktracking(grid: number[][]): boolean {
+  const bestCell = getBestEmptyCell(grid);
+  if (!bestCell) return true;
+
+  const [row, col, candidates] = bestCell;
+  if (!candidates.length) return false;
+
+  for (const num of candidates) {
+    grid[row][col] = num;
+    if (solveWithBacktracking(grid)) {
+      return true;
+    }
+    grid[row][col] = 0;
+  }
+
+  return false;
+}
+
+export function validatePuzzle(input: number[][]): SolverValidationResult {
+  if (input.length !== 9 || input.some((row) => row.length !== 9)) {
+    return {
+      valid: false,
+      reason: 'invalid_shape',
+      message: 'Puzzle must be a 9x9 grid.',
+    };
+  }
+
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      const value = input[row][col];
+      if (!Number.isInteger(value) || value < 0 || value > 9) {
+        return {
+          valid: false,
+          reason: 'invalid_values',
+          message: 'Cells must contain digits 0-9 only.',
+        };
+      }
+    }
+  }
+
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      const value = input[row][col];
+      if (value === 0) continue;
+      if (!isPlacementValidForPuzzle(input, row, col, value)) {
+        return {
+          valid: false,
+          reason: 'conflict',
+          message: 'Puzzle has conflicting numbers in a row, column, or 3x3 box.',
+        };
+      }
+    }
+  }
+
+  return { valid: true };
+}
+
+export function solvePuzzle(input: number[][]): SolvePuzzleResult {
+  const validation = validatePuzzle(input);
+  if (!validation.valid) {
+    return { status: 'invalid', message: validation.message };
+  }
+
+  const grid = input.map((row) => [...row]);
+  const solved = solveWithBacktracking(grid);
+
+  if (!solved) {
+    return {
+      status: 'unsolvable',
+      message: 'No solution found for this Sudoku puzzle.',
+    };
+  }
+
+  return { status: 'solved', solution: grid };
+}
+
 export function generateGrid(difficulty: Difficulty): { grid: Grid; solution: SudokuSolution } {
   const solution = generateSolution();
   const puzzle = generatePuzzle(solution, difficulty);

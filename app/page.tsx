@@ -1,5 +1,6 @@
-import { Difficulty } from '@/types';
 import Link from 'next/link';
+
+import { Difficulty } from '@/types';
 
 import { Container } from '@/components/container';
 import { HomeFaqSection } from '@/components/home-faq-section';
@@ -14,7 +15,9 @@ export default function HomePage() {
 
       <section className="prose mt-12 max-w-none">
         <Container>
-          <h1>How to Play Sudoku</h1>
+          <h1 className="font-heading text-4xl font-black dark:text-stone-50">
+            How to Play Sudoku
+          </h1>
 
           <p>
             Sudoku is a popular number puzzle that challenges your logical thinking. The game
@@ -23,7 +26,9 @@ export default function HomePage() {
             and 3x3 box contains the numbers <strong>1 to 9</strong> without repeating any number.
           </p>
 
-          <h2>Understanding the Sudoku Grid</h2>
+          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">
+            Understanding the Sudoku Grid
+          </h2>
           <ul>
             <li>
               The grid has <strong>81 cells</strong>, arranged in 9 rows and 9 columns.
@@ -32,7 +37,9 @@ export default function HomePage() {
             <li>Some numbers are already provided as clues—your job is to fill in the rest.</li>
           </ul>
 
-          <h2>Basic Rules of Sudoku</h2>
+          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">
+            Basic Rules of Sudoku
+          </h2>
           <p>To solve a Sudoku puzzle, follow these simple rules:</p>
           <ol>
             <li>
@@ -48,39 +55,51 @@ export default function HomePage() {
             <li>You can only use logic—no guessing!</li>
           </ol>
 
-          <h2>Strategies to Solve Sudoku</h2>
+          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">
+            Strategies to Solve Sudoku
+          </h2>
 
-          <h3>1. Start with Easy Numbers</h3>
+          <h3 className="font-heading text-xl font-bold dark:text-stone-50">
+            1. Start with Easy Numbers
+          </h3>
           <p>
             Look for numbers that appear frequently in the grid. If a number is already placed in
             two or more sections, it might be easier to determine where it should go next.
           </p>
 
-          <h3>2. Use the Elimination Method</h3>
+          <h3 className="font-heading text-xl font-bold dark:text-stone-50">
+            2. Use the Elimination Method
+          </h3>
           <p>
             Check each row, column, and box to see which numbers are missing. If a number is already
             present in a row or column, it can’t go in that section again.
           </p>
 
-          <h3>3. Try the Pencil Mark Technique</h3>
+          <h3 className="font-heading text-xl font-bold dark:text-stone-50">
+            3. Try the Pencil Mark Technique
+          </h3>
           <p>
             Write down possible numbers in empty cells as small notes. This helps track
             possibilities without committing to a number too soon.
           </p>
 
-          <h3>4. Look for Single Possibilities</h3>
+          <h3 className="font-heading text-xl font-bold dark:text-stone-50">
+            4. Look for Single Possibilities
+          </h3>
           <p>
             Sometimes, only one number can fit in a specific cell. Identifying these easy placements
             early will make solving the puzzle much faster.
           </p>
 
-          <h3>5. Stay Patient and Logical</h3>
+          <h3 className="font-heading text-xl font-bold dark:text-stone-50">
+            5. Stay Patient and Logical
+          </h3>
           <p>
             Sudoku is a game of logic, not guessing. If you&rsquo;re stuck, take a step back,
             double-check your work, and look for new patterns.
           </p>
 
-          <h2>Ready to Play?</h2>
+          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">Ready to Play?</h2>
           <p>
             Now that you know the basics, start with an easy Sudoku puzzle and gradually challenge
             yourself with harder levels. Have fun solving!

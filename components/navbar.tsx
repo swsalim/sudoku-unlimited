@@ -15,7 +15,9 @@ export default function Navbar() {
     <>
       <div
         className={`sticky top-[-1px] w-full ${
-          scrolled ? 'border-b border-stone-200/80 bg-white/70 backdrop-blur-xl' : 'bg-transparent'
+          scrolled
+            ? 'border-b border-stone-200/80 bg-white/70 backdrop-blur-xl dark:border-stone-800/80 dark:bg-stone-900/70'
+            : 'bg-transparent'
         } z-30 transition-all`}>
         <Container className="flex h-16 items-center justify-between py-0">
           <Link href="/" className="flex items-center gap-x-2">
@@ -24,6 +26,11 @@ export default function Navbar() {
             </span>
           </Link>
           <div className="flex items-center gap-4">
+            <Link
+              href="/sudoku-solver"
+              className="text-sm font-medium text-stone-600 underline-offset-4 hover:text-stone-900 hover:underline dark:text-stone-400 dark:hover:text-stone-300">
+              Sudoku Solver
+            </Link>
             <Link
               href="/killer-sudoku"
               className="text-sm font-medium text-stone-600 underline-offset-4 hover:text-stone-900 hover:underline dark:text-stone-400 dark:hover:text-stone-300">
