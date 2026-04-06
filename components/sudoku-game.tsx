@@ -20,7 +20,7 @@ import {
   grantEarnedHints,
 } from '@/lib/storage/hint-storage';
 import { getZenMode, setZenMode } from '@/lib/storage/zen-storage';
-import { deepCopy } from '@/lib/utils';
+import { cn, deepCopy } from '@/lib/utils';
 
 import { generateKillerGrid } from '@/utils/killer-sudoku';
 import {
@@ -46,6 +46,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 import { ZenModeToast } from '@/components/zen-mode-toast';
 
 import SudokuGameSkeleton from './sudoku-game-skeleton';
@@ -197,6 +198,17 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
   }, [gameState]);
 
   useEffect(() => {
+    if (!gameState?.isPaused || showVictory || showGameOver) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setGameState((prev) => (prev ? { ...prev, isPaused: false } : null));
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [gameState?.isPaused, showVictory, showGameOver]);
+
+  useEffect(() => {
     // Zen mode: no game over from mistakes
     if (gameState && !isZenMode && gameState.mistakes >= gameState.maxMistakes) {
       setShowGameOver(true);
@@ -310,6 +322,7 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
   );
 
   const handleUndo = () => {
+    if (!gameState || gameState.isPaused) return;
     if (moveHistory.length <= 1) return; // Cannot undo initial state
 
     const newHistory = [...moveHistory];
@@ -354,7 +367,7 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
   }, [gameState, saveToHistory, combo]);
 
   const handleHint = () => {
-    if (!gameState || !gameState.selectedCell) return;
+    if (!gameState || gameState.isPaused || !gameState.selectedCell) return;
     const { row, col } = gameState.selectedCell;
     const cell = gameState.grid[row][col];
 
@@ -683,6 +696,8 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
     );
   }
 
+  const antiCheatPauseActive = gameState.isPaused && !showVictory && !showGameOver;
+
   return (
     <>
       <div className="relative z-10">
@@ -737,62 +752,136 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
             />
 
             <div className="flex flex-col items-center gap-6 md:flex-row md:items-start md:gap-8">
-              <div className="grid w-fit max-w-full shrink-0 grid-cols-9 overflow-hidden rounded-xl border-2 border-[color:var(--sudoku-board-border)] bg-[color:var(--sudoku-board-bg)] font-[var(--sudoku-board-font)] shadow-inner">
-                {gameState.grid.map((row, rowIndex) =>
-                  row.map((cell, colIndex) => {
-                    const highlighted = isHighlighted(rowIndex, colIndex);
-                    const sameNumber = isSameNumber(rowIndex, colIndex);
-                    const cage = getCageAt(rowIndex, colIndex);
-                    return (
-                      <Cell
-                        key={`${rowIndex}-${colIndex}`}
-                        cell={cell}
-                        isSelected={
-                          gameState.selectedCell?.row === rowIndex &&
-                          gameState.selectedCell?.col === colIndex
-                        }
-                        isHighlighted={highlighted}
-                        isSameNumber={sameNumber}
-                        onClick={() => handleCellClick(rowIndex, colIndex)}
-                        tabIndex={0}
-                        role="gridcell"
-                        aria-selected={
-                          gameState.selectedCell?.row === rowIndex &&
-                          gameState.selectedCell?.col === colIndex
-                        }
-                        cageSum={
-                          cage && isCageStartCell(cage, rowIndex, colIndex) ? cage.sum : undefined
-                        }
-                        cageBorders={
-                          gameState.variant === GameVariant.KILLER && cage
-                            ? {
-                                top: !cage.cells.some(
-                                  (cageCell) =>
-                                    cageCell.row === rowIndex - 1 && cageCell.col === colIndex,
-                                ),
-                                right: !cage.cells.some(
-                                  (cageCell) =>
-                                    cageCell.row === rowIndex && cageCell.col === colIndex + 1,
-                                ),
-                                bottom: !cage.cells.some(
-                                  (cageCell) =>
-                                    cageCell.row === rowIndex + 1 && cageCell.col === colIndex,
-                                ),
-                                left: !cage.cells.some(
-                                  (cageCell) =>
-                                    cageCell.row === rowIndex && cageCell.col === colIndex - 1,
-                                ),
-                              }
-                            : undefined
-                        }
-                        className={`${colIndex % 3 === 2 && colIndex !== 8 ? (gameState.variant === GameVariant.KILLER ? 'border-r-2 border-r-stone-500 sm:border-r-[3px]' : 'border-r-2 border-r-stone-400 sm:border-r-2') : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? (gameState.variant === GameVariant.KILLER ? 'border-b-2 border-b-stone-500 sm:border-b-[3px]' : 'border-b-2 border-b-stone-400 sm:border-b-[3px]') : ''}`}
-                      />
-                    );
-                  }),
+              <div className="relative w-fit max-w-full shrink-0 overflow-hidden rounded-xl">
+                <div
+                  className="grid w-full grid-cols-9 overflow-hidden rounded-xl border-2 border-[color:var(--sudoku-board-border)] bg-[color:var(--sudoku-board-bg)] font-[var(--sudoku-board-font)] shadow-inner"
+                  aria-hidden={antiCheatPauseActive}>
+                  {gameState.grid.map((row, rowIndex) =>
+                    row.map((cell, colIndex) => {
+                      const highlighted = isHighlighted(rowIndex, colIndex);
+                      const sameNumber = isSameNumber(rowIndex, colIndex);
+                      const cage = getCageAt(rowIndex, colIndex);
+                      return (
+                        <Cell
+                          key={`${rowIndex}-${colIndex}`}
+                          cell={cell}
+                          hideContent={antiCheatPauseActive}
+                          isSelected={
+                            gameState.selectedCell?.row === rowIndex &&
+                            gameState.selectedCell?.col === colIndex
+                          }
+                          isHighlighted={highlighted}
+                          isSameNumber={sameNumber}
+                          onClick={() => handleCellClick(rowIndex, colIndex)}
+                          tabIndex={antiCheatPauseActive ? -1 : 0}
+                          role="gridcell"
+                          aria-selected={
+                            gameState.selectedCell?.row === rowIndex &&
+                            gameState.selectedCell?.col === colIndex
+                          }
+                          cageSum={
+                            cage && isCageStartCell(cage, rowIndex, colIndex) ? cage.sum : undefined
+                          }
+                          cageBorders={
+                            gameState.variant === GameVariant.KILLER && cage
+                              ? {
+                                  top: !cage.cells.some(
+                                    (cageCell) =>
+                                      cageCell.row === rowIndex - 1 && cageCell.col === colIndex,
+                                  ),
+                                  right: !cage.cells.some(
+                                    (cageCell) =>
+                                      cageCell.row === rowIndex && cageCell.col === colIndex + 1,
+                                  ),
+                                  bottom: !cage.cells.some(
+                                    (cageCell) =>
+                                      cageCell.row === rowIndex + 1 && cageCell.col === colIndex,
+                                  ),
+                                  left: !cage.cells.some(
+                                    (cageCell) =>
+                                      cageCell.row === rowIndex && cageCell.col === colIndex - 1,
+                                  ),
+                                }
+                              : undefined
+                          }
+                          className={`${colIndex % 3 === 2 && colIndex !== 8 ? (gameState.variant === GameVariant.KILLER ? 'border-r-2 border-r-stone-500 sm:border-r-[3px]' : 'border-r-2 border-r-stone-400 sm:border-r-2') : ''} ${rowIndex % 3 === 2 && rowIndex !== 8 ? (gameState.variant === GameVariant.KILLER ? 'border-b-2 border-b-stone-500 sm:border-b-[3px]' : 'border-b-2 border-b-stone-400 sm:border-b-[3px]') : ''}`}
+                        />
+                      );
+                    }),
+                  )}
+                </div>
+                {antiCheatPauseActive && (
+                  <div
+                    className="absolute inset-0 z-20 flex items-center justify-center bg-stone-400/95 p-3 dark:bg-stone-600/95"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="pause-overlay-title">
+                    <div className="w-full max-w-sm rounded-2xl border border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] p-5 shadow-lg sm:p-6">
+                      <h2
+                        id="pause-overlay-title"
+                        className="text-center text-xl font-bold text-[color:var(--app-accent-strong)]">
+                        Pause
+                      </h2>
+                      <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl bg-[color:var(--app-muted-bg)] px-3 py-4 sm:gap-3 sm:px-4">
+                        <div className="text-center">
+                          <p className="text-xs font-medium text-[color:var(--app-accent-strong)]">
+                            Difficulty
+                          </p>
+                          <p className="mt-1 text-base font-bold capitalize text-stone-900 dark:text-stone-50 sm:text-lg">
+                            {gameState.difficulty}
+                          </p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-xs font-medium text-[color:var(--app-accent-strong)]">
+                            Time
+                          </p>
+                          <p className="mt-1 font-mono text-base font-bold text-stone-900 dark:text-stone-50 sm:text-lg">
+                            {formatTime(time)}
+                          </p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-xs font-medium text-[color:var(--app-accent-strong)]">
+                            Mistakes
+                          </p>
+                          <p className="mt-1 text-base font-bold text-stone-900 dark:text-stone-50 sm:text-lg">
+                            {gameState.mistakes}
+                            {!isZenMode && (
+                              <span className="text-sm font-semibold text-stone-500 dark:text-stone-400">
+                                {' '}
+                                / {gameState.maxMistakes}
+                              </span>
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-5 flex flex-col gap-3">
+                        <Button
+                          type="button"
+                          className="h-11 w-full rounded-xl bg-[color:var(--app-accent-strong)] text-white hover:bg-[color:var(--app-accent-strong)]/90"
+                          onClick={() =>
+                            setGameState((prev) => (prev ? { ...prev, isPaused: false } : null))
+                          }>
+                          Continue
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="h-11 w-full rounded-xl border-2 border-[color:var(--app-accent-strong)] bg-transparent text-[color:var(--app-accent-strong)] hover:bg-[color:var(--app-muted-bg)]"
+                          onClick={() => resetGame()}>
+                          Retry game
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
 
-              <Controls
+              <div
+                className={cn(
+                  'min-w-0 flex-1 transition-opacity',
+                  antiCheatPauseActive && 'pointer-events-none opacity-40',
+                )}>
+                <Controls
                 onUndo={handleUndo}
                 onErase={handleErase}
                 onToggleNotes={() =>
@@ -808,6 +897,7 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
                 hintsAvailable={hintsAvailable}
                 hintRefreshMessage={hintRefreshMessage}
               />
+              </div>
             </div>
 
             {gameState.variant === GameVariant.KILLER && (

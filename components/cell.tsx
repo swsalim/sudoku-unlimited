@@ -19,6 +19,8 @@ interface CellProps {
     bottom: boolean;
     left: boolean;
   };
+  /** When true, values, notes, and cage clues are not rendered (e.g. paused game). */
+  hideContent?: boolean;
 }
 
 export function Cell({
@@ -33,6 +35,7 @@ export function Cell({
   className,
   cageSum,
   cageBorders,
+  hideContent = false,
 }: CellProps) {
   const baseClasses =
     'size-8 md:size-14 flex items-center justify-center border relative transition-colors text-[color:var(--sudoku-cell-text)] border-[color:var(--sudoku-cell-border)] bg-[color:var(--sudoku-cell-bg)] rounded-[var(--sudoku-cell-radius)]';
@@ -94,14 +97,14 @@ export function Cell({
           }}
         />
       )}
-      {typeof cageSum === 'number' && (
+      {typeof cageSum === 'number' && !hideContent && (
         <span className="absolute left-1 top-1 text-xs font-semibold leading-none text-stone-600 dark:text-stone-400">
           {cageSum}
         </span>
       )}
-      {cell.value ? (
+      {!hideContent && cell.value ? (
         <span className={valueClasses}>{cell.value}</span>
-      ) : (
+      ) : !hideContent ? (
         <div className="absolute inset-0.5 grid grid-cols-3 grid-rows-3 gap-0.5">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
             <span
@@ -111,7 +114,7 @@ export function Cell({
             </span>
           ))}
         </div>
-      )}
+      ) : null}
     </button>
   );
 }
