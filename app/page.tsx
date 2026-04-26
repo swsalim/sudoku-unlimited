@@ -13,7 +13,7 @@ export default function HomePage() {
       <HomeSchemaScript />
       <SudokuGame initialDifficulty={Difficulty.EASY} />
 
-      <section className="prose mt-12 max-w-none">
+      <section className="prose prose-stone mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50">
         <Container>
           <h1 className="font-heading text-4xl font-black dark:text-stone-50">
             How to Play Sudoku

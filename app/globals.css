@@ -54,7 +54,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-
+    
     /* App theme tokens (defaults) */
     --app-page-bg: linear-gradient(165deg, #faf8f5 0%, #f5f0e8 50%, #efe9e0 100%);
     --app-surface-bg: #ffffff;

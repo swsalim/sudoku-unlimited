@@ -3,7 +3,7 @@ import { sudokuSolverFaqs } from '@/lib/schema/sudoku-solver-schema';
 export function SudokuSolverFaqSection() {
   return (
     <section
-      className="prose mt-10 max-w-none bg-green-50/50 dark:bg-green-900/50"
+      className="prose mt-10 max-w-none bg-green-50/50 dark:prose-invert dark:bg-green-900/50"
       aria-labelledby="solver-faq-heading">
       <div className="mx-auto max-w-4xl px-4 py-8">
         <h2 id="solver-faq-heading" className="font-heading text-2xl font-bold dark:text-stone-50">

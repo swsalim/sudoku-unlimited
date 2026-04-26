@@ -29,15 +29,18 @@ interface GameHeaderProps {
   time: string;
   isPaused: boolean;
   isZenMode?: boolean;
-  isDailyMode?: boolean;
   onPauseToggle: () => void;
   onOpenAchievements?: () => void;
   onOpenStats?: () => void;
   onOpenThemes?: () => void;
   onZenModeToggle?: () => void;
-  onDailyToggle?: () => void;
+  /** /daily: hide level switches; show “Daily challenge” + date */
+  hideDifficultyNav?: boolean;
+  globalDailyDateLabel?: string;
   routeBase?: string;
 }
+
+const practiceByLevelPath = (routeBase: string) => `${routeBase || ''}/medium`.replace(/\/\//, '/');
 
 export function GameHeader({
   difficulty,
@@ -47,24 +50,25 @@ export function GameHeader({
   time,
   isPaused,
   isZenMode = false,
-  isDailyMode = false,
   onPauseToggle,
   onOpenAchievements,
   onOpenStats,
   onOpenThemes,
   onZenModeToggle,
-  onDailyToggle,
+  hideDifficultyNav = false,
+  globalDailyDateLabel,
   routeBase = '',
 }: GameHeaderProps) {
   const router = useRouter();
   const { isMobile } = useMediaQuery();
   const validDifficulties = Object.values(Difficulty).map((d) => d.toLowerCase());
+  const levelPracticeHref = practiceByLevelPath(routeBase);
 
   return (
     <TooltipProvider delayDuration={150}>
       <div className="mb-5 flex flex-col flex-wrap items-center justify-between gap-3 border-b border-[color:var(--app-surface-border)] pb-4">
-        <div className="flex flex-wrap items-center gap-2 md:gap-3">
-          {!isMobile && (
+        <div className="flex max-w-full flex-wrap items-center gap-2 md:gap-3">
+          {!isMobile && !hideDifficultyNav && (
             <div className="flex items-center gap-1 rounded-xl bg-[color:var(--app-muted-bg)] p-1">
               {validDifficulties.map((d) => (
                 <Button key={d} variant="ghost" size="sm" asChild className="h-8 px-3">
@@ -82,7 +86,25 @@ export function GameHeader({
               ))}
             </div>
           )}
-          {isMobile && (
+          {!isMobile && hideDifficultyNav && globalDailyDateLabel && (
+            <div className="flex min-w-0 flex-col items-start gap-1 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-2 sm:gap-y-0">
+              <span className="flex items-center gap-1.5 text-sm font-bold text-stone-900 dark:text-stone-50">
+                <Sparkles className="h-4 w-4 shrink-0 text-emerald-600" aria-hidden />
+                Daily challenge
+              </span>
+              <span className="text-sm text-stone-600 dark:text-stone-400">
+                <span className="capitalize">{difficulty}</span>
+                {` · ${globalDailyDateLabel} (UTC)`}
+              </span>
+              <Link
+                href={levelPracticeHref}
+                className="text-sm font-semibold text-[color:var(--app-accent-strong)] hover:underline"
+                onClick={() => selineTrack('header_practice_by_level_click')}>
+                Practice by level →
+              </Link>
+            </div>
+          )}
+          {isMobile && !hideDifficultyNav && (
             <div className="flex flex-row items-center text-sm text-muted-foreground">
               <Select
                 defaultValue={difficulty}
@@ -106,6 +128,21 @@ export function GameHeader({
               </Select>
             </div>
           )}
+          {isMobile && hideDifficultyNav && globalDailyDateLabel && (
+            <div className="flex min-w-0 flex-col text-sm">
+              <span className="font-bold text-stone-900 dark:text-stone-50">Daily challenge</span>
+              <span className="text-stone-600 dark:text-stone-400">
+                <span className="capitalize">{difficulty}</span>
+                {` · ${globalDailyDateLabel} (UTC)`}
+              </span>
+              <Link
+                href={levelPracticeHref}
+                className="mt-0.5 font-semibold text-[color:var(--app-accent-strong)]"
+                onClick={() => selineTrack('header_practice_by_level_click')}>
+                Practice by level →
+              </Link>
+            </div>
+          )}
           {isZenMode ? (
             <Tooltip>
               <TooltipTrigger asChild>
@@ -124,35 +161,10 @@ export function GameHeader({
           )}
         </div>
         <div className="flex w-full flex-wrap items-center justify-center gap-1">
-          <span className="font-mono text-sm font-semibold tabular-nums text-stone-600 dark:text-stone-400">
+          <span className="px-2 font-mono text-sm font-semibold tabular-nums text-stone-600 dark:text-stone-400">
             {time}
           </span>
           <span className="h-4 w-px bg-stone-200" aria-hidden />
-          {onDailyToggle && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => {
-                    selineTrack('header_daily_toggle', { isDailyMode: !isDailyMode });
-                    onDailyToggle();
-                  }}
-                  className={
-                    isDailyMode
-                      ? 'text-emerald-600'
-                      : 'text-stone-500 dark:text-stone-400 dark:hover:text-stone-300'
-                  }>
-                  <Sparkles className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                {isDailyMode
-                  ? 'Daily challenge is on. You are playing today’s fixed puzzle.'
-                  : 'Switch to the seeded daily challenge. Same puzzle for everyone today.'}
-              </TooltipContent>
-            </Tooltip>
-          )}
           {onZenModeToggle && (
             <Tooltip>
               <TooltipTrigger asChild>

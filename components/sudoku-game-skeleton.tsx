@@ -4,8 +4,8 @@ export default function SudokuGameSkeleton() {
   return (
     <>
       <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
-        <div className="rounded-2xl bg-white/90 p-5 shadow-[0_8px_40px_rgba(0,0,0,0.08)] sm:p-6">
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/60 pb-4">
+        <div className="rounded-2xl border border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] p-5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.15)] sm:p-6">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/60 pb-4 dark:border-stone-600/60">
             <div className="flex gap-2">
               <div className="h-8 w-32 animate-pulse rounded-xl bg-stone-200"></div>
               <div className="h-8 w-20 animate-pulse rounded-lg bg-stone-200"></div>

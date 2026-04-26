@@ -27,6 +27,11 @@ export default function Navbar() {
           </Link>
           <div className="flex items-center gap-4">
             <Link
+              href="/daily"
+              className="text-sm font-medium text-stone-600 underline-offset-4 hover:text-stone-900 hover:underline dark:text-stone-400 dark:hover:text-stone-300">
+              Daily Challenge
+            </Link>
+            <Link
               href="/sudoku-solver"
               className="text-sm font-medium text-stone-600 underline-offset-4 hover:text-stone-900 hover:underline dark:text-stone-400 dark:hover:text-stone-300">
               Sudoku Solver

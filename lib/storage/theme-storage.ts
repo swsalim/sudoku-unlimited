@@ -135,14 +135,10 @@ export function applyThemeToDocument(options?: {
   root.style.setProperty('--sudoku-accent', tokens.accent);
 
   // App-level styling (make theme feel global)
-  root.style.setProperty(
-    '--app-page-bg',
-    `linear-gradient(165deg, ${tokens.boardBg} 0%, ${tokens.cellBg} 55%, ${tokens.boardBorder} 100%)`,
-  );
+  root.style.setProperty('--app-page-bg', `${tokens.boardBg}`);
   root.style.setProperty('--app-surface-bg', tokens.cellBg);
   root.style.setProperty('--app-surface-border', tokens.boardBorder);
   root.style.setProperty('--app-muted-bg', tokens.cellHighlightedBg);
   root.style.setProperty('--app-accent', tokens.accent);
   root.style.setProperty('--app-accent-strong', tokens.accent);
 }
-

@@ -21,6 +21,8 @@ const config = {
   generateIndexSitemap: false,
   sitemapSize: 7000,
   exclude,
+  /** Force-include dynamic routes not listed in static export */
+  additionalPaths: async (cfg) => [await cfg.transform(cfg, '/daily')],
   robotsTxtOptions: {
     policies: [{ userAgent: '*', disallow: NEXT_SSG_FILES }],
   },

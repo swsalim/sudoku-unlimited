@@ -49,8 +49,8 @@ export const SUDOKU_THEMES: readonly SudokuTheme[] = [
     unlock: { type: 'free' },
     tokens: {
       light: {
-        boardBg: '#fafaf9',
-        boardBorder: '#e7e5e4',
+        boardBg: '#faf8f5',
+        boardBorder: '#efe9e0',
         cellBg: '#ffffff',
         cellBorder: '#d6d3d1',
         cellSelectedBg: '#a7f3d0',
@@ -257,4 +257,3 @@ export const SUDOKU_THEMES: readonly SudokuTheme[] = [
 export function getThemeById(id: ThemeId): SudokuTheme {
   return (SUDOKU_THEMES.find((t) => t.id === id) ?? SUDOKU_THEMES[0]) as SudokuTheme;
 }
-

@@ -20,6 +20,7 @@ import {
   grantEarnedHints,
 } from '@/lib/storage/hint-storage';
 import { getZenMode, setZenMode } from '@/lib/storage/zen-storage';
+import { getCalendarDateStringForDaily, getGlobalDailySeed } from '@/lib/daily-challenge';
 import { cn, deepCopy } from '@/lib/utils';
 
 import { generateKillerGrid } from '@/utils/killer-sudoku';
@@ -71,6 +72,10 @@ interface GameMove {
 interface SudokuGameProps {
   initialDifficulty: Difficulty;
   variant?: GameVariant;
+  /** One official puzzle per day at /daily */
+  globalDailyMode?: boolean;
+  /** Long date for the header, e.g. "April 26, 2026" (UTC) */
+  globalDailyDateLabel?: string;
 }
 
 function formatTime(seconds: number) {
@@ -79,7 +84,12 @@ function formatTime(seconds: number) {
   return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 }
 
-export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }: SudokuGameProps) {
+export function SudokuGame({
+  initialDifficulty,
+  variant = GameVariant.CLASSIC,
+  globalDailyMode = false,
+  globalDailyDateLabel,
+}: SudokuGameProps) {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [time, setTime] = useState(0);
   const [showGameOver, setShowGameOver] = useState(false);
@@ -95,7 +105,7 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
   const [showThemes, setShowThemes] = useState(false);
   const [isZenMode, setIsZenMode] = useState(false);
   const [showZenToast, setShowZenToast] = useState(false);
-  const [isDailyMode, setIsDailyMode] = useState(false);
+  const isDailyMode = globalDailyMode;
   const [combo, setCombo] = useState(0);
   const [showComboToast, setShowComboToast] = useState(false);
   const [comboToShow, setComboToShow] = useState(0);
@@ -441,12 +451,6 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [gameState, handleErase, handleNumberInput]);
 
-  const getDailySeed = (difficulty: Difficulty) => {
-    const today = new Date();
-    const yyyyMmDd = today.toISOString().slice(0, 10); // e.g. 2026-03-18
-    return `${yyyyMmDd}-${difficulty}`;
-  };
-
   const startNewGame = (difficulty: Difficulty, options?: { dailyMode?: boolean }) => {
     clearSavedGame();
     setSavedGameOffer(null);
@@ -456,7 +460,10 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
       variant === GameVariant.KILLER
         ? generateKillerGrid(difficulty)
         : useDaily
-          ? generateSeededGrid(difficulty, getDailySeed(difficulty))
+          ? generateSeededGrid(
+              difficulty,
+              getGlobalDailySeed(getCalendarDateStringForDaily(), difficulty),
+            )
           : generateGrid(difficulty);
     let { grid } = generated;
     const { solution } = generated;
@@ -710,7 +717,7 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
           />
         </div>
         <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
-          <div className="relative rounded-2xl border border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] p-3 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.15)] sm:p-6">
+          <div className="relative rounded-2xl border border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] p-5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.15)] sm:p-6">
             <GameHeader
               difficulty={gameState.difficulty.toLowerCase()}
               mistakes={gameState.mistakes}
@@ -719,7 +726,6 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
               time={formatTime(time)}
               isPaused={gameState.isPaused}
               isZenMode={isZenMode}
-              isDailyMode={isDailyMode}
               onPauseToggle={() =>
                 setGameState((prev) => (prev ? { ...prev, isPaused: !prev.isPaused } : null))
               }
@@ -727,15 +733,8 @@ export function SudokuGame({ initialDifficulty, variant = GameVariant.CLASSIC }:
               onOpenAchievements={() => setShowAchievements(true)}
               onOpenStats={() => setShowStats(true)}
               onOpenThemes={() => setShowThemes(true)}
-              onDailyToggle={
-                variant === GameVariant.KILLER
-                  ? undefined
-                  : () => {
-                      const nextDaily = !isDailyMode;
-                      setIsDailyMode(nextDaily);
-                      startNewGame(gameState.difficulty as Difficulty, { dailyMode: nextDaily });
-                    }
-              }
+              hideDifficultyNav={globalDailyMode}
+              globalDailyDateLabel={globalDailyDateLabel}
               onZenModeToggle={() => {
                 const next = !isZenMode;
                 setIsZenMode(next);
