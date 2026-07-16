@@ -84,6 +84,7 @@ export default function RootLayout({
           data-key="15wDlBoHgMA4DHDxuC/6uA"
           defer></script>
         <script async src="https://cdn.seline.com/seline.js" data-token="9b914a331a40d42"></script>
+        <script async src="https://badgerelay.com/widget.js"></script>
       </head>
       <body
         className={`${fraunces.variable} ${figtree.variable} font-sans font-medium antialiased`}

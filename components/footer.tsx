@@ -4,6 +4,8 @@ import { siteConfig } from '@/config/site';
 
 import { cn } from '@/lib/utils';
 
+import { BadgeRelaySite } from '@/components/badge-relay-site';
+
 interface FooterProps extends ComponentProps<'footer'> {
   className?: string;
 }
@@ -35,6 +37,13 @@ export default function Footer({ className, ...props }: FooterProps) {
             </a>
           </span>
         </p>
+      </div>
+      <div className="mx-auto max-w-7xl px-6 py-4 text-center">
+        <BadgeRelaySite
+          siteKey="site_live_MZo0AcSphW-Z4mFwr0siyg"
+          apiBase="https://badgerelay.com"
+          revalidateSeconds={30}
+        />
       </div>
     </footer>
   );
