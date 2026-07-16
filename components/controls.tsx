@@ -145,7 +145,7 @@ export function Controls({
               variant="outline"
               className="h-11 w-11 border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] text-xl font-semibold hover:bg-[color:var(--app-muted-bg)] md:h-16 md:w-full md:text-2xl"
               onClick={() => {
-                selineTrack('controls_number_click', { value: num });
+                // selineTrack('controls_number_click', { value: num });
                 onNumberClick(num);
               }}>
               {num}
