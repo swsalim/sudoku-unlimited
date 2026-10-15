@@ -7,6 +7,24 @@ import { HomeFaqSection } from '@/components/home-faq-section';
 import { HomeSchemaScript } from '@/components/schemas';
 import { SudokuGame } from '@/components/sudoku-game';
 
+const CLASSIC_LEVELS = [
+  { href: '/easy', label: 'Easy' },
+  { href: '/medium', label: 'Medium' },
+  { href: '/hard', label: 'Hard' },
+  { href: '/expert', label: 'Expert' },
+  { href: '/master', label: 'Master' },
+  { href: '/extreme', label: 'Extreme' },
+] as const;
+
+const KILLER_LEVELS = [
+  { href: '/killer-sudoku/easy', label: 'Easy' },
+  { href: '/killer-sudoku/medium', label: 'Medium' },
+  { href: '/killer-sudoku/hard', label: 'Hard' },
+  { href: '/killer-sudoku/expert', label: 'Expert' },
+  { href: '/killer-sudoku/master', label: 'Master' },
+  { href: '/killer-sudoku/extreme', label: 'Extreme' },
+] as const;
+
 export default function HomePage() {
   return (
     <>
@@ -16,8 +34,37 @@ export default function HomePage() {
       <section className="prose prose-stone mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50">
         <Container>
           <h1 className="font-heading text-4xl font-black dark:text-stone-50">
-            How to Play Sudoku
+            Play Free Sudoku Online
           </h1>
+
+          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">
+            Play by level
+          </h2>
+          <p>Choose a classic or Killer Sudoku difficulty to start playing right away.</p>
+          <h3 className="font-heading text-xl font-bold dark:text-stone-50">Classic Sudoku</h3>
+          <ul>
+            {CLASSIC_LEVELS.map(({ href, label }) => (
+              <li key={href}>
+                <Link href={href}>{label} Sudoku</Link>
+              </li>
+            ))}
+          </ul>
+          <h3 className="font-heading text-xl font-bold dark:text-stone-50">Killer Sudoku</h3>
+          <p>
+            Try cage-sum puzzles on the{' '}
+            <Link href="/killer-sudoku">Killer Sudoku hub</Link> or jump to a level:
+          </p>
+          <ul>
+            {KILLER_LEVELS.map(({ href, label }) => (
+              <li key={href}>
+                <Link href={href}>Killer {label}</Link>
+              </li>
+            ))}
+          </ul>
+
+          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">
+            How to Play Sudoku
+          </h2>
 
           <p>
             Sudoku is a popular number puzzle that challenges your logical thinking. The game
