@@ -59,18 +59,17 @@ export default function AboutPage() {
           </p>
 
           <h2 className="font-heading text-2xl font-bold dark:text-stone-50">Other Projects</h2>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
+          <ul>
             {projects.map((project) => (
-              <a
-                key={project.name}
-                href={project.url}
-                target={project.target}
-                rel="noopener noreferrer"
-                className="text-sm font-medium underline underline-offset-4 transition hover:no-underline">
-                {project.name}
-              </a>
+              <li key={project.name}>
+                <a href={project.url} target={project.target} rel="noopener noreferrer">
+                  {project.name}
+                </a>
+                {' — '}
+                {project.description}
+              </li>
             ))}
-          </div>
+          </ul>
         </Container>
       </section>
     </div>
