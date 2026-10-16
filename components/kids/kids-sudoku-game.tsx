@@ -4,6 +4,7 @@ import { type KeyboardEvent, useMemo, useState } from 'react';
 
 import { Eraser, RotateCcw } from 'lucide-react';
 
+import { selineTrack } from '@/lib/analytics';
 import type { KidsLevel } from '@/lib/kids/content';
 import { cn } from '@/lib/utils';
 
@@ -76,6 +77,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
   }
 
   function reset() {
+    selineTrack('kids_reset_click', { size: level.slug });
     setBoard(cloneBoard(given));
     setHistory([]);
     setChecked(false);
@@ -250,7 +252,10 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
               type="button"
               variant="outline"
               className={cn(controlButtonClass, 'flex-1')}
-              onClick={() => window.print()}
+              onClick={() => {
+                selineTrack('kids_print_click', { size: level.slug });
+                window.print();
+              }}
             >
               Print
             </Button>
@@ -260,7 +265,10 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
               type="button"
               variant="outline"
               className={cn(controlButtonClass, 'flex-1')}
-              onClick={() => setChecked(true)}
+              onClick={() => {
+                selineTrack('kids_check_click', { size: level.slug });
+                setChecked(true);
+              }}
             >
               Check
             </Button>
@@ -268,7 +276,13 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
               type="button"
               variant="outline"
               className={cn(controlButtonClass, 'flex-1')}
-              onClick={() => setShowSolution((value) => !value)}
+              onClick={() => {
+                selineTrack('kids_show_solution_click', {
+                  size: level.slug,
+                  visible: !showSolution,
+                });
+                setShowSolution((value) => !value);
+              }}
             >
               {showSolution ? 'Hide solution' : 'Show solution'}
             </Button>
