@@ -163,6 +163,10 @@ export default function HomePage() {
             <Link href="/guides/9-advanced-sudoku-techniques-that-experienced-solvers-use">
               advanced techniques
             </Link>
+            , and{' '}
+            <Link href="/guides/solve-sudoku-without-guessing">
+              how to solve Sudoku without guessing
+            </Link>
             .
           </p>
 
@@ -172,8 +176,9 @@ export default function HomePage() {
             yourself with harder levels. Have fun solving!
           </p>
           <p>
-            Want a different ruleset? Try <Link href="/killer-sudoku">Killer Sudoku</Link> for
-            cage-sum puzzles, or join the shared{' '}
+            Want a different ruleset? Read the rules on the{' '}
+            <Link href="/killer-sudoku">Killer Sudoku</Link> page,{' '}
+            <Link href="/killer-sudoku/easy">play Easy Killer Sudoku</Link>, or join the shared{' '}
             <Link href="/daily">daily challenge</Link>.
           </p>
         </Container>

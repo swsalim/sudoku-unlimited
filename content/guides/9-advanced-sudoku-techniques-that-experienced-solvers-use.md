@@ -6,7 +6,7 @@ meta_title: "9 Advanced Sudoku Techniques for Hard Sudoku Puzzles"
 meta_description: "Learn 9 advanced Sudoku techniques, including X-Wing, Swordfish, XY-Wing, coloring, chains, and unique rectangles, with practical examples."
 primary_keyword: "advanced sudoku techniques"
 secondary_keywords: []
-word_count: 2169
+word_count: 2293
 status: "draft"
 brief: "9-advanced-sudoku-techniques-that-experienced-solvers-use"
 ---
@@ -17,7 +17,7 @@ You reach a hard Sudoku grid, scan every row, column, and box, and still find no
 
 ## How to read this list of advanced Sudoku techniques
 
-These advanced Sudoku strategies assume you already know candidate notation, singles, naked and hidden subsets, triples, and locked candidates. The methods below remove candidates rather than select a value because it looks likely.
+These advanced Sudoku strategies assume you already know candidate notation and the earlier technique guides: [naked singles](/guides/naked-singles), [hidden singles](/guides/hidden-singles), [naked pairs](/guides/naked-pairs), [hidden pairs](/guides/hidden-pairs), [naked triples](/guides/naked-triples), [pointing pairs](/guides/pointing-pairs), and [box-line reduction](/guides/box-line-reduction). The methods below remove candidates rather than select a value because it looks likely. The fish and wing patterns in this list also have their own pages: [X-Wing](/guides/x-wing), [Swordfish](/guides/swordfish), and [XY-Wing](/guides/xy-wing). The order for choosing among all of them is [how to solve Sudoku without guessing](/guides/solve-sudoku-without-guessing).
 
 Coordinates use **r4c7** for row 4, column 7. A set such as **{2, 5, 9}** lists the candidates remaining in one cell. HoDoKu groups related methods into families such as fish, wings, coloring, uniqueness, chains, and loops; that classification gives you a sensible way to learn hard Sudoku solving techniques instead of memorizing disconnected names.
 
@@ -25,7 +25,7 @@ Speed depends on the grid and your practice. A technique may be present but hard
 
 ## 1. X-Wing: remove a candidate locked into two matching rows
 
-An X-Wing occurs when one candidate appears in exactly two useful positions in each of two rows, and those positions fall in the same two columns. The four cells form the corners of a rectangle. The equivalent pattern can run through two columns and two rows.
+An X-Wing occurs when one candidate appears in exactly two useful positions in each of two rows, and those positions fall in the same two columns. The [X-Wing guide](/guides/x-wing) walks through that rectangle on its own. The four cells form the corners of a rectangle. The equivalent pattern can run through two columns and two rows.
 
 Suppose candidate 7 appears in r2c3, r2c8, r6c3, and r6c8. In rows 2 and 6, every possible 7 in the selected pattern lies in columns 3 or 8. Therefore one of those rows must place 7 in column 3, and the other must place 7 in column 8, in either order.
 
@@ -39,7 +39,7 @@ Remove 7 from other cells in columns 3 and 8, such as r4c3, if that cell contain
 
 ## 2. Swordfish: extend the fish pattern across three rows or columns
 
-A Swordfish extends the same idea across three rows. For one candidate, each selected row contains two or three possible positions, and the combined positions occupy no more than the same three columns. Those columns then hold the candidate for the three selected rows, in some order.
+A Swordfish extends the same idea across three rows. See the [Swordfish guide](/guides/swordfish) for a full cover-column example, including a legal empty corner. For one candidate, each selected row contains two or three possible positions, and the combined positions occupy no more than the same three columns. Those columns then hold the candidate for the three selected rows, in some order.
 
 For candidate 4, imagine these positions:
 
@@ -72,7 +72,7 @@ Check X-Wing and Swordfish first. A smaller fish may produce the same eliminatio
 
 ## 4. XY-Wing: force an elimination through three bivalue cells
 
-An XY-Wing, also called a Y-Wing, uses three bivalue cells. The pivot contains {X, Y}; one wing contains {X, Z}; the other contains {Y, Z}. The pivot must see both wings through a shared row, column, or box.
+An XY-Wing, also called a Y-Wing, uses three bivalue cells. The [XY-Wing guide](/guides/xy-wing) isolates the pivot, the two wings, and the cells that actually lose a candidate. The pivot contains {X, Y}; one wing contains {X, Z}; the other contains {Y, Z}. The pivot must see both wings through a shared row, column, or box.
 
 Use this example: pivot r4c4 is {2, 7}, wing r4c8 is {2, 9}, and wing r7c4 is {7, 9}. The pivot sees both wings through its row and column. A target such as r7c8 sees r4c8 in column 8 and r7c4 in row 7, so it sees both wings.
 

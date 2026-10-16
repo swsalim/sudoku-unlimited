@@ -183,6 +183,75 @@ const killerDescriptionByDifficulty: Record<string, string> = {
   extreme: 'Play extreme Killer Sudoku online with ultra-hard cage-sum puzzle challenges.',
 };
 
+export const killerHubFaqs: KillerFaq[] = [
+  {
+    question: 'What is Killer Sudoku?',
+    answer:
+      'Killer Sudoku is classic Sudoku plus cages. Each cage is a group of cells that must add up to the sum printed on the cage, and digits cannot repeat inside that cage. Rows, columns, and 3×3 boxes still contain the digits 1–9 once.',
+  },
+  {
+    question: 'Can numbers repeat inside a Killer Sudoku cage?',
+    answer:
+      'No. A cage cannot contain the same digit twice, even when the cage crosses more than one box.',
+  },
+  {
+    question: 'Do cages replace the normal Sudoku rules?',
+    answer:
+      'No. A placement still has to be legal in its row, column, and box. The cage sum and the no-repeat rule inside the cage are extra constraints.',
+  },
+  {
+    question: 'How should I start a Killer Sudoku puzzle?',
+    answer:
+      'Start with small cages whose sum allows only one combination, such as a two-cell cage totaling 3 (1 and 2) or 17 (8 and 9). Then use those digits with ordinary Sudoku elimination. On Sudoku Unlimited, easier Killer levels also show some given digits. Extreme Killer Sudoku starts from the cages alone.',
+  },
+  {
+    question: 'Where can I play Killer Sudoku by difficulty?',
+    answer:
+      'Easy, Medium, Hard, Expert, Master, and Extreme each have a play page linked from this hub.',
+  },
+];
+
+const killerHubDescription =
+  'Learn Killer Sudoku rules — cages, sums, and no repeated digits — then play free puzzles from Easy to Extreme.';
+
+export function getKillerHubSchema() {
+  const baseUrl = absoluteUrl();
+  const pageUrl = absoluteUrl('/killer-sudoku');
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: 'Killer Sudoku',
+        description: killerHubDescription,
+        isPartOf: { '@id': `${baseUrl}#website` },
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+      },
+      {
+        ...getBreadcrumbSchema([
+          { name: 'Home', url: baseUrl },
+          { name: 'Killer Sudoku', url: pageUrl },
+        ]),
+        '@id': `${pageUrl}#breadcrumb`,
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${pageUrl}#faq`,
+        mainEntity: killerHubFaqs.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      },
+    ],
+  };
+}
+
 export function getKillerSchema(difficulty: string = 'easy') {
   const baseUrl = absoluteUrl();
   const normalizedDifficulty = difficulty.toLowerCase();
@@ -225,7 +294,11 @@ export function getKillerSchema(difficulty: string = 'easy') {
       },
       getBreadcrumbSchema([
         { name: 'Home', url: baseUrl },
-        { name: 'Killer Sudoku', url: pageUrl },
+        { name: 'Killer Sudoku', url: absoluteUrl('/killer-sudoku') },
+        {
+          name: `${normalizedDifficulty.charAt(0).toUpperCase()}${normalizedDifficulty.slice(1)} Killer Sudoku`,
+          url: pageUrl,
+        },
       ]),
       getOrganizationSchema(),
       getSoftwareApplicationSchema(),

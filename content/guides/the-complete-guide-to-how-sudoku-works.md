@@ -6,7 +6,7 @@ meta_title: "How Does Sudoku Work? Complete Rules and Solving Guide"
 meta_description: "Learn how Sudoku works, including the 9x9 grid rules, candidate notes, elimination methods, difficulty levels, and a practical solving example."
 primary_keyword: "how does sudoku work"
 secondary_keywords: ["sudoku grid rules", "sudoku 9x9 grid", "sudoku elimination method", "sudoku pencil marks", "sudoku single possibility", "online sudoku difficulty levels"]
-word_count: 3027
+word_count: 3161
 status: "draft"
 brief: "the-complete-guide-to-how-sudoku-works"
 ---
@@ -192,7 +192,7 @@ Deduction should be your default, but a blind guess is especially unhelpful in t
 - A row, column, or box still contains an obvious single.
 - You can’t state which rule proves the proposed placement.
 
-Some advanced solving methods use controlled assumptions, but beginners should postpone them. First restore accurate candidates and complete the basic scan. A puzzle that seems impossible may simply contain one forgotten exclusion.
+Some advanced solving methods use controlled assumptions, but beginners should postpone them. First restore accurate candidates and complete the basic scan. A puzzle that seems impossible may simply contain one forgotten exclusion. The repeatable order for that scan — singles, then pairs and locked candidates, then fish and short chains — is [how to solve Sudoku without guessing](/guides/solve-sudoku-without-guessing).
 
 ## A practical practice plan for learning Sudoku
 

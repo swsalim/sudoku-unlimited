@@ -8,11 +8,14 @@ const NEXT_SSG_FILES = [
 
 const exclude = ['/dashboard*', '/404', '/api*', '/login', '/server-sitemap.xml', '/dev-demo'];
 
-const GUIDE_SLUGS = [
-  'the-complete-guide-to-how-sudoku-works',
-  '5-ways-to-approach-number-puzzles-like-sudoku',
-  '9-advanced-sudoku-techniques-that-experienced-solvers-use',
-];
+const fs = require('fs');
+const path = require('path');
+
+const registrySrc = fs.readFileSync(path.join(__dirname, 'lib/guides/registry.ts'), 'utf8');
+const registryBlock = registrySrc.split('export const guideRegistry')[1] ?? '';
+const GUIDE_SLUGS = [...registryBlock.matchAll(/^\s+'?([a-z0-9-]+)'?\s*:\s*\{/gm)].map(
+  (match) => match[1],
+);
 
 const GUIDE_LASTMOD = '2026-10-16';
 

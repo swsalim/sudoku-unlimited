@@ -9,4 +9,4 @@ resource: "https://sudokuunlimited.com/killer-sudoku"
 
 # Killer Sudoku
 
-Killer Sudoku keeps classic row, column, and box uniqueness and adds cages: outlined groups of cells that must sum to a given total. Digits still cannot repeat inside a cage. Sudoku Unlimited hosts a Killer hub and Easy through Extreme Killer levels.
+Killer Sudoku keeps classic row, column, and box uniqueness and adds cages: outlined groups of cells that must sum to a given total. Digits still cannot repeat inside a cage. The hub at `/killer-sudoku` states those rules and links to Easy through Extreme. Easier levels on this site also include some given digits. Extreme starts from the cages alone.
