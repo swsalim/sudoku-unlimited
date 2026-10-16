@@ -100,6 +100,7 @@ export function getAllGuides(): GuideListItem[] {
       readMinutes: guide.readMinutes,
       featured: guide.featured,
       dateModified: guide.dateModified,
+      group: guideRegistry[slug]?.group,
     };
   });
 }

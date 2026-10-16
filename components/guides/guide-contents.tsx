@@ -3,12 +3,40 @@
 import { useReducedMotion } from 'motion/react';
 import { type MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
+import { pickActiveGuideHeading } from '@/lib/guides/active-guide-heading';
 import type { GuideHeading } from '@/lib/guides/types';
 import { smoothScrollToId } from '@/lib/scroll/smooth-scroll-to-id';
 
 type GuideContentsProps = {
   headings: GuideHeading[];
 };
+
+/** Extra pixels below scroll-margin-top so subpixel resting positions still count. */
+const ACTIVATION_SLACK_PX = 8;
+const SCROLL_END_SLACK_PX = 2;
+
+function activationLine(heading: HTMLElement): number {
+  const margin = Number.parseFloat(getComputedStyle(heading).scrollMarginTop);
+  const base = Number.isFinite(margin) ? margin : 96;
+  return base + ACTIVATION_SLACK_PX;
+}
+
+function measureActiveId(ids: string[]): string | null {
+  const nodes = ids
+    .map((id) => document.getElementById(id))
+    .filter((node): node is HTMLElement => node !== null);
+  if (nodes.length === 0) return null;
+
+  const doc = document.documentElement;
+  const maxScroll = doc.scrollHeight - window.innerHeight;
+  const atBottom = maxScroll > SCROLL_END_SLACK_PX && window.scrollY >= maxScroll - SCROLL_END_SLACK_PX;
+
+  return pickActiveGuideHeading(
+    nodes.map((node) => ({ id: node.id, top: node.getBoundingClientRect().top })),
+    activationLine(nodes[0]),
+    atBottom,
+  );
+}
 
 export function GuideContents({ headings }: GuideContentsProps) {
   const topLevel = useMemo(() => headings.filter((h) => h.level === 2), [headings]);
@@ -26,26 +54,28 @@ export function GuideContents({ headings }: GuideContentsProps) {
 
   useEffect(() => {
     if (topLevel.length === 0) return;
+    const ids = topLevel.map((heading) => heading.id);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]?.target.id) {
-          setActiveId(visible[0].target.id);
-        }
-      },
-      { rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.25, 0.5, 1] },
-    );
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const next = measureActiveId(ids);
+      setActiveId((current) => (current === next ? current : next));
+    };
+    const schedule = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
 
-    for (const heading of topLevel) {
-      const el = document.getElementById(heading.id);
-      if (el) observer.observe(el);
-    }
-
-    return () => observer.disconnect();
-  }, [topLevel, headings]);
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, [topLevel]);
 
   if (topLevel.length === 0) return null;
 
@@ -63,6 +93,7 @@ export function GuideContents({ headings }: GuideContentsProps) {
             <li key={heading.id}>
               <a
                 href={`#${heading.id}`}
+                aria-current={isActive ? 'location' : undefined}
                 onClick={(event) => onTocClick(event, heading.id)}
                 className={`block rounded-md px-2 py-1 transition-colors ${
                   isActive

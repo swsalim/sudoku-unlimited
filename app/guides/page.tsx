@@ -24,7 +24,8 @@ export const metadata: Metadata = {
 
 export default function GuidesIndexPage() {
   const featured = getFeaturedGuide();
-  const guides = getAllGuides().filter((g) => !g.featured);
+  const guides = getAllGuides().filter((g) => !g.featured && g.group !== 'techniques');
+  const techniques = getAllGuides().filter((g) => g.group === 'techniques');
 
   return (
     <div className="flex grow flex-col">
@@ -46,8 +47,8 @@ export default function GuidesIndexPage() {
           Sudoku <span className="text-[color:var(--app-accent-strong)]">guides</span>
         </h1>
         <p className="mt-3 max-w-2xl text-lg text-stone-600 dark:text-stone-400">
-          Step-by-step articles on rules, candidate notes, and advanced patterns—written for players
-          who want logic, not guesswork.
+          Step-by-step articles on rules, candidate notes, and named solving techniques—written for
+          players who want a logical next step.
         </p>
 
         <section aria-label="Featured guide" className="mt-10">
@@ -73,6 +74,34 @@ export default function GuidesIndexPage() {
           </h2>
           <ul className="mt-4 divide-y divide-stone-200 dark:divide-stone-700">
             {guides.map((guide) => (
+              <li key={guide.slug} className="py-5">
+                <TransitionLink href={`/guides/${guide.slug}`} className="group block">
+                  <h3 className="font-heading text-lg font-semibold text-stone-900 group-hover:text-[color:var(--app-accent-strong)] dark:text-stone-50">
+                    {guide.title}
+                  </h3>
+                  <p className="mt-1 text-stone-600 dark:text-stone-400">{guide.meta_description}</p>
+                  <p className="mt-2 text-sm text-stone-500">{guide.readMinutes} min read</p>
+                </TransitionLink>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section aria-label="Techniques" className="mt-12">
+          <h2 className="font-heading text-xl font-bold text-stone-900 dark:text-stone-50">
+            Techniques
+          </h2>
+          <p className="mt-2 max-w-2xl text-stone-600 dark:text-stone-400">
+            One page per pattern, from singles through fish and wings. Start with{' '}
+            <TransitionLink
+              href="/guides/solve-sudoku-without-guessing"
+              className="font-medium text-[color:var(--app-accent-strong)] hover:underline">
+              how to solve Sudoku without guessing
+            </TransitionLink>{' '}
+            if you want the order to use them in.
+          </p>
+          <ul className="mt-4 divide-y divide-stone-200 dark:divide-stone-700">
+            {techniques.map((guide) => (
               <li key={guide.slug} className="py-5">
                 <TransitionLink href={`/guides/${guide.slug}`} className="group block">
                   <h3 className="font-heading text-lg font-semibold text-stone-900 group-hover:text-[color:var(--app-accent-strong)] dark:text-stone-50">

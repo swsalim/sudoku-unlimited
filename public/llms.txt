@@ -13,7 +13,7 @@
 - [Extreme](https://sudokuunlimited.com/extreme): Extreme Sudoku
 - [Daily Challenge](https://sudokuunlimited.com/daily): One shared puzzle per UTC day
 - [Sudoku Solver](https://sudokuunlimited.com/sudoku-solver): Check or complete a grid
-- [Killer Sudoku](https://sudokuunlimited.com/killer-sudoku): Cage-sum Sudoku hub
+- [Killer Sudoku](https://sudokuunlimited.com/killer-sudoku): Rules, cages, and links to every Killer difficulty
 
 ## Guides
 
@@ -21,6 +21,17 @@
 - [How Sudoku Works](https://sudokuunlimited.com/guides/the-complete-guide-to-how-sudoku-works): Complete rules and solving guide
 - [5 Ways to Approach Number Puzzles](https://sudokuunlimited.com/guides/5-ways-to-approach-number-puzzles-like-sudoku): Practical solving routine for beginners
 - [9 Advanced Sudoku Techniques](https://sudokuunlimited.com/guides/9-advanced-sudoku-techniques-that-experienced-solvers-use): Fish, wings, chains, and uniqueness
+- [How to Solve Sudoku Without Guessing](https://sudokuunlimited.com/guides/solve-sudoku-without-guessing): Scanning, singles, pairs, fish, and chains in order
+- [Naked Singles](https://sudokuunlimited.com/guides/naked-singles): Place a cell that has one candidate
+- [Hidden Singles](https://sudokuunlimited.com/guides/hidden-singles): Place a digit that has one home in a unit
+- [Naked Pairs](https://sudokuunlimited.com/guides/naked-pairs): Two cells that reserve two digits
+- [Hidden Pairs](https://sudokuunlimited.com/guides/hidden-pairs): Two digits confined to two cells
+- [Naked Triples](https://sudokuunlimited.com/guides/naked-triples): Three cells that reserve three digits
+- [Pointing Pairs](https://sudokuunlimited.com/guides/pointing-pairs): A box digit locked to one line
+- [Box-Line Reduction](https://sudokuunlimited.com/guides/box-line-reduction): A line digit claimed by one box
+- [X-Wing](https://sudokuunlimited.com/guides/x-wing): A two-row, two-column fish
+- [Swordfish](https://sudokuunlimited.com/guides/swordfish): A three-row, three-column fish
+- [XY-Wing](https://sudokuunlimited.com/guides/xy-wing): A pivot and two wings that delete one candidate
 
 ## About
 

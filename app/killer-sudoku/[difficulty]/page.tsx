@@ -247,6 +247,7 @@ export default async function KillerDifficultyPage({ params }: Props) {
           <h3 className="font-heading text-xl font-bold">{copy.whoForHeading}</h3>
           <p>{copy.whoFor}</p>
           <p>
+            All six levels are listed on the <Link href="/killer-sudoku">Killer Sudoku</Link> page.
             Looking for classic puzzles too? Try <Link href="/easy">Easy Sudoku</Link> or explore
             all <Link href="/">Sudoku levels</Link>.
           </p>

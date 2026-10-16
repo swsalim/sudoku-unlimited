@@ -33,7 +33,7 @@ export function getGuidesIndexSchema() {
     url: guidesUrl,
     name: 'Sudoku Guides',
     description:
-      'In-depth Sudoku guides covering rules, beginner approaches, and advanced solving techniques.',
+      'In-depth Sudoku guides covering rules, a no-guess solving workflow, and individual techniques.',
     isPartOf: { '@id': `${baseUrl}#website` },
     breadcrumb: { '@id': `${guidesUrl}#breadcrumb` },
   };

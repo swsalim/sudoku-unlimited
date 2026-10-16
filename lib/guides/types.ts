@@ -40,7 +40,11 @@ export type Guide = GuideFrontmatter & {
   relatedGuideSlugs: string[];
 };
 
+export type GuideGroup = 'techniques';
+
 export type GuideListItem = Pick<
   Guide,
   'slug' | 'title' | 'meta_description' | 'readMinutes' | 'featured' | 'dateModified'
->;
+> & {
+  group?: GuideGroup;
+};
