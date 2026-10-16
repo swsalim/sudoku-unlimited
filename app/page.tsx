@@ -146,6 +146,26 @@ export default function HomePage() {
             double-check your work, and look for new patterns.
           </p>
 
+          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">
+            Learn more in our guides
+          </h2>
+          <p>
+            For deeper walkthroughs on rules, candidate notes, and advanced patterns, browse the{' '}
+            <Link href="/guides">Sudoku guides</Link>—including{' '}
+            <Link href="/guides/the-complete-guide-to-how-sudoku-works">
+              how Sudoku works
+            </Link>
+            ,{' '}
+            <Link href="/guides/5-ways-to-approach-number-puzzles-like-sudoku">
+              five practical approaches
+            </Link>
+            , and{' '}
+            <Link href="/guides/9-advanced-sudoku-techniques-that-experienced-solvers-use">
+              advanced techniques
+            </Link>
+            .
+          </p>
+
           <h2 className="font-heading text-2xl font-bold dark:text-stone-50">Ready to Play?</h2>
           <p>
             Now that you know the basics, start with an easy Sudoku puzzle and gradually challenge
@@ -153,7 +173,8 @@ export default function HomePage() {
           </p>
           <p>
             Want a different ruleset? Try <Link href="/killer-sudoku">Killer Sudoku</Link> for
-            cage-sum puzzles.
+            cage-sum puzzles, or join the shared{' '}
+            <Link href="/daily">daily challenge</Link>.
           </p>
         </Container>
       </section>

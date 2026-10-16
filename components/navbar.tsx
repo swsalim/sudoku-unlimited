@@ -42,6 +42,11 @@ export default function Navbar() {
               Killer Sudoku
             </Link>
             <Link
+              href="/guides"
+              className="text-sm font-medium text-stone-600 underline-offset-4 hover:text-stone-900 hover:underline dark:text-stone-400 dark:hover:text-stone-300">
+              Guides
+            </Link>
+            <Link
               href="/about"
               className="text-sm font-medium text-stone-600 underline-offset-4 hover:text-stone-900 hover:underline dark:text-stone-400 dark:hover:text-stone-300">
               About

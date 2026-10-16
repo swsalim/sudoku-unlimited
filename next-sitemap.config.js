@@ -8,6 +8,14 @@ const NEXT_SSG_FILES = [
 
 const exclude = ['/dashboard*', '/404', '/api*', '/login', '/server-sitemap.xml', '/dev-demo'];
 
+const GUIDE_SLUGS = [
+  'the-complete-guide-to-how-sudoku-works',
+  '5-ways-to-approach-number-puzzles-like-sudoku',
+  '9-advanced-sudoku-techniques-that-experienced-solvers-use',
+];
+
+const GUIDE_LASTMOD = '2026-10-16';
+
 const siteUrl =
   process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`
@@ -22,7 +30,18 @@ const config = {
   sitemapSize: 7000,
   exclude,
   /** Force-include dynamic routes not listed in static export */
-  additionalPaths: async (cfg) => [await cfg.transform(cfg, '/daily')],
+  additionalPaths: async (cfg) => {
+    const paths = [
+      await cfg.transform(cfg, '/daily'),
+      await cfg.transform(cfg, '/guides'),
+    ];
+    for (const slug of GUIDE_SLUGS) {
+      const entry = await cfg.transform(cfg, `/guides/${slug}`);
+      entry.lastmod = GUIDE_LASTMOD;
+      paths.push(entry);
+    }
+    return paths;
+  },
   robotsTxtOptions: {
     policies: [{ userAgent: '*', disallow: NEXT_SSG_FILES }],
   },

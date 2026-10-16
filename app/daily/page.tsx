@@ -5,6 +5,7 @@ import { getCalendarDateStringForDaily, getDailyDifficultyForDate } from '@/lib/
 import { absoluteUrl } from '@/lib/utils';
 
 import { DailyFaqSection } from '@/components/daily-faq-section';
+import { DailySchemaScript } from '@/components/schemas';
 import { SudokuGame } from '@/components/sudoku-game';
 
 export const dynamic = 'force-dynamic';
@@ -44,6 +45,7 @@ export default function DailyPage() {
 
   return (
     <>
+      <DailySchemaScript />
       <div className="border-b border-[color:var(--app-surface-border)] bg-[color:var(--app-muted-bg)]/40">
         <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-10">
           <h1 className="font-heading text-3xl font-black tracking-tight text-stone-900 dark:text-stone-50 sm:text-4xl">
