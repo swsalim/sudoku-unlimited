@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Figtree, Fraunces } from 'next/font/google';
+import { ViewTransitions } from 'next-view-transitions';
 
 import { siteConfig } from '@/config/site';
 
@@ -73,7 +74,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <ViewTransitions>
+      <html lang="en">
       <head>
         <script
           src="https://beamanalytics.b-cdn.net/beam.min.js"
@@ -101,5 +103,6 @@ export default function RootLayout({
           async></script>
       </body>
     </html>
+    </ViewTransitions>
   );
 }

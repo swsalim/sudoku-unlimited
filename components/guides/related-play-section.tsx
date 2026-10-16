@@ -1,6 +1,6 @@
-import Link from 'next/link';
-
 import type { GuidePlayLink } from '@/lib/guides/types';
+
+import { TransitionLink } from '@/components/transition-link';
 
 type RelatedPlaySectionProps = {
   links: GuidePlayLink[];
@@ -19,14 +19,14 @@ export function RelatedPlaySection({ links }: RelatedPlaySectionProps) {
       <ul className="mt-4 grid gap-3 sm:grid-cols-2">
         {links.map((link) => (
           <li key={link.href}>
-            <Link
+            <TransitionLink
               href={link.href}
               className="block rounded-xl border border-stone-200 bg-white p-4 shadow-sm transition hover:border-stone-300 dark:border-stone-700 dark:bg-stone-900/50 dark:hover:border-stone-600">
               <span className="font-semibold text-stone-900 dark:text-stone-100">{link.title}</span>
               <span className="mt-1 block text-sm text-stone-600 dark:text-stone-400">
                 {link.description}
               </span>
-            </Link>
+            </TransitionLink>
           </li>
         ))}
       </ul>

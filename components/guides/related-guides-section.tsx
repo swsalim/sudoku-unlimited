@@ -1,6 +1,6 @@
-import Link from 'next/link';
-
 import { getGuideBySlug } from '@/lib/guides/load-guide';
+
+import { TransitionLink } from '@/components/transition-link';
 
 type RelatedGuidesSectionProps = {
   slugs: string[];
@@ -25,11 +25,11 @@ export function RelatedGuidesSection({ slugs, currentSlug }: RelatedGuidesSectio
       <ul className="mt-4 space-y-3">
         {guides.map((guide) => (
           <li key={guide.slug}>
-            <Link
+            <TransitionLink
               href={`/guides/${guide.slug}`}
               className="text-[color:var(--app-accent-strong)] font-medium hover:underline">
               {guide.title}
-            </Link>
+            </TransitionLink>
             <p className="text-sm text-stone-600 dark:text-stone-400">{guide.meta_description}</p>
           </li>
         ))}

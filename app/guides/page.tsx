@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-
 import { getAllGuides, getFeaturedGuide } from '@/lib/guides/load-guide';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
 import { GuideSchemaScript } from '@/components/schemas';
+import { TransitionLink } from '@/components/transition-link';
 
 export const metadata: Metadata = {
   title: 'Sudoku Guides',
@@ -34,9 +33,9 @@ export default function GuidesIndexPage() {
         <nav aria-label="Breadcrumb" className="mb-6 text-sm text-stone-600 dark:text-stone-400">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
-              <Link href="/" className="hover:text-stone-900 dark:hover:text-stone-200">
+              <TransitionLink href="/" className="hover:text-stone-900 dark:hover:text-stone-200">
                 Home
-              </Link>
+              </TransitionLink>
             </li>
             <li aria-hidden="true">/</li>
             <li className="font-medium text-stone-900 dark:text-stone-100">Guides</li>
@@ -52,7 +51,7 @@ export default function GuidesIndexPage() {
         </p>
 
         <section aria-label="Featured guide" className="mt-10">
-          <Link
+          <TransitionLink
             href={`/guides/${featured.slug}`}
             className="block rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50 to-orange-50 p-6 shadow-sm transition hover:border-amber-300 dark:border-amber-900/50 dark:from-amber-950/40 dark:to-stone-900/60">
             <p className="text-xs font-semibold uppercase tracking-wide text-amber-800 dark:text-amber-200">
@@ -65,7 +64,7 @@ export default function GuidesIndexPage() {
             <p className="mt-4 text-sm font-medium text-stone-600 dark:text-stone-400">
               {featured.readMinutes} min read
             </p>
-          </Link>
+          </TransitionLink>
         </section>
 
         <section aria-label="More guides" className="mt-12">
@@ -75,13 +74,13 @@ export default function GuidesIndexPage() {
           <ul className="mt-4 divide-y divide-stone-200 dark:divide-stone-700">
             {guides.map((guide) => (
               <li key={guide.slug} className="py-5">
-                <Link href={`/guides/${guide.slug}`} className="group block">
+                <TransitionLink href={`/guides/${guide.slug}`} className="group block">
                   <h3 className="font-heading text-lg font-semibold text-stone-900 group-hover:text-[color:var(--app-accent-strong)] dark:text-stone-50">
                     {guide.title}
                   </h3>
                   <p className="mt-1 text-stone-600 dark:text-stone-400">{guide.meta_description}</p>
                   <p className="mt-2 text-sm text-stone-500">{guide.readMinutes} min read</p>
-                </Link>
+                </TransitionLink>
               </li>
             ))}
           </ul>

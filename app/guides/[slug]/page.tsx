@@ -126,7 +126,7 @@ export default async function GuidePage({ params }: PageProps) {
             <RelatedGuidesSection slugs={guide.relatedGuideSlugs} currentSlug={guide.slug} />
           </article>
 
-          <aside className="lg:sticky lg:top-24">
+          <aside className="order-first lg:order-none lg:sticky lg:top-24">
             <GuideContents headings={guide.headings} />
           </aside>
         </div>

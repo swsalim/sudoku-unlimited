@@ -1,12 +1,11 @@
 import type { ComponentProps } from 'react';
 
-import Link from 'next/link';
-
 import { siteConfig } from '@/config/site';
 
 import { cn } from '@/lib/utils';
 
 import { BadgeRelaySite } from '@/components/badge-relay-site';
+import { TransitionLink } from '@/components/transition-link';
 
 interface FooterProps extends ComponentProps<'footer'> {
   className?: string;
@@ -18,21 +17,21 @@ export default function Footer({ className, ...props }: FooterProps) {
     <footer className={cn('bg-white text-sm font-semibold', className)} {...props}>
       <div className="mx-auto max-w-7xl px-6 py-3 text-center">
         <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-gray-700">
-          <Link href="/guides" className="font-medium underline-offset-4 hover:underline">
+          <TransitionLink href="/guides" className="font-medium underline-offset-4 hover:underline">
             Guides
-          </Link>
-          <Link href="/daily" className="font-medium underline-offset-4 hover:underline">
+          </TransitionLink>
+          <TransitionLink href="/daily" className="font-medium underline-offset-4 hover:underline">
             Daily Challenge
-          </Link>
-          <Link href="/sudoku-solver" className="font-medium underline-offset-4 hover:underline">
+          </TransitionLink>
+          <TransitionLink href="/sudoku-solver" className="font-medium underline-offset-4 hover:underline">
             Sudoku Solver
-          </Link>
-          <Link href="/killer-sudoku" className="font-medium underline-offset-4 hover:underline">
+          </TransitionLink>
+          <TransitionLink href="/killer-sudoku" className="font-medium underline-offset-4 hover:underline">
             Killer Sudoku
-          </Link>
-          <Link href="/about" className="font-medium underline-offset-4 hover:underline">
+          </TransitionLink>
+          <TransitionLink href="/about" className="font-medium underline-offset-4 hover:underline">
             About
-          </Link>
+          </TransitionLink>
         </nav>
       </div>
       <div className="mx-auto max-w-7xl px-6 py-4 text-center">
