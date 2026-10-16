@@ -34,8 +34,8 @@ export function ComboToast({ combo, onDismiss, duration = 800 }: ComboToastProps
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -6, scale: 0.98 }}
           transition={{ type: 'spring', stiffness: 500, damping: 28 }}>
-          <div className="rounded-xl border border-amber-400/60 bg-amber-50 px-6 py-2 shadow-lg">
-            <span className="font-heading text-xl font-bold text-amber-800">
+          <div className="rounded-xl border border-amber-400/60 bg-amber-50 px-6 py-2 shadow-lg dark:border-amber-700/50 dark:bg-[color:var(--app-surface-bg)]">
+            <span className="font-heading text-xl font-bold text-amber-800 dark:text-amber-200">
               {combo}× Combo!
             </span>
           </div>

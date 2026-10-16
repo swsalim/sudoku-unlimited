@@ -167,7 +167,7 @@ export default function SudokuSolverPage() {
           width={1000}
           height={1000}
           unoptimized
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover dark:hidden"
         />
         <Container className="relative z-10">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">

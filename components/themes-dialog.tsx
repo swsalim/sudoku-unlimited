@@ -139,7 +139,9 @@ export function ThemesDialog({ open, onOpenChange }: ThemesDialogProps) {
                   onClick={() => handleSelectTheme(t.id)}
                   className={[
                     'w-full rounded-lg border p-3 text-left transition-colors',
-                    isSelected ? 'border-emerald-600/40 bg-emerald-50/40' : 'hover:bg-muted/40',
+                    isSelected
+                      ? 'border-emerald-600/40 bg-emerald-50/40 dark:border-[color:var(--app-accent)] dark:bg-[color:var(--app-muted-bg)]'
+                      : 'hover:bg-muted/40',
                     !isUnlocked ? 'opacity-60' : '',
                   ].join(' ')}>
                   <div className="flex items-start gap-3">

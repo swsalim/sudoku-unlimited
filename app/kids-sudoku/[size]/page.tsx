@@ -79,7 +79,7 @@ export default async function KidsSizePage({ params }: Props) {
           width={1000}
           height={1000}
           unoptimized
-          className="absolute inset-0 h-full w-full object-cover print:hidden"
+          className="absolute inset-0 h-full w-full object-cover dark:hidden print:hidden"
         />
         <Container className="relative z-10">
           <nav

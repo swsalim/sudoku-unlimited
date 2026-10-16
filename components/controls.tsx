@@ -135,7 +135,7 @@ export function Controls({
           </Tooltip>
         </div>
         {!hasHints && hintRefreshMessage && (
-          <p className="text-center text-xs text-stone-500">{hintRefreshMessage}</p>
+          <p className="text-center text-xs text-stone-500 dark:text-stone-400">{hintRefreshMessage}</p>
         )}
 
         <div className="flex flex-row flex-wrap gap-1 md:grid md:grid-cols-3 md:gap-2">

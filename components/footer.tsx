@@ -14,12 +14,16 @@ interface FooterProps extends ComponentProps<'footer'> {
 export default function Footer({ className, ...props }: FooterProps) {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className={cn('bg-white text-sm font-semibold print:hidden', className)} {...props}>
+    <footer
+      className={cn(
+        'border-t border-transparent bg-white text-sm font-semibold text-gray-700 print:hidden dark:border-[color:var(--app-surface-border)] dark:bg-[color:var(--app-surface-bg)] dark:text-foreground',
+        className,
+      )}
+      {...props}>
       <div className="mx-auto max-w-7xl px-6 py-3 text-center">
         <nav
           aria-label="Footer"
-          className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-gray-700"
-        >
+          className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-gray-700 dark:text-muted-foreground">
           <TransitionLink href="/guides" className="font-medium underline-offset-4 hover:underline">
             Guides
           </TransitionLink>
@@ -56,9 +60,9 @@ export default function Footer({ className, ...props }: FooterProps) {
         </nav>
       </div>
       <div className="mx-auto max-w-7xl px-6 py-4 text-center">
-        <p className="text-sm leading-5 text-gray-700">
+        <p className="text-sm leading-5 text-gray-700 dark:text-muted-foreground">
           &copy; {currentYear} {siteConfig.siteName}.
-          <span className="ml-2 mt-0 inline-block text-gray-700">
+          <span className="ml-2 mt-0 inline-block text-gray-700 dark:text-muted-foreground">
             Built by{' '}
             <a
               href="https://www.yuurrific.com?ref=sudokuunlimited"
@@ -69,7 +73,7 @@ export default function Footer({ className, ...props }: FooterProps) {
             </a>
             .
           </span>
-          <span className="mt-2 block text-gray-700 md:ml-2 md:mt-0 md:inline-block">
+          <span className="mt-2 block text-gray-700 dark:text-muted-foreground md:ml-2 md:mt-0 md:inline-block">
             Privacy-friendly analytics by{' '}
             <a
               href="https://seline.com/?via=yuyu"

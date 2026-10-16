@@ -125,7 +125,7 @@
     --sudoku-cell-error-bg: #2b0b0b;
     --sudoku-cell-error-text: #fb7185;
     --sudoku-cell-notes-text: #a8a29e;
-    --sudoku-cell-text: #fafaf9;
+    --sudoku-cell-text: #86efac;
     --sudoku-cell-initial-text: #ffffff;
     --sudoku-cell-radius: 0rem;
     --sudoku-board-font: var(--font-figtree);
@@ -198,6 +198,21 @@
   .kids-print-board {
     break-inside: avoid;
     page-break-inside: avoid;
+  }
+
+  html.dark body :is(h1, h2, h3, h4, p, li, a, span, dt, dd, figcaption, label, button, td, th) {
+    color: #000 !important;
+  }
+
+  html.dark .printable-puzzle,
+  html.dark .printable-puzzle table,
+  html.dark .printable-puzzle td,
+  html.dark .kids-print-board,
+  html.dark .kids-print-board table,
+  html.dark .kids-print-board button {
+    background: #fff !important;
+    color: #000 !important;
+    border-color: #111 !important;
   }
 }
 

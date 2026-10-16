@@ -77,8 +77,8 @@ export function GameHeader({
                     className={cn(
                       'text-sm font-semibold capitalize',
                       d === difficulty
-                        ? 'border border-green-400 bg-green-100 text-green-700 shadow-sm hover:bg-green-100 hover:text-green-700 dark:text-stone-50'
-                        : 'text-stone-500 hover:bg-green-100 hover:text-green-700 dark:text-stone-400 dark:hover:text-stone-300',
+                        ? 'border border-green-400 bg-green-100 text-green-700 shadow-sm hover:bg-green-100 hover:text-green-700 dark:border-[color:var(--app-accent)] dark:bg-[color:var(--app-muted-bg)] dark:text-[color:var(--app-accent-strong)] dark:hover:bg-[color:var(--app-muted-bg)] dark:hover:text-[color:var(--app-accent-strong)]'
+                        : 'text-stone-500 hover:bg-green-100 hover:text-green-700 dark:text-stone-400 dark:hover:bg-[color:var(--app-muted-bg)] dark:hover:text-foreground',
                     )}>
                     {d}
                   </Link>
@@ -164,7 +164,7 @@ export function GameHeader({
           <span className="px-2 font-mono text-sm font-semibold tabular-nums text-stone-600 dark:text-stone-400">
             {time}
           </span>
-          <span className="h-4 w-px bg-stone-200" aria-hidden />
+          <span className="h-4 w-px bg-stone-200 dark:bg-[color:var(--app-surface-border)]" aria-hidden />
           {onZenModeToggle && (
             <Tooltip>
               <TooltipTrigger asChild>
