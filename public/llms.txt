@@ -1,0 +1,31 @@
+# Sudoku Unlimited
+
+> Free online Sudoku puzzles from Easy to Extreme, plus Daily Challenge, Killer Sudoku, and a Sudoku Solver. No signup or download.
+
+## Play
+
+- [Home](https://sudokuunlimited.com/): Play free Sudoku online
+- [Easy](https://sudokuunlimited.com/easy): Easy Sudoku
+- [Medium](https://sudokuunlimited.com/medium): Medium Sudoku
+- [Hard](https://sudokuunlimited.com/hard): Hard Sudoku
+- [Expert](https://sudokuunlimited.com/expert): Expert Sudoku
+- [Master](https://sudokuunlimited.com/master): Master Sudoku
+- [Extreme](https://sudokuunlimited.com/extreme): Extreme Sudoku
+- [Daily Challenge](https://sudokuunlimited.com/daily): One shared puzzle per UTC day
+- [Sudoku Solver](https://sudokuunlimited.com/sudoku-solver): Check or complete a grid
+- [Killer Sudoku](https://sudokuunlimited.com/killer-sudoku): Cage-sum Sudoku hub
+
+## Guides
+
+- [Sudoku Guides](https://sudokuunlimited.com/guides): Rules, approaches, and advanced techniques
+- [How Sudoku Works](https://sudokuunlimited.com/guides/the-complete-guide-to-how-sudoku-works): Complete rules and solving guide
+- [5 Ways to Approach Number Puzzles](https://sudokuunlimited.com/guides/5-ways-to-approach-number-puzzles-like-sudoku): Practical solving routine for beginners
+- [9 Advanced Sudoku Techniques](https://sudokuunlimited.com/guides/9-advanced-sudoku-techniques-that-experienced-solvers-use): Fish, wings, chains, and uniqueness
+
+## About
+
+- [About](https://sudokuunlimited.com/about): About Sudoku Unlimited
+
+## Open Knowledge Files
+
+- [OKF index](https://sudokuunlimited.com/.well-known/okf/index.md): Machine-readable site concepts and FAQs
