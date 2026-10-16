@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { Figtree, Fraunces } from 'next/font/google';
 import { ViewTransitions } from 'next-view-transitions';
+import { Figtree, Fraunces } from 'next/font/google';
 
 import { siteConfig } from '@/config/site';
 
@@ -76,33 +76,32 @@ export default function RootLayout({
   return (
     <ViewTransitions>
       <html lang="en">
-      <head>
-        <script
-          src="https://beamanalytics.b-cdn.net/beam.min.js"
-          data-token="c2fbac7b-0b09-48f0-b925-7a5a61de2a3b"
-          async></script>
-        <script
-          src="https://analytics.ahrefs.com/analytics.js"
-          data-key="15wDlBoHgMA4DHDxuC/6uA"
-          defer></script>
-        <script async src="https://cdn.seline.com/seline.js" data-token="9b914a331a40d42"></script>
-        <script async src="https://badgerelay.com/widget.js"></script>
-      </head>
-      <body
-        className={`${fraunces.variable} ${figtree.variable} font-sans font-medium antialiased`}
-        suppressHydrationWarning>
-        <ThemeProvider />
-        <Navbar />
-        <main className="flex min-h-[calc(100vh-8rem)] grow flex-col justify-center">
-          {children}
-        </main>
-        <Footer />
-        <script
-          src="https://cdn.apitiny.net/scripts/v2.0/main.js"
-          data-site-id="680e62b603dfc972f26f101d"
-          async></script>
-      </body>
-    </html>
+        <head>
+          <script
+            src="https://analytics.ahrefs.com/analytics.js"
+            data-key="15wDlBoHgMA4DHDxuC/6uA"
+            defer></script>
+          <script
+            async
+            src="https://cdn.seline.com/seline.js"
+            data-token="9b914a331a40d42"></script>
+          <script async src="https://badgerelay.com/widget.js"></script>
+        </head>
+        <body
+          className={`${fraunces.variable} ${figtree.variable} font-sans font-medium antialiased`}
+          suppressHydrationWarning>
+          <ThemeProvider />
+          <Navbar />
+          <main className="flex min-h-[calc(100vh-8rem)] grow flex-col justify-center">
+            {children}
+          </main>
+          <Footer />
+          <script
+            src="https://cdn.apitiny.net/scripts/v2.0/main.js"
+            data-site-id="680e62b603dfc972f26f101d"
+            async></script>
+        </body>
+      </html>
     </ViewTransitions>
   );
 }

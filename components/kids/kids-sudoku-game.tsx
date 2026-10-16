@@ -103,7 +103,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
   }
 
   return (
-    <div>
+    <div className="mx-auto text-center">
       <p className="no-print mb-4 text-sm text-stone-600 dark:text-stone-400" aria-live="polite">
         {solved
           ? 'Solved. Every digit is in the right cell.'
@@ -111,16 +111,14 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
       </p>
 
       <div
-        className="kids-print-board inline-block rounded-xl border border-stone-200 bg-white p-3 shadow-sm dark:border-stone-700 dark:bg-stone-950 print:border-0 print:bg-white print:p-0 print:shadow-none"
-        onKeyDown={onKeyDown}
-      >
+        className="kids-print-board mx-auto inline-block rounded-xl border border-stone-200 bg-white p-3 shadow-sm dark:border-stone-700 dark:bg-stone-950 print:border-0 print:bg-white print:p-0 print:shadow-none"
+        onKeyDown={onKeyDown}>
         <p className="mb-2 hidden text-sm font-semibold text-black print:block">
           {level.h1} · digits {level.digits}
         </p>
         <table
           className="border-collapse border-2 border-stone-900 print:border-black"
-          aria-label={`${level.h1} grid`}
-        >
+          aria-label={`${level.h1} grid`}>
           <tbody>
             {board.map((row, rowIndex) => (
               <tr key={rowIndex}>
@@ -158,8 +156,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
                             'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-200',
                           thickRight && 'border-r-2 border-r-stone-900 print:border-r-black',
                           thickBottom && 'border-b-2 border-b-stone-900 print:border-b-black',
-                        )}
-                      >
+                        )}>
                         {value || ''}
                       </button>
                     </td>
@@ -172,7 +169,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
       </div>
 
       <TooltipProvider delayDuration={150}>
-        <div className="no-print mt-4 flex w-full max-w-md flex-col gap-4">
+        <div className="no-print mx-auto mt-4 flex w-full max-w-md flex-col gap-4">
           <div className="flex gap-2">
             <Tooltip>
               <TooltipTrigger asChild>
@@ -182,8 +179,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
                   className={controlButtonClass}
                   onClick={undo}
                   disabled={history.length === 0}
-                  aria-label="Undo"
-                >
+                  aria-label="Undo">
                   <RotateCcw className="size-5 md:size-6" />
                 </Button>
               </TooltipTrigger>
@@ -196,8 +192,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
                   variant="outline"
                   className={controlButtonClass}
                   onClick={erase}
-                  aria-label="Erase"
-                >
+                  aria-label="Erase">
                   <Eraser className="size-5 md:size-6" />
                 </Button>
               </TooltipTrigger>
@@ -209,8 +204,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
                   type="button"
                   variant="outline"
                   className={controlButtonClass}
-                  onClick={reset}
-                >
+                  onClick={reset}>
                   Reset
                 </Button>
               </TooltipTrigger>
@@ -221,16 +215,14 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
           <div
             className={cn('grid gap-2', level.size === 4 ? 'grid-cols-4' : 'grid-cols-3')}
             role="group"
-            aria-label="Digits"
-          >
+            aria-label="Digits">
             {Array.from({ length: level.size }, (_, index) => index + 1).map((digit) => (
               <Button
                 key={digit}
                 type="button"
                 variant="outline"
                 className={cn(controlButtonClass, 'text-xl md:text-2xl')}
-                onClick={() => place(digit)}
-              >
+                onClick={() => place(digit)}>
                 {digit}
               </Button>
             ))}
@@ -244,8 +236,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
                 restart(
                   `${level.slug}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
                 )
-              }
-            >
+              }>
               New Game
             </Button>
             <Button
@@ -255,8 +246,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
               onClick={() => {
                 selineTrack('kids_print_click', { size: level.slug });
                 window.print();
-              }}
-            >
+              }}>
               Print
             </Button>
           </div>
@@ -268,8 +258,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
               onClick={() => {
                 selineTrack('kids_check_click', { size: level.slug });
                 setChecked(true);
-              }}
-            >
+              }}>
               Check
             </Button>
             <Button
@@ -282,8 +271,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
                   visible: !showSolution,
                 });
                 setShowSolution((value) => !value);
-              }}
-            >
+              }}>
               {showSolution ? 'Hide solution' : 'Show solution'}
             </Button>
           </div>
@@ -292,12 +280,10 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
 
       <section
         className={cn('solutions-page mt-8', showSolution ? 'block' : 'hidden print:block')}
-        aria-labelledby="kids-solution-heading"
-      >
+        aria-labelledby="kids-solution-heading">
         <h2
           id="kids-solution-heading"
-          className="font-heading text-xl font-bold text-stone-900 dark:text-stone-50 print:text-black"
-        >
+          className="font-heading text-xl font-bold text-stone-900 dark:text-stone-50 print:text-black">
           Solution
         </h2>
         <p className="mt-2 text-sm text-stone-600 dark:text-stone-400 print:text-black">

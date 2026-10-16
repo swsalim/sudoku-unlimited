@@ -13,6 +13,7 @@ export type KidsLevel = {
   title: string;
   h1: string;
   description: string;
+  shortDescription: string;
   digits: string;
   boxLabel: string;
   intro: string[];
@@ -28,6 +29,8 @@ export const kidsLevels: KidsLevel[] = [
       'Play free 4×4 Sudoku for kids. Digits 1–4, four 2×2 boxes, and a printable puzzle with a solution page.',
     digits: '1–4',
     boxLabel: '2×2 box',
+    shortDescription:
+      'Digits 1-4, each 2×2 box contains 1-4 once. A great starting point for younger children.',
     intro: [
       'A 4×4 Sudoku is a small grid for a first puzzle. Use the digits 1, 2, 3, and 4. Each row, each column, and each 2×2 box needs every digit once.',
       'Some numbers are already filled in. Those stay put. The rest of the cells are yours. When the grid follows the rules and matches the puzzle’s single solution, it is done.',
@@ -40,6 +43,8 @@ export const kidsLevels: KidsLevel[] = [
     h1: '6×6 Sudoku for Kids',
     description:
       'Play free 6×6 Sudoku for kids. Digits 1–6, six 2×3 boxes, and a printable puzzle with solutions.',
+    shortDescription:
+      'Digits 1-6, each 2×3 box contains 1-6 once. A fun next step with a bit more challenge.',
     digits: '1–6',
     boxLabel: '2×3 box',
     intro: [

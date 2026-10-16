@@ -5,7 +5,7 @@ export function SudokuSolverFaqSection() {
     <section
       className="prose mt-10 max-w-none bg-green-50/50 dark:prose-invert dark:bg-green-900/50"
       aria-labelledby="solver-faq-heading">
-      <div className="mx-auto max-w-4xl px-4 py-8">
+      <div className="mx-auto max-w-6xl px-4 py-8">
         <h2 id="solver-faq-heading" className="font-heading text-2xl font-bold dark:text-stone-50">
           Sudoku Solver FAQ
         </h2>

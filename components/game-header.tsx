@@ -77,8 +77,8 @@ export function GameHeader({
                     className={cn(
                       'text-sm font-semibold capitalize',
                       d === difficulty
-                        ? 'bg-[color:var(--app-surface-bg)] text-stone-900 shadow-sm dark:text-stone-50'
-                        : 'text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-300',
+                        ? 'border border-green-400 bg-green-100 text-green-700 shadow-sm hover:bg-green-100 hover:text-green-700 dark:text-stone-50'
+                        : 'text-stone-500 hover:bg-green-100 hover:text-green-700 dark:text-stone-400 dark:hover:text-stone-300',
                     )}>
                     {d}
                   </Link>

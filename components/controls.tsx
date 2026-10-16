@@ -153,9 +153,10 @@ export function Controls({
           ))}
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-4">
           <Button
-            className="flex-1 bg-[color:var(--app-accent)] font-semibold text-white hover:opacity-95"
+            variant="default"
+            className="flex-1 font-semibold"
             onClick={() => {
               selineTrack('controls_new_game_click');
               onNewGame();

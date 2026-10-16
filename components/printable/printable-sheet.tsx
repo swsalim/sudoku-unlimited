@@ -2,6 +2,12 @@
 
 import { useState } from 'react';
 
+import {
+  ArrowCounterClockwiseIcon,
+  DownloadIcon,
+  PrinterIcon,
+} from '@phosphor-icons/react/dist/ssr';
+
 import type { PrintableLevel } from '@/lib/printable/content';
 import { buildPrintablePdf, downloadPdf } from '@/lib/printable/pdf';
 import { createPrintableSheet, type PrintablePuzzle } from '@/lib/printable/sheet';
@@ -38,48 +44,62 @@ export function PrintableSheet({ level, initialPuzzles }: PrintableSheetProps) {
   }
 
   return (
-    <div>
-      <div className="no-print mb-6 flex flex-wrap gap-3">
-        <Button type="button" onClick={() => window.print()}>
-          Print or save as PDF
-        </Button>
-        <Button type="button" variant="outline" onClick={download}>
-          Download PDF
-        </Button>
-        <Button type="button" variant="outline" onClick={newPuzzles} disabled={busy}>
-          {busy ? 'Building puzzles…' : 'New puzzles'}
-        </Button>
+    <div className="flex flex-col gap-12">
+      <div className="no-print flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div className="not-prose flex flex-col gap-2">
+          <h2 className="font-heading text-3xl font-black text-stone-900 dark:text-stone-50 print:text-black">
+            Get the {level.difficulty} Sudoku PDF
+          </h2>
+          <p className="text-stone-600 dark:text-stone-400 print:text-black">
+            Download and print four {level.difficulty} Sudoku puzzles and their solutions.
+          </p>
+        </div>
+        <div className="no-print mb-6 flex flex-wrap gap-3">
+          <Button type="button" onClick={() => window.print()}>
+            <PrinterIcon weight="duotone" size={16} aria-hidden />
+            Print or save as PDF
+          </Button>
+          <Button type="button" variant="outline" onClick={download}>
+            <DownloadIcon weight="duotone" size={16} aria-hidden />
+            Download PDF
+          </Button>
+          <Button type="button" variant="outline" onClick={newPuzzles} disabled={busy}>
+            <ArrowCounterClockwiseIcon weight="duotone" size={16} aria-hidden />
+            {busy ? 'Building puzzles…' : 'New puzzles'}
+          </Button>
+        </div>
       </div>
 
-      <h2 className="font-heading text-2xl font-bold text-stone-900 dark:text-stone-50 print:text-black">
-        Puzzles
-      </h2>
-      <p className="mt-2 text-stone-600 dark:text-stone-400 print:text-black">
-        Fill every row, column, and 3×3 box with the digits 1–9 once. Blank cells are yours to write
-        in.
-      </p>
-      <div className="printable-sheet-grid mt-6 grid gap-8 sm:grid-cols-2">
-        {puzzles.map((puzzle, index) => (
-          <NumberGrid
-            key={`${index}-${puzzle.givens[0]?.join('')}`}
-            grid={puzzle.givens}
-            label={`Puzzle ${index + 1}`}
-          />
-        ))}
+      <div className="not-prose">
+        <h2 className="font-heading text-3xl font-black text-stone-900 dark:text-stone-50 print:text-black">
+          {level.difficulty} Sudoku Puzzles
+        </h2>
+        <p className="mt-2 text-stone-600 dark:text-stone-400 print:text-black">
+          Fill every row, column, and 3×3 box with the digits 1–9 once. Blank cells are yours to
+          write in.
+        </p>
+        <div className="printable-sheet-grid mt-6 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
+          {puzzles.map((puzzle, index) => (
+            <NumberGrid
+              key={`${index}-${puzzle.givens[0]?.join('')}`}
+              grid={puzzle.givens}
+              label={`Puzzle ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
 
-      <section className="solutions-page mt-12" aria-labelledby="solutions-heading">
+      <div className="not-prose solutions-page mt-12" aria-labelledby="solutions-heading">
         <h2
           id="solutions-heading"
-          className="font-heading text-2xl font-bold text-stone-900 dark:text-stone-50 print:text-black"
-        >
+          className="font-heading text-3xl font-black text-stone-900 dark:text-stone-50 print:text-black">
           Solutions
         </h2>
         <p className="mt-2 text-stone-600 dark:text-stone-400 print:text-black">
           Each solution matches the puzzle with the same number. On paper, this section starts on
           its own page.
         </p>
-        <div className="printable-sheet-grid mt-6 grid gap-8 sm:grid-cols-2">
+        <div className="printable-sheet-grid mt-6 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
           {puzzles.map((puzzle, index) => (
             <NumberGrid
               key={`solution-${index}-${puzzle.solution[0]?.join('')}`}
@@ -88,7 +108,7 @@ export function PrintableSheet({ level, initialPuzzles }: PrintableSheetProps) {
             />
           ))}
         </div>
-      </section>
+      </div>
     </div>
   );
 }

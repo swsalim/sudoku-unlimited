@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -6,6 +7,7 @@ import { Difficulty, GameVariant } from '@/types';
 
 import { absoluteUrl } from '@/lib/utils';
 
+import { Container } from '@/components/container';
 import { KillerFaqSection } from '@/components/killer-faq-section';
 import { KillerSchemaScript } from '@/components/schemas';
 import { SudokuGame } from '@/components/sudoku-game';
@@ -226,11 +228,27 @@ export default async function KillerDifficultyPage({ params }: Props) {
   return (
     <>
       <KillerSchemaScript difficulty={difficulty} />
-      <SudokuGame initialDifficulty={difficultyEnum} variant={GameVariant.KILLER} />
+      <section className="relative">
+        <Image
+          src="/images/hero-home.webp"
+          alt="Sudoku background"
+          width={1000}
+          height={1000}
+          unoptimized
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <Container className="relative z-10">
+          <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
+            <h1 className="font-heading text-4xl font-black dark:text-stone-50">
+              Play {copy.heading} Online
+            </h1>
+            <p className="text-lg text-stone-600 dark:text-stone-400">{copy.intro}</p>
+          </div>
+          <SudokuGame initialDifficulty={difficultyEnum} variant={GameVariant.KILLER} />
+        </Container>
+      </section>
       <section className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50">
         <div className="mx-auto max-w-4xl px-4 py-20">
-          <h1 className="font-heading text-4xl font-bold">{copy.heading}</h1>
-          <p>{copy.intro}</p>
           <p>{copy.overview}</p>
           <h2 className="font-heading text-2xl font-bold">{copy.strategyHeading}</h2>
           <p>{copy.strategy}</p>

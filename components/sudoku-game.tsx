@@ -6,6 +6,7 @@ import Confetti from 'react-confetti';
 import { Difficulty, GameState, GameVariant, Grid } from '@/types';
 
 import { recordGameAndCheckAchievements } from '@/lib/achievements/utils';
+import { OPEN_ACHIEVEMENTS_EVENT } from '@/lib/open-achievements';
 import {
   clearSavedGame,
   hydrateSave,
@@ -131,6 +132,12 @@ export function SudokuGame({
   // Load zen mode preference on mount
   useEffect(() => {
     setIsZenMode(getZenMode());
+  }, []);
+
+  useEffect(() => {
+    const open = () => setShowAchievements(true);
+    window.addEventListener(OPEN_ACHIEVEMENTS_EVENT, open);
+    return () => window.removeEventListener(OPEN_ACHIEVEMENTS_EVENT, open);
   }, []);
 
   const handleShareResult = useCallback(() => {
@@ -664,41 +671,56 @@ export function SudokuGame({
     return (
       <>
         <div className="relative z-10">
-          <SudokuGameSkeleton />
-          <AlertDialog open={!!savedGameOffer}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Resume saved game?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  You have an in-progress {savedGameOffer?.gameState.difficulty} puzzle
-                  {savedGameOffer ? ` (${formatTime(savedGameOffer.time)})` : ''}. Resume or start a
-                  new game?
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogAction
-                  onClick={() => {
-                    if (!savedGameOffer) return;
-                    const { gameState: gs, time: t, moveHistory: mh } = hydrateSave(savedGameOffer);
-                    setGameState(gs);
-                    setTime(t);
-                    setMoveHistory(mh);
-                    setSavedGameOffer(null);
-                  }}>
-                  Resume
-                </AlertDialogAction>
-                <AlertDialogAction
-                  onClick={() => {
-                    clearSavedGame();
-                    setSavedGameOffer(null);
-                    startNewGame(initialDifficulty);
-                  }}>
-                  Start New
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <SudokuGameSkeleton
+            boardOverlay={
+              savedGameOffer ? (
+                <div className="absolute inset-0 z-10 flex items-center justify-center overflow-y-auto rounded-xl bg-black/55 p-2">
+                  <div
+                    role="dialog"
+                    aria-labelledby="resume-saved-game-title"
+                    aria-describedby="resume-saved-game-desc"
+                    className="w-full rounded-lg border border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] p-3 shadow-lg">
+                    <h2 id="resume-saved-game-title" className="text-sm font-semibold">
+                      Resume saved game?
+                    </h2>
+                    <p id="resume-saved-game-desc" className="mt-1 text-xs text-stone-500">
+                      You have an in-progress {savedGameOffer.gameState.difficulty} puzzle (
+                      {formatTime(savedGameOffer.time)}). Resume or start a new game?
+                    </p>
+                    <div className="mt-3 flex flex-col gap-2">
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          const {
+                            gameState: gs,
+                            time: t,
+                            moveHistory: mh,
+                          } = hydrateSave(savedGameOffer);
+                          setGameState(gs);
+                          setTime(t);
+                          setMoveHistory(mh);
+                          setSavedGameOffer(null);
+                        }}>
+                        Resume
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          clearSavedGame();
+                          setSavedGameOffer(null);
+                          startNewGame(initialDifficulty);
+                        }}>
+                        Start New
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ) : null
+            }
+          />
         </div>
+        <AchievementsDialog open={showAchievements} onOpenChange={setShowAchievements} />
       </>
     );
   }

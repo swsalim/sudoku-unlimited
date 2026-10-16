@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -68,12 +69,19 @@ export default async function KidsSizePage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <section className="py-12 print:py-4">
-        <Container>
+      <section className="relative print:py-4">
+        <Image
+          src="/images/hero-home.webp"
+          alt="Sudoku background"
+          width={1000}
+          height={1000}
+          unoptimized
+          className="absolute inset-0 h-full w-full object-cover print:hidden"
+        />
+        <Container className="relative z-10">
           <nav
             aria-label="Breadcrumb"
-            className="no-print mb-6 text-sm text-stone-600 dark:text-stone-400"
-          >
+            className="no-print mb-6 text-sm text-stone-600 dark:text-stone-400">
             <ol className="flex flex-wrap items-center gap-2">
               <li>
                 <Link href="/" className="hover:text-stone-900 dark:hover:text-stone-200">
@@ -84,8 +92,7 @@ export default async function KidsSizePage({ params }: Props) {
               <li>
                 <Link
                   href="/kids-sudoku"
-                  className="hover:text-stone-900 dark:hover:text-stone-200"
-                >
+                  className="hover:text-stone-900 dark:hover:text-stone-200">
                   Kids Sudoku
                 </Link>
               </li>
@@ -94,40 +101,52 @@ export default async function KidsSizePage({ params }: Props) {
             </ol>
           </nav>
 
-          <h1 className="font-heading text-4xl font-black text-stone-900 dark:text-stone-50 print:text-black">
-            {level.h1}
-          </h1>
-          <div className="mt-4 max-w-2xl space-y-3 text-stone-700 dark:text-stone-300 print:text-black">
-            {level.intro.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+          <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
+            <h1 className="font-heading text-4xl font-black text-stone-900 dark:text-stone-50 print:text-black">
+              {level.h1}
+            </h1>
+            <div className="space-y-3 text-lg text-stone-600 dark:text-stone-400 print:text-black">
+              {level.intro.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
           </div>
 
-          <div className="mt-8">
+          <div className="mx-auto mt-8">
             <KidsSudokuGame level={level} />
+          </div>
+        </Container>
+      </section>
+
+      <section className="no-print prose max-w-none py-6 dark:prose-invert">
+        <Container className="grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-2">
+          <div className="w-full">
+            <h2 className="font-heading text-3xl font-black dark:text-stone-50">Rules for kids</h2>
+            <ul>
+              {kidsRulesForKids.map((rule) => (
+                <li key={rule}>{rule}</li>
+              ))}
+            </ul>
+            <p>
+              On this {level.slug} grid the digits are {level.digits}. The box to check is each{' '}
+              {level.boxLabel}.
+            </p>
+          </div>
+          <div className="w-full">
+            <h2 className="font-heading text-3xl font-black dark:text-stone-50">
+              Notes for parents
+            </h2>
+            <ul>
+              {kidsRulesForParents.map((rule) => (
+                <li key={rule}>{rule}</li>
+              ))}
+            </ul>
           </div>
         </Container>
       </section>
 
       <section className="no-print prose max-w-none pb-12 dark:prose-invert">
         <Container>
-          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">Rules for kids</h2>
-          <ul>
-            {kidsRulesForKids.map((rule) => (
-              <li key={rule}>{rule}</li>
-            ))}
-          </ul>
-          <p>
-            On this {level.slug} grid the digits are {level.digits}. The box to check is each{' '}
-            {level.boxLabel}.
-          </p>
-
-          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">Notes for parents</h2>
-          <ul>
-            {kidsRulesForParents.map((rule) => (
-              <li key={rule}>{rule}</li>
-            ))}
-          </ul>
           <p>
             {other ? (
               <>

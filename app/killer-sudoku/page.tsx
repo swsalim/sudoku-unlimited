@@ -1,44 +1,43 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 
-import { killerHubFaqs, getKillerHubSchema } from '@/lib/schema/killer-schema';
+import { GridFour, Prohibit, RectangleDashed, Sigma } from '@phosphor-icons/react/ssr';
+
+import { getKillerHubSchema, killerHubFaqs } from '@/lib/schema/killer-schema';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
+import { DifficultyLevelCards } from '@/components/difficulty-page-sections';
 
 const description =
   'Learn Killer Sudoku rules — cages, sums, and no repeated digits — then play free puzzles from Easy to Extreme.';
 
-const levels = [
+const RULES = [
   {
-    href: '/killer-sudoku/easy',
-    title: 'Easy Killer Sudoku',
-    text: 'More given digits and simpler cages for learning sums alongside ordinary elimination.',
+    title: 'Classic rules still apply',
+    description: 'Each row, column, and 3×3 box contains the digits 1–9 once.',
+    icon: GridFour,
+    iconClass: 'bg-blue-100 text-blue-500 dark:bg-blue-500/15 dark:text-blue-300',
   },
   {
-    href: '/killer-sudoku/medium',
-    title: 'Medium Killer Sudoku',
-    text: 'Cage totals start to interact with rows, columns, and boxes.',
+    title: 'Cages',
+    description:
+      'A cage is a connected group of cells with a sum in the corner. Cages may cross box boundaries.',
+    icon: RectangleDashed,
+    iconClass: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300',
   },
   {
-    href: '/killer-sudoku/hard',
-    title: 'Hard Killer Sudoku',
-    text: 'Fewer givens, so progress depends on combining cage combinations with Sudoku constraints.',
+    title: 'Sums',
+    description: 'The digits in a cage must add up to the given sum. The order does not matter.',
+    icon: Sigma,
+    iconClass: 'bg-amber-100 text-amber-500 dark:bg-amber-500/15 dark:text-amber-300',
   },
   {
-    href: '/killer-sudoku/expert',
-    title: 'Expert Killer Sudoku',
-    text: 'Tighter cages and longer candidate lists for solvers who already finish Hard.',
-  },
-  {
-    href: '/killer-sudoku/master',
-    title: 'Master Killer Sudoku',
-    text: 'Sparse givens and cages that have to be tracked across several regions.',
-  },
-  {
-    href: '/killer-sudoku/extreme',
-    title: 'Extreme Killer Sudoku',
-    text: 'No given digits. The cages and the classic rules are the whole puzzle.',
+    title: 'No repeats in a cage',
+    description: 'Digits inside a cage are unique, even if the cage spans multiple boxes.',
+    icon: Prohibit,
+    iconClass: 'bg-rose-100 text-rose-500 dark:bg-rose-500/15 dark:text-rose-300',
   },
 ] as const;
 
@@ -63,95 +62,132 @@ export default function KillerSudokuPage() {
 
   return (
     <div className="flex grow flex-col">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <section className="prose max-w-none py-12 dark:prose-invert">
-        <Container>
-          <nav aria-label="Breadcrumb" className="not-prose mb-6 text-sm text-stone-600 dark:text-stone-400">
-            <ol className="flex flex-wrap items-center gap-2">
-              <li>
-                <Link href="/" className="hover:text-stone-900 dark:hover:text-stone-200">
-                  Home
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li className="font-medium text-stone-900 dark:text-stone-100">Killer Sudoku</li>
-            </ol>
-          </nav>
+        <Container className="grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-2">
+          <div className="w-full">
+            <nav
+              aria-label="Breadcrumb"
+              className="not-prose mb-6 text-sm text-stone-600 dark:text-stone-400">
+              <ol className="flex flex-wrap items-center gap-2">
+                <li>
+                  <Link href="/" className="hover:text-stone-900 dark:hover:text-stone-200">
+                    Home
+                  </Link>
+                </li>
+                <li aria-hidden="true">/</li>
+                <li className="font-medium text-stone-900 dark:text-stone-100">Killer Sudoku</li>
+              </ol>
+            </nav>
 
-          <h1 className="font-heading text-4xl font-black dark:text-stone-50">Killer Sudoku</h1>
-          <p>
-            Killer Sudoku keeps the classic grid and adds cages: outlined groups of cells with a
-            sum in the corner. You still fill every row, column, and 3×3 box with the digits 1–9
-            exactly once. You also make each cage add up to its clue, without repeating a digit
-            inside that cage.
-          </p>
-          <p>
-            Play starts on a difficulty page. Easier levels on Sudoku Unlimited include some given
-            digits as well as cages. Extreme starts with cages only. The rules below are the same
-            at every level.
-          </p>
+            <h1 className="font-heading text-4xl font-black dark:text-stone-50">Killer Sudoku</h1>
+            <p>
+              Killer Sudoku keeps the classic grid and adds cages: outlined groups of cells with a
+              sum in the corner. You still fill every row, column, and 3×3 box with the digits 1–9
+              exactly once.
+            </p>
+            <p>
+              Easier levels include some given digits as well as cages. Extreme starts with cages
+              only. Play starts on a difficulty page below.
+            </p>
+          </div>
+          <div>
+            <Image
+              src="/images/hero-killer-sudoku.webp"
+              alt="Killer Sudoku"
+              width={800}
+              height={800}
+              className="m-0 p-0"
+            />
+          </div>
+        </Container>
+      </section>
 
-          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">Rules of Killer Sudoku</h2>
-          <h3 className="font-heading text-xl font-bold dark:text-stone-50">Classic rules still apply</h3>
-          <p>
-            Each row, each column, and each 3×3 box contains the digits 1 through 9 once. A digit
-            that is legal for a cage can still be illegal for its row, column, or box.
+      <section className="py-6">
+        <Container className="max-w-6xl">
+          <h2 className="font-heading text-3xl font-black text-stone-900 dark:text-stone-50">
+            Rules of Killer Sudoku
+          </h2>
+          <p className="mt-3 max-w-2xl text-base text-stone-600 dark:text-stone-400">
+            Killer Sudoku follows the same logic as classic Sudoku, with two extra rules for cages.
           </p>
-          <h3 className="font-heading text-xl font-bold dark:text-stone-50">Cages</h3>
-          <p>
-            A cage is a connected group of cells, drawn with a border inside the grid. Cages may
-            cross a box boundary. The sum is printed in the first cell of the cage. On this site
-            that clue sits in the corner of the earliest cell in the cage.
-          </p>
-          <h3 className="font-heading text-xl font-bold dark:text-stone-50">Sums</h3>
-          <p>
-            The digits in a cage must add up to the printed sum. The sum does not tell you the
-            order. A two-cell cage totaling 10 might be 1 and 9, 2 and 8, 3 and 7, or 4 and 6. It
-            cannot be 5 and 5, because a cage cannot repeat a digit. Some sums allow only one
-            combination: 3 is 1+2, 4 is 1+3, 16 is 7+9, and 17 is 8+9.
-          </p>
-          <h3 className="font-heading text-xl font-bold dark:text-stone-50">No repeats in a cage</h3>
-          <p>
-            Digits inside one cage are unique, even when the cage stretches across two boxes. A
-            repeat that would be legal in two different boxes is still illegal if both cells belong
-            to the same cage.
-          </p>
-
-          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">Tips</h2>
-          <ul>
-            <li>Write the combinations for two-cell cages before you fill anything else.</li>
-            <li>
-              When a cage has only one combination, those digits are locked to the cage even though
-              the order is still unknown.
-            </li>
-            <li>Reject a digit that would push the cage over its sum, or leave a total you cannot reach.</li>
-            <li>
-              Cross-check every cage digit against its row, column, and box. Cage arithmetic does
-              not replace those scans.
-            </li>
-            <li>
-              Use pencil marks for the digits a cell can still hold, and update them when a cage
-              combination shrinks.
-            </li>
-          </ul>
-          <p>
-            Classic elimination is the same skill as in{' '}
-            <Link href="/guides/the-complete-guide-to-how-sudoku-works">how Sudoku works</Link> and{' '}
-            <Link href="/guides/solve-sudoku-without-guessing">solving without guessing</Link>.
-            Killer puzzles add the cage list on top of that routine.
-          </p>
-
-          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">Play by difficulty</h2>
-          <ul>
-            {levels.map((level) => (
-              <li key={level.href}>
-                <Link href={level.href}>{level.title}</Link>
-                {' — '}
-                {level.text}
-              </li>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {RULES.map(({ title, description: ruleDescription, icon: Icon, iconClass }) => (
+              <div
+                key={title}
+                className="rounded-2xl border border-stone-200 bg-white p-5 dark:border-stone-800 dark:bg-stone-900">
+                <span
+                  className={`inline-flex size-12 items-center justify-center rounded-xl ${iconClass}`}>
+                  <Icon weight="duotone" size={26} aria-hidden />
+                </span>
+                <h3 className="mt-4 font-heading text-base font-bold text-stone-900 dark:text-stone-50">
+                  {title}
+                </h3>
+                <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">{ruleDescription}</p>
+              </div>
             ))}
-          </ul>
+          </div>
+        </Container>
+      </section>
 
+      <section className="py-6">
+        <Container className="max-w-6xl">
+          <h2 className="font-heading text-3xl font-black text-stone-900 dark:text-stone-50">
+            Play Killer Sudoku by Difficulty
+          </h2>
+          <p className="mt-3 max-w-2xl text-base text-stone-600 dark:text-stone-400">
+            Choose a difficulty level to start playing. Easier levels include more given digits and
+            simpler cages.
+          </p>
+          <DifficultyLevelCards
+            action="Play"
+            hrefFor={(slug) => `/killer-sudoku/${slug}`}
+            className="mt-8"
+          />
+        </Container>
+      </section>
+
+      <section className="prose max-w-none py-6 dark:prose-invert">
+        <Container className="flex max-w-6xl flex-col gap-10 md:flex-row">
+          <div className="w-full md:w-2/5">
+            <Image
+              src="/images/hero-killer-sudoku.webp"
+              alt="Killer Sudoku tips"
+              width={800}
+              height={800}
+            />
+          </div>
+          <div className="w-full md:w-3/5">
+            <h2 className="font-heading text-3xl font-black dark:text-stone-50">Tips</h2>
+            <ul>
+              <li>Write the combinations for two-cell cages before you fill anything else.</li>
+              <li>
+                Some sums allow only one combination: 3 is 1+2, 4 is 1+3, 16 is 7+9, and 17 is
+                8+9. A cage cannot repeat a digit, so 10 is never 5 and 5.
+              </li>
+              <li>
+                Reject a digit that would push the cage over its sum, or leave a total you cannot
+                reach.
+              </li>
+              <li>
+                Cross-check every cage digit against its row, column, and box. Cage arithmetic does
+                not replace those scans.
+              </li>
+            </ul>
+            <p>
+              Classic elimination is the same skill as in{' '}
+              <Link href="/guides/the-complete-guide-to-how-sudoku-works">how Sudoku works</Link>{' '}
+              and{' '}
+              <Link href="/guides/solve-sudoku-without-guessing">solving without guessing</Link>.
+            </p>
+          </div>
+        </Container>
+      </section>
+      <section className="prose max-w-none py-6 dark:prose-invert">
+        <Container className="max-w-6xl">
           <h2 id="faq" className="font-heading text-2xl font-bold dark:text-stone-50">
             Frequently asked questions
           </h2>

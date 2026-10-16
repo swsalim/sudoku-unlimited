@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { getCalendarDateStringForDaily, getDailyDifficultyForDate } from '@/lib/daily-challenge';
 import { absoluteUrl } from '@/lib/utils';
 
+import { Container } from '@/components/container';
 import { DailyFaqSection } from '@/components/daily-faq-section';
 import { DailySchemaScript } from '@/components/schemas';
 import { SudokuGame } from '@/components/sudoku-game';
@@ -46,25 +48,35 @@ export default function DailyPage() {
   return (
     <>
       <DailySchemaScript />
-      <div className="border-b border-[color:var(--app-surface-border)] bg-[color:var(--app-muted-bg)]/40">
-        <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-10">
-          <h1 className="font-heading text-3xl font-black tracking-tight text-stone-900 dark:text-stone-50 sm:text-4xl">
-            Free daily Sudoku challenge
-          </h1>
-          <p className="mt-3 max-w-2xl text-base text-stone-600 dark:text-stone-400 sm:text-lg">
-            One puzzle per day, shared by every player. The game below is seeded from
-            <span className="whitespace-nowrap"> {globalDailyDateLabel} (UTC)</span> and today’s
-            level is <strong className="text-stone-800 dark:text-stone-200">{todaysDifficulty}</strong>
-            . Come back after midnight UTC for a new challenge (difficulty follows a set rotation from
-            the date).
-          </p>
-        </div>
-      </div>
-      <SudokuGame
-        initialDifficulty={todaysDifficulty}
-        globalDailyMode
-        globalDailyDateLabel={globalDailyDateLabel}
-      />
+      <section className="relative">
+        <Image
+          src="/images/hero-home.webp"
+          alt="Sudoku background"
+          width={1000}
+          height={1000}
+          unoptimized
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <Container className="relative z-10">
+          <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
+            <h1 className="font-heading text-4xl font-black dark:text-stone-50">
+              Free Daily Sudoku Challenge
+            </h1>
+            <p className="text-lg text-stone-600 dark:text-stone-400">
+              One puzzle per day, shared by every player. Today&rsquo;s grid is{' '}
+              <span className="whitespace-nowrap">{globalDailyDateLabel} (UTC)</span> and the level
+              is{' '}
+              <strong className="text-stone-800 dark:text-stone-200">{todaysDifficulty}</strong>.
+              Come back after midnight UTC for a new challenge.
+            </p>
+          </div>
+          <SudokuGame
+            initialDifficulty={todaysDifficulty}
+            globalDailyMode
+            globalDailyDateLabel={globalDailyDateLabel}
+          />
+        </Container>
+      </section>
       <article
         className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50"
         aria-labelledby="daily-article">
