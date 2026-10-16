@@ -20,7 +20,7 @@ export default function Navbar() {
 
   return (
     <motion.div
-      className={`sticky top-[-1px] z-30 w-full ${
+      className={`site-navbar sticky top-[-1px] z-30 w-full print:hidden ${
         scrolled
           ? 'border-b border-stone-200/80 bg-white/70 backdrop-blur-xl dark:border-stone-800/80 dark:bg-stone-900/70'
           : 'bg-transparent'
@@ -33,7 +33,8 @@ export default function Navbar() {
               boxShadow: scrolled ? '0 1px 0 0 rgba(0,0,0,0.04)' : '0 0 0 0 rgba(0,0,0,0)',
             }
       }
-      transition={{ duration: 0.2 }}>
+      transition={{ duration: 0.2 }}
+    >
       <Container className="flex h-16 items-center justify-between py-0">
         <TransitionLink href="/" className="flex items-center gap-x-2">
           <span className="font-heading text-2xl font-extrabold tracking-tight text-stone-900 dark:text-stone-50 md:text-xl">

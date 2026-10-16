@@ -4,11 +4,13 @@ export default function ExpertSudoku() {
   return (
     <article
       className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50"
-      aria-labelledby="expert-sudoku-heading">
+      aria-labelledby="expert-sudoku-heading"
+    >
       <div className="mx-auto max-w-4xl px-4 py-20">
         <h1
           id="expert-sudoku-heading"
-          className="font-heading text-4xl font-black dark:text-stone-50">
+          className="font-heading text-4xl font-black dark:text-stone-50"
+        >
           Expert Sudoku Puzzles – Free Advanced Games Online
         </h1>
         <p>
@@ -22,7 +24,8 @@ export default function ExpertSudoku() {
 
         <h2
           id="expert-sudoku-techniques"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           Pro-Level Techniques for Expert Sudoku
         </h2>
         <p>
@@ -36,7 +39,8 @@ export default function ExpertSudoku() {
 
         <h2
           id="x-wing-swordfish-explained"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           X-Wing and Swordfish in Practice
         </h2>
         <p>
@@ -72,7 +76,8 @@ export default function ExpertSudoku() {
 
         <h2
           id="what-makes-expert-different"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           What Makes Expert Sudoku Different
         </h2>
         <p>
@@ -90,7 +95,8 @@ export default function ExpertSudoku() {
         <p className="mb-0">
           Want less intensity? Try <Link href="/hard">hard Sudoku</Link>. Ready for the toughest
           grids? Take on <Link href="/master">master Sudoku</Link>, or visit the{' '}
-          <Link href="/">homepage</Link> to choose any level.
+          <Link href="/">homepage</Link> to choose any level. Expert grids for paper are on{' '}
+          <Link href="/printable/expert">printable expert Sudoku</Link>.
         </p>
       </div>
     </article>

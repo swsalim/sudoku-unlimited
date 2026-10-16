@@ -14,20 +14,41 @@ interface FooterProps extends ComponentProps<'footer'> {
 export default function Footer({ className, ...props }: FooterProps) {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className={cn('bg-white text-sm font-semibold', className)} {...props}>
+    <footer className={cn('bg-white text-sm font-semibold print:hidden', className)} {...props}>
       <div className="mx-auto max-w-7xl px-6 py-3 text-center">
-        <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-gray-700">
+        <nav
+          aria-label="Footer"
+          className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-gray-700"
+        >
           <TransitionLink href="/guides" className="font-medium underline-offset-4 hover:underline">
             Guides
           </TransitionLink>
           <TransitionLink href="/daily" className="font-medium underline-offset-4 hover:underline">
             Daily Challenge
           </TransitionLink>
-          <TransitionLink href="/sudoku-solver" className="font-medium underline-offset-4 hover:underline">
+          <TransitionLink
+            href="/sudoku-solver"
+            className="font-medium underline-offset-4 hover:underline"
+          >
             Sudoku Solver
           </TransitionLink>
-          <TransitionLink href="/killer-sudoku" className="font-medium underline-offset-4 hover:underline">
+          <TransitionLink
+            href="/killer-sudoku"
+            className="font-medium underline-offset-4 hover:underline"
+          >
             Killer Sudoku
+          </TransitionLink>
+          <TransitionLink
+            href="/printable"
+            className="font-medium underline-offset-4 hover:underline"
+          >
+            Printable
+          </TransitionLink>
+          <TransitionLink
+            href="/kids-sudoku"
+            className="font-medium underline-offset-4 hover:underline"
+          >
+            Kids Sudoku
           </TransitionLink>
           <TransitionLink href="/about" className="font-medium underline-offset-4 hover:underline">
             About
@@ -42,7 +63,8 @@ export default function Footer({ className, ...props }: FooterProps) {
             <a
               href="https://www.yuurrific.com?ref=sudokuunlimited"
               className="inline-block font-medium underline underline-offset-4"
-              target="_blank">
+              target="_blank"
+            >
               Yuurrific
             </a>
             .
@@ -52,7 +74,8 @@ export default function Footer({ className, ...props }: FooterProps) {
             <a
               href="https://seline.com/?via=yuyu"
               className="inline-block rotate-0 rounded-md bg-violet-600 px-2 py-1 text-violet-50 transition duration-100 ease-out hover:-rotate-3 hover:ease-in"
-              target="_blank">
+              target="_blank"
+            >
               Seline
             </a>
           </span>

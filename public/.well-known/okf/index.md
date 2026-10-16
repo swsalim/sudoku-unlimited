@@ -1,7 +1,7 @@
 ---
 type: Organization
 title: Sudoku Unlimited
-description: Free online Sudoku puzzles from Easy to Extreme, plus Daily Challenge, Solver, and Killer Sudoku — no signup or download.
+description: Free online Sudoku puzzles from Easy to Extreme, plus Daily Challenge, Solver, Killer Sudoku, printable sheets, and kids grids — no signup or download.
 tags: [overview, sudoku, puzzles]
 timestamp: "2026-10-16T01:20:00Z"
 ---
@@ -12,7 +12,7 @@ timestamp: "2026-10-16T01:20:00Z"
 
 ## What this business does
 
-Sudoku Unlimited is a free, browser-based Sudoku puzzle site. Players can play classic Sudoku from Easy through Extreme, a shared Daily Challenge, Killer Sudoku variants, and a Sudoku Solver. No account or download is required. It is ONLINE-only (global, English).
+Sudoku Unlimited is a free, browser-based Sudoku puzzle site. Players can play classic Sudoku from Easy through Extreme, a shared Daily Challenge, Killer Sudoku variants, printable puzzle sheets, 4×4 and 6×6 kids grids, and a Sudoku Solver. No account or download is required. It is ONLINE-only (global, English).
 
 ## Key concepts
 
@@ -21,12 +21,16 @@ Sudoku Unlimited is a free, browser-based Sudoku puzzle site. Players can play c
 - [Daily Challenge](concepts/daily-challenge.md)
 - [Killer Sudoku](concepts/killer-sudoku.md)
 - [Sudoku Solver](concepts/sudoku-solver.md)
+- [Printable Sudoku](concepts/printable-sudoku.md)
+- [Kids Sudoku](concepts/kids-sudoku.md)
 
 ## FAQs
 
 - [Is Sudoku Unlimited free?](faqs/is-sudoku-unlimited-free.md)
 - [What are the basic rules of Sudoku?](faqs/what-are-the-basic-rules.md)
 - [How does the daily challenge work?](faqs/how-does-daily-work.md)
+- [Can I print Sudoku puzzles?](faqs/can-i-print-sudoku.md)
+- [What is kids Sudoku?](faqs/what-is-kids-sudoku.md)
 
 ## Published articles
 

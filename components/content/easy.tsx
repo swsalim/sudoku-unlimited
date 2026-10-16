@@ -4,11 +4,13 @@ export default function EasySudoku() {
   return (
     <article
       className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50"
-      aria-labelledby="easy-sudoku-heading">
+      aria-labelledby="easy-sudoku-heading"
+    >
       <div className="mx-auto max-w-4xl px-4 py-20">
         <h1
           id="easy-sudoku-heading"
-          className="font-heading text-4xl font-black dark:text-stone-50">
+          className="font-heading text-4xl font-black dark:text-stone-50"
+        >
           Free Easy Sudoku Puzzles – The Best Place for Beginners
         </h1>
         <p>
@@ -20,7 +22,8 @@ export default function EasySudoku() {
 
         <h2
           id="how-to-solve-easy-sudoku"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           How to Solve Easy Sudoku
         </h2>
         <p>
@@ -33,7 +36,8 @@ export default function EasySudoku() {
 
         <h2
           id="why-play-easy-sudoku"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           Why Play Easy Sudoku Online
         </h2>
         <p>
@@ -43,7 +47,8 @@ export default function EasySudoku() {
 
         <h2
           id="tips-for-easy-sudoku"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           Tips for Solving Easy Sudoku Faster
         </h2>
         <ul>
@@ -63,7 +68,8 @@ export default function EasySudoku() {
 
         <h2
           id="common-mistakes-easy"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           Common Mistakes to Avoid
         </h2>
         <p>
@@ -76,7 +82,8 @@ export default function EasySudoku() {
 
         <h2
           id="why-easy-sudoku-is-great-for-beginners"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           Why Easy Sudoku Is Great for Beginners
         </h2>
         <p>
@@ -92,7 +99,9 @@ export default function EasySudoku() {
         </h2>
         <p className="mb-0">
           Ready for more challenge? Step up to <Link href="/medium">medium Sudoku</Link>, or visit
-          the <Link href="/">homepage</Link> to pick any difficulty.
+          the <Link href="/">homepage</Link> to pick any difficulty. The same easy generator also
+          fills <Link href="/printable/easy">printable easy sheets</Link>. A smaller first grid is{' '}
+          <Link href="/kids-sudoku/4x4">4×4 kids Sudoku</Link>.
         </p>
       </div>
     </article>

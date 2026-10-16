@@ -48,6 +48,16 @@ const PLAY = {
     title: 'Killer Sudoku',
     description: 'Cage-sum Sudoku with an extra arithmetic layer.',
   },
+  printable: {
+    href: '/printable',
+    title: 'Printable Sudoku',
+    description: 'Four-puzzle sheets for Easy through Expert, with solutions.',
+  },
+  kids: {
+    href: '/kids-sudoku',
+    title: 'Kids Sudoku',
+    description: 'Playable 4×4 and 6×6 grids with a printable option.',
+  },
 } satisfies Record<string, GuidePlayLink>;
 
 export type GuideRegistryEntry = {
@@ -75,6 +85,8 @@ export const guideRegistry: Record<string, GuideRegistryEntry> = {
       PLAY.expert,
       PLAY.daily,
       PLAY.solver,
+      PLAY.printable,
+      PLAY.kids,
     ],
     relatedGuideSlugs: [
       'solve-sudoku-without-guessing',
@@ -89,7 +101,7 @@ export const guideRegistry: Record<string, GuideRegistryEntry> = {
       'Scan for naked and hidden singles, then maintain candidate lists.',
       'Use pairs and box-line cuts before testing a single marked assumption.',
     ],
-    relatedPlayLinks: [PLAY.easy, PLAY.medium, PLAY.hard, PLAY.solver],
+    relatedPlayLinks: [PLAY.easy, PLAY.medium, PLAY.hard, PLAY.solver, PLAY.printable, PLAY.kids],
     relatedGuideSlugs: [
       'the-complete-guide-to-how-sudoku-works',
       'solve-sudoku-without-guessing',
@@ -133,6 +145,8 @@ export const guideRegistry: Record<string, GuideRegistryEntry> = {
       PLAY.expert,
       PLAY.daily,
       PLAY.solver,
+      PLAY.printable,
+      PLAY.kids,
     ],
     relatedGuideSlugs: [
       'the-complete-guide-to-how-sudoku-works',

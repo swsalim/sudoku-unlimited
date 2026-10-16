@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+
 import { getAllGuides, getFeaturedGuide } from '@/lib/guides/load-guide';
 import { absoluteUrl } from '@/lib/utils';
 
@@ -15,8 +16,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Sudoku Guides · Sudoku Unlimited',
-    description:
-      'Rules, beginner approaches, and advanced solving techniques for classic Sudoku.',
+    description: 'Rules, beginner approaches, and advanced solving techniques for classic Sudoku.',
     url: absoluteUrl('/guides'),
   },
   robots: { index: true, follow: true },
@@ -54,7 +54,8 @@ export default function GuidesIndexPage() {
         <section aria-label="Featured guide" className="mt-10">
           <TransitionLink
             href={`/guides/${featured.slug}`}
-            className="block rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50 to-orange-50 p-6 shadow-sm transition hover:border-amber-300 dark:border-amber-900/50 dark:from-amber-950/40 dark:to-stone-900/60">
+            className="block rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50 to-orange-50 p-6 shadow-sm transition hover:border-amber-300 dark:border-amber-900/50 dark:from-amber-950/40 dark:to-stone-900/60"
+          >
             <p className="text-xs font-semibold uppercase tracking-wide text-amber-800 dark:text-amber-200">
               Featured guide
             </p>
@@ -79,11 +80,51 @@ export default function GuidesIndexPage() {
                   <h3 className="font-heading text-lg font-semibold text-stone-900 group-hover:text-[color:var(--app-accent-strong)] dark:text-stone-50">
                     {guide.title}
                   </h3>
-                  <p className="mt-1 text-stone-600 dark:text-stone-400">{guide.meta_description}</p>
+                  <p className="mt-1 text-stone-600 dark:text-stone-400">
+                    {guide.meta_description}
+                  </p>
                   <p className="mt-2 text-sm text-stone-500">{guide.readMinutes} min read</p>
                 </TransitionLink>
               </li>
             ))}
+          </ul>
+        </section>
+
+        <section aria-label="Print and kids puzzles" className="mt-12">
+          <h2 className="font-heading text-xl font-bold text-stone-900 dark:text-stone-50">
+            Print and kids puzzles
+          </h2>
+          <p className="mt-2 max-w-2xl text-stone-600 dark:text-stone-400">
+            The same classic rules, off the 9×9 game board. Print a sheet or start on a smaller
+            grid.
+          </p>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            <li>
+              <TransitionLink
+                href="/printable"
+                className="block rounded-xl border border-stone-200 bg-white p-4 shadow-sm transition hover:border-stone-300 dark:border-stone-700 dark:bg-stone-900/50"
+              >
+                <span className="font-semibold text-stone-900 dark:text-stone-100">
+                  Printable Sudoku
+                </span>
+                <span className="mt-1 block text-sm text-stone-600 dark:text-stone-400">
+                  Easy, Medium, Hard, and Expert sheets with a solution page.
+                </span>
+              </TransitionLink>
+            </li>
+            <li>
+              <TransitionLink
+                href="/kids-sudoku"
+                className="block rounded-xl border border-stone-200 bg-white p-4 shadow-sm transition hover:border-stone-300 dark:border-stone-700 dark:bg-stone-900/50"
+              >
+                <span className="font-semibold text-stone-900 dark:text-stone-100">
+                  Kids Sudoku
+                </span>
+                <span className="mt-1 block text-sm text-stone-600 dark:text-stone-400">
+                  Playable 4×4 and 6×6 grids, with rules and a printable puzzle.
+                </span>
+              </TransitionLink>
+            </li>
           </ul>
         </section>
 
@@ -95,7 +136,8 @@ export default function GuidesIndexPage() {
             One page per pattern, from singles through fish and wings. Start with{' '}
             <TransitionLink
               href="/guides/solve-sudoku-without-guessing"
-              className="font-medium text-[color:var(--app-accent-strong)] hover:underline">
+              className="font-medium text-[color:var(--app-accent-strong)] hover:underline"
+            >
               how to solve Sudoku without guessing
             </TransitionLink>{' '}
             if you want the order to use them in.
@@ -107,7 +149,9 @@ export default function GuidesIndexPage() {
                   <h3 className="font-heading text-lg font-semibold text-stone-900 group-hover:text-[color:var(--app-accent-strong)] dark:text-stone-50">
                     {guide.title}
                   </h3>
-                  <p className="mt-1 text-stone-600 dark:text-stone-400">{guide.meta_description}</p>
+                  <p className="mt-1 text-stone-600 dark:text-stone-400">
+                    {guide.meta_description}
+                  </p>
                   <p className="mt-2 text-sm text-stone-500">{guide.readMinutes} min read</p>
                 </TransitionLink>
               </li>

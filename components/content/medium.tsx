@@ -4,11 +4,13 @@ export default function MediumSudoku() {
   return (
     <article
       className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50"
-      aria-labelledby="medium-sudoku-heading">
+      aria-labelledby="medium-sudoku-heading"
+    >
       <div className="mx-auto max-w-4xl px-4 py-20">
         <h1
           id="medium-sudoku-heading"
-          className="font-heading text-4xl font-black dark:text-stone-50">
+          className="font-heading text-4xl font-black dark:text-stone-50"
+        >
           Medium Sudoku Puzzles – Free Intermediate-Level Games Online
         </h1>
         <p>
@@ -22,7 +24,8 @@ export default function MediumSudoku() {
 
         <h2
           id="strategies-for-medium-sudoku"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           Strategies to Solve Medium Sudoku
         </h2>
         <p>
@@ -35,7 +38,8 @@ export default function MediumSudoku() {
 
         <h2
           id="understanding-naked-pairs"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           Understanding Naked Pairs and Hidden Singles
         </h2>
         <p>
@@ -67,7 +71,8 @@ export default function MediumSudoku() {
 
         <h2
           id="what-to-expect-from-medium-sudoku"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           What to Expect from Medium Sudoku
         </h2>
         <p>
@@ -84,7 +89,8 @@ export default function MediumSudoku() {
         <p className="mb-0">
           New to Sudoku? Start with <Link href="/easy">easy Sudoku</Link>. Ready for more? Try{' '}
           <Link href="/hard">hard Sudoku</Link>, or visit the <Link href="/">homepage</Link> to pick
-          any level.
+          any level. Paper copies of this level are on{' '}
+          <Link href="/printable/medium">printable medium Sudoku</Link>.
         </p>
       </div>
     </article>
