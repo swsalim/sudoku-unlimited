@@ -30,4 +30,6 @@ Sudoku Unlimited is a free, browser-based Sudoku puzzle site. Players can play c
 
 ## Published articles
 
-_(Guides land under `/guides/` after the draft PR merges — none live yet.)_
+- [The Complete Guide to How Sudoku Works](https://sudokuunlimited.com/guides/the-complete-guide-to-how-sudoku-works)
+- [5 Ways to Approach Number Puzzles Like Sudoku](https://sudokuunlimited.com/guides/5-ways-to-approach-number-puzzles-like-sudoku)
+- [9 Advanced Sudoku Techniques That Experienced Solvers Use](https://sudokuunlimited.com/guides/9-advanced-sudoku-techniques-that-experienced-solvers-use)
