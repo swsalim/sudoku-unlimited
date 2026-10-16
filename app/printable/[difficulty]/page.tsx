@@ -11,6 +11,7 @@ import {
 } from '@/lib/printable/content';
 import { createPrintableSheet, defaultPrintableSeed } from '@/lib/printable/sheet';
 import { getPrintableDifficultySchema } from '@/lib/schema/printable-schema';
+import { openGraphImages, twitterImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
@@ -45,10 +46,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${level.title} · Sudoku Unlimited`,
       description: level.description,
       url: canonical,
+      images: openGraphImages,
     },
     twitter: {
       title: `${level.title} · Free Sheets with Solutions`,
       description: level.description,
+      ...twitterImages,
     },
     robots: { index: true, follow: true },
   };

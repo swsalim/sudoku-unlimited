@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { getAllGuides, getFeaturedGuide } from '@/lib/guides/load-guide';
+import { openGraphImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
     title: 'Sudoku Guides · Sudoku Unlimited',
     description: 'Rules, beginner approaches, and advanced solving techniques for classic Sudoku.',
     url: absoluteUrl('/guides'),
+    images: openGraphImages,
   },
   robots: { index: true, follow: true },
 };

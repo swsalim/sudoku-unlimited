@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { printableHubFaqs, printableLevels } from '@/lib/printable/content';
 import { getPrintableHubSchema } from '@/lib/schema/printable-schema';
+import { openGraphImages, twitterImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
@@ -20,10 +21,12 @@ export const metadata: Metadata = {
     title: 'Printable Sudoku · Sudoku Unlimited',
     description,
     url: absoluteUrl('/printable'),
+    images: openGraphImages,
   },
   twitter: {
     title: 'Printable Sudoku · Free Puzzle Sheets',
     description,
+    ...twitterImages,
   },
   robots: { index: true, follow: true },
 };

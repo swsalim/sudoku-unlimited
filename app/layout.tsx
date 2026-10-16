@@ -4,6 +4,8 @@ import { Figtree, Fraunces } from 'next/font/google';
 
 import { siteConfig } from '@/config/site';
 
+import { openGraphImages, twitterImages } from '@/lib/open-graph';
+
 import Footer from '@/components/footer';
 import Navbar from '@/components/navbar';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -40,28 +42,24 @@ export const metadata: Metadata = {
     title: siteConfig.title,
     description: siteConfig.description,
     url: siteConfig.url,
-    images: [
-      {
-        url: siteConfig.openGraph.image,
-        width: siteConfig.openGraph.width,
-        height: siteConfig.openGraph.height,
-        alt: siteConfig.openGraph.imageAlt,
-      },
-    ],
+    images: openGraphImages,
     locale: 'en_US',
     type: 'website',
   },
   icons: {
-    icon: '/icons/favicon-32x32.png',
-    shortcut: '/icons/apple-touch-icon.png',
-    apple: '/icons/apple-touch-icon.png',
+    icon: [
+      { url: '/icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
   twitter: {
     title: siteConfig.title,
     description: siteConfig.description,
-    card: 'summary_large_image',
     creator: siteConfig.creator,
-    images: [siteConfig.openGraph.image],
+    ...twitterImages,
   },
   robots: {
     index: true,

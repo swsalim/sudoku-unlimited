@@ -16,6 +16,7 @@ import {
   Sparkle,
 } from '@phosphor-icons/react/ssr';
 
+import { openGraphImages, twitterImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
@@ -146,10 +147,12 @@ export const metadata: Metadata = {
     title,
     description,
     url: canonicalUrl,
+    images: openGraphImages,
   },
   twitter: {
     title,
     description,
+    ...twitterImages,
   },
 };
 

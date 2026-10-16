@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { kidsHubFaqs, kidsLevels, kidsRulesForKids, kidsRulesForParents } from '@/lib/kids/content';
 import { getKidsHubSchema } from '@/lib/schema/kids-schema';
+import { openGraphImages, twitterImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 
@@ -21,10 +22,12 @@ export const metadata: Metadata = {
     title: 'Kids Sudoku · Sudoku Unlimited',
     description,
     url: absoluteUrl('/kids-sudoku'),
+    images: openGraphImages,
   },
   twitter: {
     title: 'Kids Sudoku · 4×4 and 6×6 Puzzles',
     description,
+    ...twitterImages,
   },
   robots: { index: true, follow: true },
 };

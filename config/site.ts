@@ -9,10 +9,10 @@ export const siteConfig: SiteConfig = {
   siteName: 'Sudoku Unlimited',
   url: new URL(absoluteUrl()),
   openGraph: {
-    image: '/images/og-default.png',
-    imageAlt: 'Sudoku Unlimited game preview banner',
+    image: '/images/default-opengraph.png',
+    imageAlt: 'Sudoku. Sharpen your mind one puzzle at a time.',
     width: '1200',
-    height: '630',
+    height: '675',
   },
   creator: '@swsalim',
 };

@@ -12,6 +12,7 @@ import {
   kidsRulesForParents,
 } from '@/lib/kids/content';
 import { getKidsSizeSchema } from '@/lib/schema/kids-schema';
+import { openGraphImages, twitterImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
@@ -45,10 +46,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${level.title} · Sudoku Unlimited`,
       description: level.description,
       url: canonical,
+      images: openGraphImages,
     },
     twitter: {
       title: `${level.title} · Free Play and Print`,
       description: level.description,
+      ...twitterImages,
     },
     robots: { index: true, follow: true },
   };

@@ -1,11 +1,15 @@
 'use client';
 
-import { Menu, X } from 'lucide-react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useId, useState } from 'react';
 
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+
+import { Menu, X } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+
 import { primaryNavLinks } from '@/config/nav';
+import { siteConfig } from '@/config/site';
 
 import { TransitionLink } from '@/components/transition-link';
 
@@ -57,7 +61,7 @@ export function MobileNavMenu() {
     <div className="md:hidden">
       <button
         type="button"
-        className="inline-flex size-10 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-800 shadow-sm dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100"
+        className="relative z-[60] inline-flex size-10 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-800 shadow-sm dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100"
         aria-expanded={open}
         aria-controls={menuId}
         aria-label={open ? 'Close menu' : 'Open menu'}
@@ -87,6 +91,18 @@ export function MobileNavMenu() {
               exit="closed"
               variants={panelVariants}
               transition={transition}>
+              <div className="flex items-center gap-2 border-b border-stone-100 px-4 py-3 dark:border-stone-800">
+                <Image
+                  src="/icons/logo.webp"
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="size-9 shrink-0"
+                />
+                <span className="sr-only font-heading text-lg font-extrabold tracking-tight text-stone-900 dark:text-stone-50 md:not-sr-only">
+                  {siteConfig.siteName}
+                </span>
+              </div>
               <ul className="divide-y divide-stone-100 dark:divide-stone-800">
                 {primaryNavLinks.map((link, index) => (
                   <motion.li

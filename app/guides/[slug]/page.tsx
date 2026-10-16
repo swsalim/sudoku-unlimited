@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 
 import { guideSlugs } from '@/lib/guides/registry';
 import { getGuideBySlug } from '@/lib/guides/load-guide';
+import { openGraphImages, twitterImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
@@ -41,16 +42,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${guide.title} · Sudoku Unlimited`,
       description: guide.meta_description,
       url: canonicalUrl,
-      images: [
-        {
-          url: absoluteUrl('/images/og-default.png'),
-          alt: guide.title,
-        },
-      ],
+      images: openGraphImages,
     },
     twitter: {
       title: guide.meta_title,
       description: guide.meta_description,
+      ...twitterImages,
     },
     robots: { index: true, follow: true },
   };

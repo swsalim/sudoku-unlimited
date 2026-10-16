@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { getCalendarDateStringForDaily, getDailyDifficultyForDate } from '@/lib/daily-challenge';
+import { openGraphImages, twitterImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
@@ -35,8 +36,8 @@ export async function generateMetadata(): Promise<Metadata> {
       'daily puzzle',
     ],
     alternates: { canonical: canonicalUrl },
-    openGraph: { title, description, url: canonicalUrl },
-    twitter: { title, description },
+    openGraph: { title, description, url: canonicalUrl, images: openGraphImages },
+    twitter: { title, description, ...twitterImages },
   };
 }
 

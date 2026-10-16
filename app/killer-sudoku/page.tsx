@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { GridFour, Prohibit, RectangleDashed, Sigma } from '@phosphor-icons/react/ssr';
 
 import { getKillerHubSchema, killerHubFaqs } from '@/lib/schema/killer-schema';
+import { openGraphImages, twitterImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
@@ -49,10 +50,12 @@ export const metadata: Metadata = {
     title: 'Killer Sudoku · Sudoku Unlimited',
     description,
     url: absoluteUrl('/killer-sudoku'),
+    images: openGraphImages,
   },
   twitter: {
     title: 'Killer Sudoku · Rules and Free Puzzles',
     description,
+    ...twitterImages,
   },
   robots: { index: true, follow: true },
 };

@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 
 import { Difficulty, GameVariant } from '@/types';
 
+import { openGraphImages, twitterImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
@@ -211,10 +212,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: config.title,
       description: config.description,
       url: canonicalUrl,
+      images: openGraphImages,
     },
     twitter: {
       title: config.title,
       description: config.description,
+      ...twitterImages,
     },
   };
 }

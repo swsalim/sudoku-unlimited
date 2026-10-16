@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 import { motion, useReducedMotion } from 'motion/react';
 
 import { primaryNavLinks } from '@/config/nav';
@@ -33,11 +35,17 @@ export default function Navbar() {
               boxShadow: scrolled ? '0 1px 0 0 rgba(0,0,0,0.04)' : '0 0 0 0 rgba(0,0,0,0)',
             }
       }
-      transition={{ duration: 0.2 }}
-    >
+      transition={{ duration: 0.2 }}>
       <Container className="flex h-16 items-center justify-between py-0">
         <TransitionLink href="/" className="flex items-center gap-x-2">
-          <span className="font-heading text-2xl font-extrabold tracking-tight text-stone-900 dark:text-stone-50 md:text-xl">
+          <Image
+            src="/icons/logo.webp"
+            alt=""
+            width={40}
+            height={40}
+            className="size-9 shrink-0 md:size-10"
+          />
+          <span className="sr-only font-heading text-2xl font-extrabold tracking-tight text-stone-900 dark:text-stone-50 md:text-xl">
             {siteConfig.siteName}
           </span>
         </TransitionLink>

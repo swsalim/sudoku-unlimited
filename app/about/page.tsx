@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import { projects } from '@/config/projects';
 
+import { openGraphImages, twitterImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
@@ -19,9 +20,11 @@ export const metadata: Metadata = {
     description:
       'Sudoku Unlimited is a free online Sudoku game that you can play directly in your browser—no signup required. Choose from multiple difficulty levels, from Easy to Extreme, and challenge yourself with new puzzles whenever you like. Whether you&rsquo;re a beginner or an experienced solver, you&rsquo;ll find a level that suits you.',
     url: 'https://sudokuunlimited.com/about',
+    images: openGraphImages,
   },
   twitter: {
     title: 'About Sudoku Unlimited',
+    ...twitterImages,
   },
   robots: {
     index: true,
