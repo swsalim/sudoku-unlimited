@@ -54,7 +54,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-    
+
     /* App theme tokens (defaults) */
     --app-page-bg: linear-gradient(165deg, #faf8f5 0%, #f5f0e8 50%, #efe9e0 100%);
     --app-surface-bg: #ffffff;
@@ -168,6 +168,36 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@media print {
+  .site-navbar,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  main {
+    display: block !important;
+    min-height: 0 !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .solutions-page {
+    display: block !important;
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .printable-puzzle,
+  .kids-print-board {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
 

@@ -37,9 +37,7 @@ export default function HomePage() {
             Play Free Sudoku Online
           </h1>
 
-          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">
-            Play by level
-          </h2>
+          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">Play by level</h2>
           <p>Choose a classic or Killer Sudoku difficulty to start playing right away.</p>
           <h3 className="font-heading text-xl font-bold dark:text-stone-50">Classic Sudoku</h3>
           <ul>
@@ -49,10 +47,19 @@ export default function HomePage() {
               </li>
             ))}
           </ul>
+          <h3 className="font-heading text-xl font-bold dark:text-stone-50">Printable and kids</h3>
+          <ul>
+            <li>
+              <Link href="/printable">Printable Sudoku</Link> — paper sheets for Easy through Expert
+            </li>
+            <li>
+              <Link href="/kids-sudoku">Kids Sudoku</Link> — playable 4×4 and 6×6 grids
+            </li>
+          </ul>
           <h3 className="font-heading text-xl font-bold dark:text-stone-50">Killer Sudoku</h3>
           <p>
-            Try cage-sum puzzles on the{' '}
-            <Link href="/killer-sudoku">Killer Sudoku hub</Link> or jump to a level:
+            Try cage-sum puzzles on the <Link href="/killer-sudoku">Killer Sudoku hub</Link> or jump
+            to a level:
           </p>
           <ul>
             {KILLER_LEVELS.map(({ href, label }) => (
@@ -62,9 +69,7 @@ export default function HomePage() {
             ))}
           </ul>
 
-          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">
-            How to Play Sudoku
-          </h2>
+          <h2 className="font-heading text-2xl font-bold dark:text-stone-50">How to Play Sudoku</h2>
 
           <p>
             Sudoku is a popular number puzzle that challenges your logical thinking. The game
@@ -152,10 +157,7 @@ export default function HomePage() {
           <p>
             For deeper walkthroughs on rules, candidate notes, and advanced patterns, browse the{' '}
             <Link href="/guides">Sudoku guides</Link>—including{' '}
-            <Link href="/guides/the-complete-guide-to-how-sudoku-works">
-              how Sudoku works
-            </Link>
-            ,{' '}
+            <Link href="/guides/the-complete-guide-to-how-sudoku-works">how Sudoku works</Link>,{' '}
             <Link href="/guides/5-ways-to-approach-number-puzzles-like-sudoku">
               five practical approaches
             </Link>
@@ -179,7 +181,9 @@ export default function HomePage() {
             Want a different ruleset? Read the rules on the{' '}
             <Link href="/killer-sudoku">Killer Sudoku</Link> page,{' '}
             <Link href="/killer-sudoku/easy">play Easy Killer Sudoku</Link>, or join the shared{' '}
-            <Link href="/daily">daily challenge</Link>.
+            <Link href="/daily">daily challenge</Link>. For paper, open{' '}
+            <Link href="/printable">printable Sudoku</Link>. For a smaller grid, try{' '}
+            <Link href="/kids-sudoku">Kids Sudoku</Link>.
           </p>
         </Container>
       </section>

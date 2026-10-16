@@ -1,6 +1,6 @@
 # Sudoku Unlimited
 
-> Free online Sudoku puzzles from Easy to Extreme, plus Daily Challenge, Killer Sudoku, and a Sudoku Solver. No signup or download.
+> Free online Sudoku puzzles from Easy to Extreme, plus Daily Challenge, Killer Sudoku, printable sheets, kids grids, and a Sudoku Solver. No signup or download.
 
 ## Play
 
@@ -14,6 +14,20 @@
 - [Daily Challenge](https://sudokuunlimited.com/daily): One shared puzzle per UTC day
 - [Sudoku Solver](https://sudokuunlimited.com/sudoku-solver): Check or complete a grid
 - [Killer Sudoku](https://sudokuunlimited.com/killer-sudoku): Rules, cages, and links to every Killer difficulty
+
+## Print
+
+- [Printable Sudoku](https://sudokuunlimited.com/printable): Free puzzle sheets with a solution page
+- [Printable Easy](https://sudokuunlimited.com/printable/easy): Four easy puzzles and solutions
+- [Printable Medium](https://sudokuunlimited.com/printable/medium): Four medium puzzles and solutions
+- [Printable Hard](https://sudokuunlimited.com/printable/hard): Four hard puzzles and solutions
+- [Printable Expert](https://sudokuunlimited.com/printable/expert): Four expert puzzles and solutions
+
+## Kids
+
+- [Kids Sudoku](https://sudokuunlimited.com/kids-sudoku): 4×4 and 6×6 rules for kids and parents
+- [4×4 Sudoku](https://sudokuunlimited.com/kids-sudoku/4x4): Playable 4×4 grid with a printable option
+- [6×6 Sudoku](https://sudokuunlimited.com/kids-sudoku/6x6): Playable 6×6 grid with a printable option
 
 ## Guides
 

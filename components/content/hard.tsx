@@ -4,11 +4,13 @@ export default function HardSudoku() {
   return (
     <article
       className="prose mt-12 max-w-none dark:prose-invert dark:bg-stone-900/50"
-      aria-labelledby="hard-sudoku-heading">
+      aria-labelledby="hard-sudoku-heading"
+    >
       <div className="mx-auto max-w-4xl px-4 py-20">
         <h1
           id="hard-sudoku-heading"
-          className="font-heading text-4xl font-black dark:text-stone-50">
+          className="font-heading text-4xl font-black dark:text-stone-50"
+        >
           Hard Sudoku Puzzles – Free Challenging Games Online
         </h1>
         <p>
@@ -22,7 +24,8 @@ export default function HardSudoku() {
 
         <h2
           id="advanced-techniques-hard"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           Advanced Techniques for Hard Sudoku
         </h2>
         <p>
@@ -35,7 +38,8 @@ export default function HardSudoku() {
 
         <h2
           id="hard-sudoku-step-by-step"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           A Step-by-Step Approach to Hard Sudoku
         </h2>
         <p>
@@ -67,7 +71,8 @@ export default function HardSudoku() {
 
         <h2
           id="hard-sudoku-vs-easier-levels"
-          className="font-heading text-2xl font-bold dark:text-stone-50">
+          className="font-heading text-2xl font-bold dark:text-stone-50"
+        >
           How Hard Sudoku Differs from Easier Levels
         </h2>
         <p>
@@ -85,7 +90,8 @@ export default function HardSudoku() {
         <p className="mb-0">
           Prefer something easier? Try <Link href="/medium">medium Sudoku</Link>. Ready for elite
           challenges? Move on to <Link href="/expert">expert Sudoku</Link>, or go to the{' '}
-          <Link href="/">homepage</Link> to pick any difficulty.
+          <Link href="/">homepage</Link> to pick any difficulty. To solve on paper, use{' '}
+          <Link href="/printable/hard">printable hard Sudoku</Link>.
         </p>
       </div>
     </article>
