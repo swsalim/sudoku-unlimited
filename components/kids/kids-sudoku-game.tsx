@@ -2,6 +2,8 @@
 
 import { type KeyboardEvent, useMemo, useState } from 'react';
 
+import { Eraser, RotateCcw } from 'lucide-react';
+
 import type { KidsLevel } from '@/lib/kids/content';
 import { cn } from '@/lib/utils';
 
@@ -9,6 +11,7 @@ import { digitsConflict, generateMiniPuzzle, miniBoxShape } from '@/utils/mini-s
 
 import { NumberGrid } from '@/components/printable/number-grid';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 type KidsSudokuGameProps = {
   level: KidsLevel;
@@ -20,10 +23,14 @@ function cloneBoard(board: Board): Board {
   return board.map((row) => [...row]);
 }
 
+const controlButtonClass =
+  'h-12 w-full border-[color:var(--app-surface-border)] bg-[color:var(--app-surface-bg)] font-semibold hover:bg-[color:var(--app-muted-bg)] md:h-14';
+
 export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
   const [seed, setSeed] = useState(`${level.slug}-start`);
   const puzzle = useMemo(() => generateMiniPuzzle(level.size, seed), [level.size, seed]);
   const [board, setBoard] = useState<Board>(() => cloneBoard(puzzle.givens));
+  const [history, setHistory] = useState<Board[]>([]);
   const [selected, setSelected] = useState<{ row: number; col: number } | null>(null);
   const [checked, setChecked] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
@@ -38,6 +45,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
     const next = generateMiniPuzzle(level.size, nextSeed);
     setSeed(nextSeed);
     setBoard(cloneBoard(next.givens));
+    setHistory([]);
     setSelected(null);
     setChecked(false);
     setShowSolution(false);
@@ -47,19 +55,42 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
     if (!selected || solved) return;
     const { row, col } = selected;
     if (given[row][col] !== 0) return;
-    setBoard((current) => {
-      const next = cloneBoard(current);
-      next[row][col] = value;
-      return next;
-    });
+    if (board[row][col] === value) return;
+    setHistory((previous) => [...previous, cloneBoard(board)]);
+    const next = cloneBoard(board);
+    next[row][col] = value;
+    setBoard(next);
+    setChecked(false);
+  }
+
+  function undo() {
+    const last = history[history.length - 1];
+    if (!last) return;
+    setBoard(cloneBoard(last));
+    setHistory((previous) => previous.slice(0, -1));
+    setChecked(false);
+  }
+
+  function erase() {
+    place(0);
+  }
+
+  function reset() {
+    setBoard(cloneBoard(given));
+    setHistory([]);
     setChecked(false);
   }
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'z') {
+      event.preventDefault();
+      undo();
+      return;
+    }
     if (!selected) return;
     if (event.key === 'Backspace' || event.key === 'Delete' || event.key === '0') {
       event.preventDefault();
-      place(0);
+      erase();
       return;
     }
     const digit = Number(event.key);
@@ -71,29 +102,6 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
 
   return (
     <div>
-      <div className="no-print mb-4 flex flex-wrap gap-2">
-        <Button type="button" onClick={() => window.print()}>
-          Print this puzzle
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() =>
-            restart(
-              `${level.slug}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
-            )
-          }
-        >
-          New puzzle
-        </Button>
-        <Button type="button" variant="outline" onClick={() => setChecked(true)}>
-          Check puzzle
-        </Button>
-        <Button type="button" variant="outline" onClick={() => setShowSolution((value) => !value)}>
-          {showSolution ? 'Hide solution' : 'Show solution'}
-        </Button>
-      </div>
-
       <p className="no-print mb-4 text-sm text-stone-600 dark:text-stone-400" aria-live="polite">
         {solved
           ? 'Solved. Every digit is in the right cell.'
@@ -161,22 +169,112 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
         </table>
       </div>
 
-      <div className="no-print mt-4 flex flex-wrap gap-2" role="group" aria-label="Digits">
-        {Array.from({ length: level.size }, (_, index) => index + 1).map((digit) => (
-          <Button
-            key={digit}
-            type="button"
-            variant="outline"
-            className="size-12 text-lg"
-            onClick={() => place(digit)}
+      <TooltipProvider delayDuration={150}>
+        <div className="no-print mt-4 flex w-full max-w-md flex-col gap-4">
+          <div className="flex gap-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={controlButtonClass}
+                  onClick={undo}
+                  disabled={history.length === 0}
+                  aria-label="Undo"
+                >
+                  <RotateCcw className="size-5 md:size-6" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Undo last move</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={controlButtonClass}
+                  onClick={erase}
+                  aria-label="Erase"
+                >
+                  <Eraser className="size-5 md:size-6" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Clear selected cell</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={controlButtonClass}
+                  onClick={reset}
+                >
+                  Reset
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Clear your entries and keep this puzzle</TooltipContent>
+            </Tooltip>
+          </div>
+
+          <div
+            className={cn('grid gap-2', level.size === 4 ? 'grid-cols-4' : 'grid-cols-3')}
+            role="group"
+            aria-label="Digits"
           >
-            {digit}
-          </Button>
-        ))}
-        <Button type="button" variant="outline" onClick={() => place(0)}>
-          Erase
-        </Button>
-      </div>
+            {Array.from({ length: level.size }, (_, index) => index + 1).map((digit) => (
+              <Button
+                key={digit}
+                type="button"
+                variant="outline"
+                className={cn(controlButtonClass, 'text-xl md:text-2xl')}
+                onClick={() => place(digit)}
+              >
+                {digit}
+              </Button>
+            ))}
+          </div>
+
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              className="h-12 flex-1 bg-[color:var(--app-accent)] font-semibold text-white hover:opacity-95 md:h-14"
+              onClick={() =>
+                restart(
+                  `${level.slug}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
+                )
+              }
+            >
+              New Game
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className={cn(controlButtonClass, 'flex-1')}
+              onClick={() => window.print()}
+            >
+              Print
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              className={cn(controlButtonClass, 'flex-1')}
+              onClick={() => setChecked(true)}
+            >
+              Check
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className={cn(controlButtonClass, 'flex-1')}
+              onClick={() => setShowSolution((value) => !value)}
+            >
+              {showSolution ? 'Hide solution' : 'Show solution'}
+            </Button>
+          </div>
+        </div>
+      </TooltipProvider>
 
       <section
         className={cn('solutions-page mt-8', showSolution ? 'block' : 'hidden print:block')}
