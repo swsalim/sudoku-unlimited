@@ -11,8 +11,8 @@ import {
   kidsRulesForKids,
   kidsRulesForParents,
 } from '@/lib/kids/content';
-import { getKidsSizeSchema } from '@/lib/schema/kids-schema';
 import { openGraphImages, twitterImages } from '@/lib/open-graph';
+import { getKidsSizeSchema } from '@/lib/schema/kids-schema';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
@@ -125,11 +125,11 @@ export default async function KidsSizePage({ params }: Props) {
         <Container className="grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-2">
           <div className="w-full">
             <h2 className="font-heading text-3xl font-black dark:text-stone-50">Rules for kids</h2>
-            <ul>
+            <ol>
               {kidsRulesForKids.map((rule) => (
                 <li key={rule}>{rule}</li>
               ))}
-            </ul>
+            </ol>
             <p>
               On this {level.slug} grid the digits are {level.digits}. The box to check is each{' '}
               {level.boxLabel}.

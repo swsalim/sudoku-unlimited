@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { kidsHubFaqs, kidsLevels, kidsRulesForKids, kidsRulesForParents } from '@/lib/kids/content';
-import { getKidsHubSchema } from '@/lib/schema/kids-schema';
 import { openGraphImages, twitterImages } from '@/lib/open-graph';
+import { getKidsHubSchema } from '@/lib/schema/kids-schema';
 import { absoluteUrl } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 
@@ -94,13 +94,22 @@ export default function KidsSudokuPage() {
             {kidsLevels.map((level) => (
               <div key={level.slug}>
                 <div className="grid items-center gap-8 md:grid-cols-2">
-                  <div className="">
-                    <h3 className="font-heading text-2xl font-bold dark:text-stone-50">
-                      {level.title}
-                    </h3>
-                    <p className="mt-1 text-base text-stone-600 dark:text-stone-400">
-                      {level.shortDescription}
-                    </p>
+                  <div className="flex flex-row gap-2">
+                    <div
+                      className={cn(
+                        'flex size-14 shrink-0 items-center justify-center rounded-full',
+                        level.labelClass,
+                      )}>
+                      <span className="block text-base font-bold">{level.slug}</span>
+                    </div>
+                    <div>
+                      <h3 className="font-heading text-2xl font-bold dark:text-stone-50">
+                        {level.title}
+                      </h3>
+                      <p className="mt-1 text-base text-stone-600 dark:text-stone-400">
+                        {level.shortDescription}
+                      </p>
+                    </div>
                   </div>
                   <div className="">
                     <Image
@@ -126,11 +135,11 @@ export default function KidsSudokuPage() {
         <Container className="grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-2">
           <div className="w-full">
             <h2 className="font-heading text-3xl font-black dark:text-stone-50">Rules for kids</h2>
-            <ul>
+            <ol>
               {kidsRulesForKids.map((rule) => (
                 <li key={rule}>{rule}</li>
               ))}
-            </ul>
+            </ol>
           </div>
           <div className="w-full">
             <h2 className="font-heading text-3xl font-black dark:text-stone-50">

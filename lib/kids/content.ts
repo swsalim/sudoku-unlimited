@@ -17,6 +17,7 @@ export type KidsLevel = {
   digits: string;
   boxLabel: string;
   intro: string[];
+  labelClass: string;
 };
 
 export const kidsLevels: KidsLevel[] = [
@@ -35,6 +36,7 @@ export const kidsLevels: KidsLevel[] = [
       'A 4×4 Sudoku is a small grid for a first puzzle. Use the digits 1, 2, 3, and 4. Each row, each column, and each 2×2 box needs every digit once.',
       'Some numbers are already filled in. Those stay put. The rest of the cells are yours. When the grid follows the rules and matches the puzzle’s single solution, it is done.',
     ],
+    labelClass: 'text-white bg-green-700 border-green-200 border-[6px] font-semibold text-base',
   },
   {
     slug: '6x6',
@@ -51,6 +53,7 @@ export const kidsLevels: KidsLevel[] = [
       'A 6×6 Sudoku sits between the 4×4 grid and a full 9×9 puzzle. Use the digits 1 through 6. Each row and each column needs every digit once.',
       'The grid is split into six boxes of 2 rows by 3 columns. Each of those boxes also uses 1–6 once. Givens stay fixed, and the puzzle has one solution.',
     ],
+    labelClass: 'text-white bg-blue-700 border-blue-200 border-[6px] font-semibold text-base',
   },
 ];
 
