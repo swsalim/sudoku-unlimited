@@ -85,7 +85,9 @@ export default function GuidesIndexPage() {
                   <p className="mt-1 text-stone-600 dark:text-stone-400">
                     {guide.meta_description}
                   </p>
-                  <p className="mt-2 text-sm text-stone-500">{guide.readMinutes} min read</p>
+                  <p className="mt-2 text-sm text-stone-500 dark:text-stone-400">
+                    {guide.readMinutes} min read
+                  </p>
                 </TransitionLink>
               </li>
             ))}
@@ -154,7 +156,9 @@ export default function GuidesIndexPage() {
                   <p className="mt-1 text-stone-600 dark:text-stone-400">
                     {guide.meta_description}
                   </p>
-                  <p className="mt-2 text-sm text-stone-500">{guide.readMinutes} min read</p>
+                  <p className="mt-2 text-sm text-stone-500 dark:text-stone-400">
+                    {guide.readMinutes} min read
+                  </p>
                 </TransitionLink>
               </li>
             ))}

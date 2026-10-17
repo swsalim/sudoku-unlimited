@@ -683,7 +683,7 @@ export function SudokuGame({
                     <h2 id="resume-saved-game-title" className="text-sm font-semibold">
                       Resume saved game?
                     </h2>
-                    <p id="resume-saved-game-desc" className="mt-1 text-xs text-stone-500">
+                    <p id="resume-saved-game-desc" className="mt-1 text-xs text-stone-500 dark:text-stone-400">
                       You have an in-progress {savedGameOffer.gameState.difficulty} puzzle (
                       {formatTime(savedGameOffer.time)}). Resume or start a new game?
                     </p>

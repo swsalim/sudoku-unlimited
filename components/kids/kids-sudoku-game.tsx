@@ -117,7 +117,7 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
           {level.h1} · digits {level.digits}
         </p>
         <table
-          className="border-collapse border-2 border-stone-900 print:border-black"
+          className="border-collapse border-2 border-stone-900 dark:border-stone-200 print:border-black"
           aria-label={`${level.h1} grid`}>
           <tbody>
             {board.map((row, rowIndex) => (
@@ -145,17 +145,22 @@ export function KidsSudokuGame({ level }: KidsSudokuGameProps) {
                         disabled={isGiven}
                         onClick={() => setSelected({ row: rowIndex, col: colIndex })}
                         className={cn(
-                          'flex size-12 items-center justify-center border border-stone-300 text-lg font-semibold sm:size-14 print:size-8 print:text-sm',
+                          'flex size-12 items-center justify-center border border-stone-300 text-lg font-semibold dark:border-stone-600 sm:size-14 print:size-8 print:border-stone-400 print:text-black',
                           level.size === 6 && 'size-10 text-base sm:size-12',
                           isGiven
-                            ? 'bg-stone-100 text-stone-900 dark:bg-stone-900 dark:text-stone-50 print:bg-white'
-                            : 'bg-white text-emerald-800 dark:bg-stone-950 dark:text-emerald-200 print:bg-white print:text-black',
-                          isSelected && 'bg-emerald-100 dark:bg-emerald-950 print:bg-white',
-                          !isSelected && sameBand && 'bg-stone-50 dark:bg-stone-900 print:bg-white',
+                            ? 'bg-stone-100 text-stone-900 dark:bg-[color:var(--sudoku-cell-highlighted-bg)] dark:text-[color:var(--sudoku-cell-initial-text)] print:bg-white'
+                            : 'bg-white text-emerald-800 dark:bg-[color:var(--sudoku-cell-bg)] dark:text-[color:var(--app-accent-strong)] print:bg-white print:text-black',
+                          isSelected &&
+                            'bg-emerald-100 dark:bg-[color:var(--sudoku-cell-selected-bg)] dark:text-[color:var(--sudoku-cell-text)] print:bg-white',
+                          !isSelected &&
+                            sameBand &&
+                            'bg-stone-50 dark:bg-[color:var(--sudoku-cell-highlighted-bg)] print:bg-white',
                           (conflict || wrong) &&
-                            'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-200',
-                          thickRight && 'border-r-2 border-r-stone-900 print:border-r-black',
-                          thickBottom && 'border-b-2 border-b-stone-900 print:border-b-black',
+                            'bg-red-100 text-red-700 dark:bg-[color:var(--sudoku-cell-error-bg)] dark:text-[color:var(--sudoku-cell-error-text)]',
+                          thickRight &&
+                            'border-r-2 border-r-stone-900 dark:border-r-stone-200 print:border-r-black',
+                          thickBottom &&
+                            'border-b-2 border-b-stone-900 dark:border-b-stone-200 print:border-b-black',
                         )}>
                         {value || ''}
                       </button>

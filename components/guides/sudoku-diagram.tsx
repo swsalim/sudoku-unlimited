@@ -78,7 +78,7 @@ export function SudokuDiagram({ source }: SudokuDiagramProps) {
           <caption className="sr-only">{diagram.caption}</caption>
           <thead>
             <tr>
-              <th scope="col" className="w-8 p-1 text-xs font-medium text-stone-500">
+              <th scope="col" className="w-8 p-1 text-xs font-medium text-stone-500 dark:text-stone-400">
                 <span className="sr-only">Row</span>
               </th>
               {diagram.cols.map((col) => (
