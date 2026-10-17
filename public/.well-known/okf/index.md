@@ -3,7 +3,7 @@ type: Organization
 title: Sudoku Unlimited
 description: Free online Sudoku puzzles from Easy to Extreme, plus Daily Challenge, Solver, Killer Sudoku, printable sheets, and kids grids — no signup or download.
 tags: [overview, sudoku, puzzles]
-timestamp: "2026-10-16T01:20:00Z"
+timestamp: "2026-10-17T03:30:00Z"
 ---
 
 # Sudoku Unlimited
@@ -35,6 +35,9 @@ Sudoku Unlimited is a free, browser-based Sudoku puzzle site. Players can play c
 ## Published articles
 
 - [The Complete Guide to How Sudoku Works](https://sudokuunlimited.com/guides/the-complete-guide-to-how-sudoku-works)
+- [How Do You Play Sudoku With Numbers?](https://sudokuunlimited.com/guides/how-do-you-play-sudoku-with-numbers)
+- [How to Solve Sudoku Step by Step](https://sudokuunlimited.com/guides/how-to-solve-sudoku-step-by-step)
+- [Easy vs Medium vs Hard Sudoku: What the Difficulty Levels Mean](https://sudokuunlimited.com/guides/easy-vs-medium-vs-hard-sudoku)
 - [5 Ways to Approach Number Puzzles Like Sudoku](https://sudokuunlimited.com/guides/5-ways-to-approach-number-puzzles-like-sudoku)
 - [9 Advanced Sudoku Techniques That Experienced Solvers Use](https://sudokuunlimited.com/guides/9-advanced-sudoku-techniques-that-experienced-solvers-use)
 - [How to Solve Sudoku Without Guessing](https://sudokuunlimited.com/guides/solve-sudoku-without-guessing)

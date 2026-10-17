@@ -91,7 +91,11 @@ export default function HardSudoku() {
           Prefer something easier? Try <Link href="/medium">medium Sudoku</Link>. Ready for elite
           challenges? Move on to <Link href="/expert">expert Sudoku</Link>, or go to the{' '}
           <Link href="/">homepage</Link> to pick any difficulty. To solve on paper, use{' '}
-          <Link href="/printable/hard">printable hard Sudoku</Link>.
+          <Link href="/printable/hard">printable hard Sudoku</Link>. The scale those names sit on is{' '}
+          <Link href="/guides/easy-vs-medium-vs-hard-sudoku">
+            easy vs medium vs hard Sudoku
+          </Link>
+          .
         </p>
       </div>
     </article>

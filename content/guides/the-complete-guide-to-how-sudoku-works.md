@@ -6,14 +6,14 @@ meta_title: "How Does Sudoku Work? Complete Rules and Solving Guide"
 meta_description: "Learn how Sudoku works, including the 9x9 grid rules, candidate notes, elimination methods, difficulty levels, and a practical solving example."
 primary_keyword: "how does sudoku work"
 secondary_keywords: ["sudoku grid rules", "sudoku 9x9 grid", "sudoku elimination method", "sudoku pencil marks", "sudoku single possibility", "online sudoku difficulty levels"]
-word_count: 3161
+word_count: 3199
 status: "draft"
 brief: "the-complete-guide-to-how-sudoku-works"
 ---
 
 A Sudoku puzzle can look like a wall of random numbers. You find an empty square, spot two or three digits that seem possible, and then discover that the surrounding 3x3 box rules out the number you wanted. That confusion disappears once you treat every empty cell as three checks at once: its row, its column, and its box.
 
-So, how does Sudoku work? Sudoku works by placing the digits 1 through 9 so that no digit repeats in any row, column, or 3x3 box. The sections below turn that rule into a repeatable solving process you can use on paper or in a browser.
+So, how does Sudoku work? Sudoku works by placing the digits 1 through 9 so that no digit repeats in any row, column, or 3x3 box. The sections below turn that rule into a repeatable solving process you can use on paper or in a browser. For the opening placements only, follow [how to solve Sudoku step by step](/guides/how-to-solve-sudoku-step-by-step). Entering a digit is covered in [how to play Sudoku with numbers](/guides/how-do-you-play-sudoku-with-numbers). What Easy, Medium, and Hard change is in [what the difficulty levels mean](/guides/easy-vs-medium-vs-hard-sudoku).
 
 ## Quick answer
 

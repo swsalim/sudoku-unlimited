@@ -40,7 +40,11 @@ const config = {
     ];
     for (const slug of GUIDE_SLUGS) {
       const entry = await cfg.transform(cfg, `/guides/${slug}`);
-      entry.lastmod = GUIDE_LASTMOD;
+      const block = registryBlock.match(
+        new RegExp(`(?:'|")?${slug}(?:'|")?\\s*:\\s*\\{([\\s\\S]*?)\\n\\s*\\},`),
+      );
+      const dated = block?.[1].match(/dateModified:\s*'(\d{4}-\d{2}-\d{2})'/);
+      entry.lastmod = dated?.[1] ?? GUIDE_LASTMOD;
       paths.push(entry);
     }
     return paths;

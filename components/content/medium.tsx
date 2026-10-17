@@ -90,7 +90,11 @@ export default function MediumSudoku() {
           New to Sudoku? Start with <Link href="/easy">easy Sudoku</Link>. Ready for more? Try{' '}
           <Link href="/hard">hard Sudoku</Link>, or visit the <Link href="/">homepage</Link> to pick
           any level. Paper copies of this level are on{' '}
-          <Link href="/printable/medium">printable medium Sudoku</Link>.
+          <Link href="/printable/medium">printable medium Sudoku</Link>. See{' '}
+          <Link href="/guides/easy-vs-medium-vs-hard-sudoku">
+            what Easy, Medium, and Hard mean
+          </Link>
+          .
         </p>
       </div>
     </article>
