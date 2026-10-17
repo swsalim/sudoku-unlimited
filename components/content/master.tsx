@@ -88,7 +88,12 @@ export default function MasterSudoku() {
         <p className="mb-0">
           Need a breather? Try <Link href="/expert">expert Sudoku</Link>. Want the ultimate test?{' '}
           <Link href="/extreme">Extreme Sudoku</Link> awaits. Or head to the{' '}
-          <Link href="/">homepage</Link> to pick any difficulty.
+          <Link href="/">homepage</Link> to pick any difficulty. The removal targets behind these
+          names are in{' '}
+          <Link href="/guides/easy-vs-medium-vs-hard-sudoku">
+            easy vs medium vs hard Sudoku
+          </Link>
+          .
         </p>
       </div>
     </article>

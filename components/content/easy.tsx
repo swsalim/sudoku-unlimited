@@ -101,7 +101,12 @@ export default function EasySudoku() {
           Ready for more challenge? Step up to <Link href="/medium">medium Sudoku</Link>, or visit
           the <Link href="/">homepage</Link> to pick any difficulty. The same easy generator also
           fills <Link href="/printable/easy">printable easy sheets</Link>. A smaller first grid is{' '}
-          <Link href="/kids-sudoku/4x4">4×4 kids Sudoku</Link>.
+          <Link href="/kids-sudoku/4x4">4×4 kids Sudoku</Link>. The names of the levels are explained
+          in{' '}
+          <Link href="/guides/easy-vs-medium-vs-hard-sudoku">
+            easy vs medium vs hard Sudoku
+          </Link>
+          .
         </p>
       </div>
     </article>

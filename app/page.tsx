@@ -293,6 +293,19 @@ export default function HomePage() {
               column, and 3x3 box contains the numbers <strong>1 to 9</strong> without repeating any
               number.
             </p>
+            <p>
+              New to the grid? Read{' '}
+              <Link href="/guides/how-do-you-play-sudoku-with-numbers">
+                how to play Sudoku with numbers
+              </Link>{' '}
+              and{' '}
+              <Link href="/guides/how-to-solve-sudoku-step-by-step">
+                how to solve Sudoku step by step
+              </Link>
+              . For what Easy, Medium, and Hard change, see{' '}
+              <Link href="/guides/easy-vs-medium-vs-hard-sudoku">what the difficulty levels mean</Link>
+              .
+            </p>
 
             <Button asChild className={buttonVariants({ variant: 'default' })}>
               <Link href="/guides/the-complete-guide-to-how-sudoku-works">Read the full guide</Link>

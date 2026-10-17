@@ -6,7 +6,7 @@ meta_title: "How to Solve Number Puzzles: 5 Sudoku Approaches That Work"
 meta_description: "Learn how to solve number puzzles with five practical Sudoku approaches: map constraints, scan for singles, track candidates, test deductions, and avoid guesses."
 primary_keyword: "how to solve number puzzles"
 secondary_keywords: []
-word_count: 1125
+word_count: 1140
 status: "draft"
 brief: "5-ways-to-approach-number-puzzles-like-sudoku"
 ---
@@ -75,7 +75,7 @@ Use the same loop on every grid:
 - Inspect naked pairs and box-line intersections.
 - Test one marked two-candidate assumption only when direct deductions stop.
 
-Return to the first step after every placement. A confirmed digit changes three units and can open a new deduction elsewhere. For a practical next step, open an Easy puzzle on Sudoku Unlimited, apply one technique at a time, and move to Medium or harder levels only after the routine feels natural. Each of those steps is expanded, with diagrams, in [how to solve Sudoku without guessing](/guides/solve-sudoku-without-guessing).
+Return to the first step after every placement. A confirmed digit changes three units and can open a new deduction elsewhere. For a practical next step, open an Easy puzzle on Sudoku Unlimited, apply one technique at a time, and move to Medium or harder levels only after the routine feels natural. The first placements, before these five approaches, are in [how to solve Sudoku step by step](/guides/how-to-solve-sudoku-step-by-step). Each later step is expanded, with diagrams, in [how to solve Sudoku without guessing](/guides/solve-sudoku-without-guessing).
 
 ## References
 

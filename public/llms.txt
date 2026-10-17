@@ -33,6 +33,9 @@
 
 - [Sudoku Guides](https://sudokuunlimited.com/guides): Rules, approaches, and advanced techniques
 - [How Sudoku Works](https://sudokuunlimited.com/guides/the-complete-guide-to-how-sudoku-works): Complete rules and solving guide
+- [How Do You Play Sudoku With Numbers?](https://sudokuunlimited.com/guides/how-do-you-play-sudoku-with-numbers): What the digits mean and how to enter one
+- [How to Solve Sudoku Step by Step](https://sudokuunlimited.com/guides/how-to-solve-sudoku-step-by-step): A beginner walkthrough of the first placements
+- [Easy vs Medium vs Hard Sudoku](https://sudokuunlimited.com/guides/easy-vs-medium-vs-hard-sudoku): What the difficulty levels mean
 - [5 Ways to Approach Number Puzzles](https://sudokuunlimited.com/guides/5-ways-to-approach-number-puzzles-like-sudoku): Practical solving routine for beginners
 - [9 Advanced Sudoku Techniques](https://sudokuunlimited.com/guides/9-advanced-sudoku-techniques-that-experienced-solvers-use): Fish, wings, chains, and uniqueness
 - [How to Solve Sudoku Without Guessing](https://sudokuunlimited.com/guides/solve-sudoku-without-guessing): Scanning, singles, pairs, fish, and chains in order

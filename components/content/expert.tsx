@@ -96,7 +96,12 @@ export default function ExpertSudoku() {
           Want less intensity? Try <Link href="/hard">hard Sudoku</Link>. Ready for the toughest
           grids? Take on <Link href="/master">master Sudoku</Link>, or visit the{' '}
           <Link href="/">homepage</Link> to choose any level. Expert grids for paper are on{' '}
-          <Link href="/printable/expert">printable expert Sudoku</Link>.
+          <Link href="/printable/expert">printable expert Sudoku</Link>. Where Expert sits on the scale
+          is in{' '}
+          <Link href="/guides/easy-vs-medium-vs-hard-sudoku">
+            what the difficulty levels mean
+          </Link>
+          .
         </p>
       </div>
     </article>

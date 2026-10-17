@@ -90,7 +90,12 @@ export default function ExtremeSudoku() {
         </h2>
         <p className="mb-0">
           Want something more approachable? Try <Link href="/master">master Sudoku</Link>, or go to
-          the <Link href="/">homepage</Link> to choose from all difficulty levels.
+          the <Link href="/">homepage</Link> to choose from all difficulty levels. How Extreme
+          compares with Easy, Medium, and Hard is in{' '}
+          <Link href="/guides/easy-vs-medium-vs-hard-sudoku">
+            what the difficulty levels mean
+          </Link>
+          .
         </p>
       </div>
     </article>

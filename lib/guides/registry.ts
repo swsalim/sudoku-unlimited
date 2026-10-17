@@ -64,6 +64,8 @@ export type GuideRegistryEntry = {
   filename: string;
   featured?: boolean;
   group?: 'techniques';
+  /** Overrides the shared publication date for this guide only. */
+  dateModified?: string;
   shortVersion: string[];
   relatedPlayLinks: GuidePlayLink[];
   relatedGuideSlugs: string[];
@@ -89,9 +91,76 @@ export const guideRegistry: Record<string, GuideRegistryEntry> = {
       PLAY.kids,
     ],
     relatedGuideSlugs: [
+      'how-to-solve-sudoku-step-by-step',
+      'how-do-you-play-sudoku-with-numbers',
+      'easy-vs-medium-vs-hard-sudoku',
       'solve-sudoku-without-guessing',
       '5-ways-to-approach-number-puzzles-like-sudoku',
       '9-advanced-sudoku-techniques-that-experienced-solvers-use',
+    ],
+  },
+  'how-do-you-play-sudoku-with-numbers': {
+    filename: 'how-do-you-play-sudoku-with-numbers.md',
+    dateModified: '2026-10-17',
+    shortVersion: [
+      'Enter a digit from 1 to 9 in an empty cell.',
+      'Keep it only when that digit is missing from the cell’s row, column, and 3×3 box.',
+      'Givens stay fixed. Small notes are candidates, not answers.',
+    ],
+    relatedPlayLinks: [PLAY.easy, PLAY.medium, PLAY.kids, PLAY.daily, PLAY.printable, PLAY.solver],
+    relatedGuideSlugs: [
+      'how-to-solve-sudoku-step-by-step',
+      'the-complete-guide-to-how-sudoku-works',
+      'easy-vs-medium-vs-hard-sudoku',
+      'naked-singles',
+      '5-ways-to-approach-number-puzzles-like-sudoku',
+    ],
+  },
+  'how-to-solve-sudoku-step-by-step': {
+    filename: 'how-to-solve-sudoku-step-by-step.md',
+    dateModified: '2026-10-17',
+    shortVersion: [
+      'Start in the row, column, or box with the fewest empty cells.',
+      'Name the missing digit, then check the other two units before you write it.',
+      'Rescan only the units you changed. When nothing is forced, continue in the technique guides.',
+    ],
+    relatedPlayLinks: [PLAY.easy, PLAY.medium, PLAY.kids, PLAY.daily, PLAY.solver, PLAY.printable],
+    relatedGuideSlugs: [
+      'how-do-you-play-sudoku-with-numbers',
+      'the-complete-guide-to-how-sudoku-works',
+      '5-ways-to-approach-number-puzzles-like-sudoku',
+      'solve-sudoku-without-guessing',
+      'naked-singles',
+      'hidden-singles',
+    ],
+  },
+  'easy-vs-medium-vs-hard-sudoku': {
+    filename: 'easy-vs-medium-vs-hard-sudoku.md',
+    dateModified: '2026-10-17',
+    shortVersion: [
+      'Easy, Medium, and Hard use the same rules. The generator’s removal target is what changes.',
+      'Those targets are 30, 40, and 50 cells. A removal that would create a second solution is put back.',
+      'Expert, Master, and Extreme continue the same scale at 55, 60, and 65 cells.',
+    ],
+    relatedPlayLinks: [
+      PLAY.easy,
+      PLAY.medium,
+      PLAY.hard,
+      PLAY.expert,
+      PLAY.master,
+      PLAY.extreme,
+      PLAY.daily,
+      PLAY.printable,
+    ],
+    relatedGuideSlugs: [
+      'how-to-solve-sudoku-step-by-step',
+      'naked-singles',
+      'hidden-singles',
+      'naked-pairs',
+      'pointing-pairs',
+      'box-line-reduction',
+      'x-wing',
+      'the-complete-guide-to-how-sudoku-works',
     ],
   },
   '5-ways-to-approach-number-puzzles-like-sudoku': {
@@ -103,6 +172,7 @@ export const guideRegistry: Record<string, GuideRegistryEntry> = {
     ],
     relatedPlayLinks: [PLAY.easy, PLAY.medium, PLAY.hard, PLAY.solver, PLAY.printable, PLAY.kids],
     relatedGuideSlugs: [
+      'how-to-solve-sudoku-step-by-step',
       'the-complete-guide-to-how-sudoku-works',
       'solve-sudoku-without-guessing',
       '9-advanced-sudoku-techniques-that-experienced-solvers-use',
@@ -149,6 +219,7 @@ export const guideRegistry: Record<string, GuideRegistryEntry> = {
       PLAY.kids,
     ],
     relatedGuideSlugs: [
+      'how-to-solve-sudoku-step-by-step',
       'the-complete-guide-to-how-sudoku-works',
       '9-advanced-sudoku-techniques-that-experienced-solvers-use',
       'naked-singles',
