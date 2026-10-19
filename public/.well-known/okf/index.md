@@ -36,6 +36,7 @@ Sudoku Unlimited is a free, browser-based Sudoku puzzle site. Players can play c
 
 - [The Complete Guide to How Sudoku Works](https://sudokuunlimited.com/guides/the-complete-guide-to-how-sudoku-works)
 - [How Do You Play Sudoku With Numbers?](https://sudokuunlimited.com/guides/how-do-you-play-sudoku-with-numbers)
+- [What Are the Rules of Sudoku? A Player FAQ](https://sudokuunlimited.com/guides/what-are-the-rules-of-sudoku)
 - [How to Solve Sudoku Step by Step](https://sudokuunlimited.com/guides/how-to-solve-sudoku-step-by-step)
 - [Easy vs Medium vs Hard Sudoku: What the Difficulty Levels Mean](https://sudokuunlimited.com/guides/easy-vs-medium-vs-hard-sudoku)
 - [5 Ways to Approach Number Puzzles Like Sudoku](https://sudokuunlimited.com/guides/5-ways-to-approach-number-puzzles-like-sudoku)

@@ -91,6 +91,7 @@ export const guideRegistry: Record<string, GuideRegistryEntry> = {
       PLAY.kids,
     ],
     relatedGuideSlugs: [
+      'what-are-the-rules-of-sudoku',
       'how-to-solve-sudoku-step-by-step',
       'how-do-you-play-sudoku-with-numbers',
       'easy-vs-medium-vs-hard-sudoku',
@@ -109,11 +110,38 @@ export const guideRegistry: Record<string, GuideRegistryEntry> = {
     ],
     relatedPlayLinks: [PLAY.easy, PLAY.medium, PLAY.kids, PLAY.daily, PLAY.printable, PLAY.solver],
     relatedGuideSlugs: [
+      'what-are-the-rules-of-sudoku',
       'how-to-solve-sudoku-step-by-step',
       'the-complete-guide-to-how-sudoku-works',
       'easy-vs-medium-vs-hard-sudoku',
       'naked-singles',
       '5-ways-to-approach-number-puzzles-like-sudoku',
+    ],
+  },
+  'what-are-the-rules-of-sudoku': {
+    filename: 'what-are-the-rules-of-sudoku.md',
+    dateModified: '2026-10-19',
+    shortVersion: [
+      'Fill every empty cell with 1–9 so each row, column, and 3×3 box contains each digit once.',
+      'Givens stay fixed. A puzzle on this site is kept to a single completion.',
+      'Classic play has no sums. Killer Sudoku adds cage sums on the same grid.',
+    ],
+    relatedPlayLinks: [
+      PLAY.easy,
+      PLAY.medium,
+      PLAY.kids,
+      PLAY.killer,
+      PLAY.daily,
+      PLAY.solver,
+      PLAY.printable,
+    ],
+    relatedGuideSlugs: [
+      'the-complete-guide-to-how-sudoku-works',
+      'how-do-you-play-sudoku-with-numbers',
+      'how-to-solve-sudoku-step-by-step',
+      'easy-vs-medium-vs-hard-sudoku',
+      'solve-sudoku-without-guessing',
+      '9-advanced-sudoku-techniques-that-experienced-solvers-use',
     ],
   },
   'how-to-solve-sudoku-step-by-step': {
@@ -126,6 +154,7 @@ export const guideRegistry: Record<string, GuideRegistryEntry> = {
     ],
     relatedPlayLinks: [PLAY.easy, PLAY.medium, PLAY.kids, PLAY.daily, PLAY.solver, PLAY.printable],
     relatedGuideSlugs: [
+      'what-are-the-rules-of-sudoku',
       'how-do-you-play-sudoku-with-numbers',
       'the-complete-guide-to-how-sudoku-works',
       '5-ways-to-approach-number-puzzles-like-sudoku',
@@ -161,6 +190,7 @@ export const guideRegistry: Record<string, GuideRegistryEntry> = {
       'box-line-reduction',
       'x-wing',
       'the-complete-guide-to-how-sudoku-works',
+      'what-are-the-rules-of-sudoku',
     ],
   },
   '5-ways-to-approach-number-puzzles-like-sudoku': {
