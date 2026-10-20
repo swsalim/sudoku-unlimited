@@ -13,7 +13,7 @@ brief: "the-complete-guide-to-how-sudoku-works"
 
 A Sudoku puzzle can look like a wall of random numbers. You find an empty square, spot two or three digits that seem possible, and then discover that the surrounding 3x3 box rules out the number you wanted. That confusion disappears once you treat every empty cell as three checks at once: its row, its column, and its box.
 
-So, how does Sudoku work? Sudoku works by placing the digits 1 through 9 so that no digit repeats in any row, column, or 3x3 box. The sections below turn that rule into a repeatable solving process you can use on paper or in a browser. For the opening placements only, follow [how to solve Sudoku step by step](/guides/how-to-solve-sudoku-step-by-step). Entering a digit is covered in [how to play Sudoku with numbers](/guides/how-do-you-play-sudoku-with-numbers). What Easy, Medium, and Hard change is in [what the difficulty levels mean](/guides/easy-vs-medium-vs-hard-sudoku).
+So, how does Sudoku work? Sudoku works by placing the digits 1 through 9 so that no digit repeats in any row, column, or 3x3 box. The sections below turn that rule into a repeatable solving process you can use on paper or in a browser. For the opening placements only, follow [how to solve Sudoku step by step](/guides/how-to-solve-sudoku-step-by-step). Entering a digit is covered in [how to play Sudoku with numbers](/guides/how-do-you-play-sudoku-with-numbers). What Easy, Medium, and Hard change is in [what the difficulty levels mean](/guides/easy-vs-medium-vs-hard-sudoku). If you want the motivation behind the habit, read [what is the point of Sudoku](/guides/what-is-the-point-of-sudoku).
 
 ## Quick answer
 
@@ -111,7 +111,7 @@ Locked candidates can produce the next single, but beginners don’t need them o
 
 ## How to use Sudoku pencil marks without creating confusion
 
-Sudoku pencil marks are temporary candidate notes, not miniature answers. Add them after checking the obvious singles; otherwise you can spend time writing candidates into cells that a simple scan would have solved.
+Sudoku pencil marks are temporary candidate notes, not miniature answers. Add them after checking the obvious singles; otherwise you can spend time writing candidates into cells that a simple scan would have solved. A beginner-oriented walkthrough of that note-taking loop is [how to use Sudoku pencil marks as a beginner](/guides/sudoku-pencil-marks).
 
 For each uncertain cell, check all three units before writing a note. Then update the note immediately after a related placement. If a cell shows {3, 7} and a 7 enters its row, erase 7 and leave {3}.
 
@@ -168,7 +168,7 @@ Online Sudoku removes the need to draw a grid, but it can also make random click
 4. Use notes for candidates that passed all three checks.
 5. Pause before using any available hint or undo control and identify the deduction you missed.
 
-SudokuUnlimited.com offers free web Sudoku puzzles across Easy to Expert levels, so you can start with a beginner-friendly board and move upward as the deductions become familiar. The site also lists Daily, Solver, and Killer Sudoku options, but standard Sudoku practice should come first if the three basic rules still feel new.
+SudokuUnlimited.com offers free web Sudoku puzzles across Easy to Expert levels, so you can start with a beginner-friendly board and move upward as the deductions become familiar. The site also lists Daily, Solver, and Killer Sudoku options, but standard Sudoku practice should come first if the three basic rules still feel new. For a single entry point to those levels and formats, see [Sudoku brain game: how to play free Sudoku online](/guides/sudoku-brain-game).
 
 Don’t assume an online board’s interface will maintain your notes or explain every move unless the site confirms those features. The logic belongs to the puzzle, not the button you press.
 
