@@ -2,7 +2,7 @@
 slug: "sudoku-pencil-marks"
 page_type: "blog"
 title: "How to Use Sudoku Pencil Marks as a Beginner"
-meta_title: "Sudoku Pencil Marks for Beginners | Sudoku Unlimited"
+meta_title: "Sudoku Pencil Marks for Beginners"
 meta_description: "Learn a clean method for writing Sudoku candidate notes, spotting singles, updating related cells, and using pencil marks without guesswork on every puzzle."
 primary_keyword: "sudoku pencil marks for beginners"
 secondary_keywords: []
