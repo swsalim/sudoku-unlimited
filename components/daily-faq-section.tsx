@@ -11,6 +11,10 @@ const faqs = [
     q: 'Is the daily the same on mobile and desktop?',
     a: 'Yes. The puzzle is generated from the date, so you can start on your phone and continue on a desktop with the same layout.',
   },
+  {
+    q: 'Can I play older daily puzzles?',
+    a: 'Yes. Every published daily has a permanent page under /daily/YYYY-MM-DD and a monthly calendar in the archive. Progress is saved per date on your device.',
+  },
 ] as const;
 
 export function DailyFaqSection() {

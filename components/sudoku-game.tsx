@@ -15,6 +15,13 @@ import {
   saveGame,
 } from '@/lib/storage/game-storage';
 import {
+  clearDailyGame,
+  loadDailyGame,
+  markDailyCompleted,
+  saveDailyGameProgress,
+} from '@/lib/storage/daily-progress-storage';
+import { numbersToGrid } from '@/lib/daily/grid';
+import {
   consumeHint,
   getAvailableHints,
   getHintRefreshMessage,
@@ -77,6 +84,10 @@ interface SudokuGameProps {
   globalDailyMode?: boolean;
   /** Long date for the header, e.g. "April 26, 2026" (UTC) */
   globalDailyDateLabel?: string;
+  /** UTC ISO date for per-day save + archive pages */
+  dailyIsoDate?: string;
+  /** Immutable puzzle from archive (server-provided) */
+  dailyPuzzle?: { puzzle: number[][]; solution: number[][] };
 }
 
 function formatTime(seconds: number) {
@@ -90,6 +101,8 @@ export function SudokuGame({
   variant = GameVariant.CLASSIC,
   globalDailyMode = false,
   globalDailyDateLabel,
+  dailyIsoDate,
+  dailyPuzzle,
 }: SudokuGameProps) {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [time, setTime] = useState(0);
@@ -107,6 +120,26 @@ export function SudokuGame({
   const [isZenMode, setIsZenMode] = useState(false);
   const [showZenToast, setShowZenToast] = useState(false);
   const isDailyMode = globalDailyMode;
+  const dailyDateKey =
+    dailyIsoDate ?? (isDailyMode ? getCalendarDateStringForDaily() : undefined);
+
+  const loadSavedState = useCallback((): SavedGameState | null => {
+    if (dailyDateKey) {
+      const daily = loadDailyGame(dailyDateKey);
+      if (daily) return daily;
+      if (isDailyMode && !dailyIsoDate) {
+        return loadGame();
+      }
+      return null;
+    }
+    return loadGame();
+  }, [dailyDateKey, dailyIsoDate, isDailyMode]);
+
+  const clearCurrentSave = useCallback(() => {
+    if (dailyDateKey) clearDailyGame(dailyDateKey);
+    else clearSavedGame();
+  }, [dailyDateKey]);
+
   const [combo, setCombo] = useState(0);
   const [showComboToast, setShowComboToast] = useState(false);
   const [comboToShow, setComboToShow] = useState(0);
@@ -165,7 +198,7 @@ export function SudokuGame({
   useEffect(() => {
     if (isInitialLoad.current) {
       isInitialLoad.current = false;
-      const saved = loadGame();
+      const saved = loadSavedState();
       if (saved) {
         setSavedGameOffer(saved);
       } else {
@@ -174,33 +207,31 @@ export function SudokuGame({
       }
     } else {
       // User switched difficulty - start fresh
-      clearSavedGame();
+      clearCurrentSave();
       setSavedGameOffer(null);
       startNewGame(initialDifficulty);
     }
     // We intentionally omit startNewGame from deps to avoid recreating
     // puzzles unnecessarily; this effect should only react to difficulty.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialDifficulty]);
+  }, [initialDifficulty, dailyIsoDate]);
 
   // Auto-save when game state changes (only for in-progress games)
   useEffect(() => {
     if (!gameState || !moveHistory.length || showGameOver || showVictory || savedGameOffer) {
       return;
     }
-    saveGame({
-      gameState,
-      time,
-      moveHistory,
-    });
-  }, [gameState, time, moveHistory, showGameOver, showVictory, savedGameOffer]);
+    const payload = { gameState, time, moveHistory };
+    if (dailyDateKey) saveDailyGameProgress(dailyDateKey, payload);
+    else saveGame(payload);
+  }, [gameState, time, moveHistory, showGameOver, showVictory, savedGameOffer, dailyDateKey]);
 
-  // Clear save when game ends (victory or game over)
+  // Clear in-progress save when game ends (victory or game over)
   useEffect(() => {
     if (showGameOver || showVictory) {
-      clearSavedGame();
+      clearCurrentSave();
     }
-  }, [showGameOver, showVictory]);
+  }, [showGameOver, showVictory, clearCurrentSave]);
 
   useEffect(() => {
     if (!gameState) return;
@@ -459,21 +490,35 @@ export function SudokuGame({
   }, [gameState, handleErase, handleNumberInput]);
 
   const startNewGame = (difficulty: Difficulty, options?: { dailyMode?: boolean }) => {
-    clearSavedGame();
+    clearCurrentSave();
     setSavedGameOffer(null);
 
     const useDaily = options?.dailyMode ?? isDailyMode;
-    const generated =
-      variant === GameVariant.KILLER
-        ? generateKillerGrid(difficulty)
-        : useDaily
-          ? generateSeededGrid(
-              difficulty,
-              getGlobalDailySeed(getCalendarDateStringForDaily(), difficulty),
-            )
-          : generateGrid(difficulty);
-    let { grid } = generated;
-    const { solution } = generated;
+    const isoForSeed = dailyDateKey ?? getCalendarDateStringForDaily();
+    let grid: Grid;
+    let solution: number[][];
+    let killerCages: ReturnType<typeof generateKillerGrid>['cages'] | undefined;
+
+    if (variant === GameVariant.KILLER) {
+      const generated = generateKillerGrid(difficulty);
+      grid = generated.grid;
+      solution = generated.solution;
+      killerCages = generated.cages;
+    } else if (useDaily && dailyPuzzle) {
+      grid = numbersToGrid(dailyPuzzle.puzzle);
+      solution = dailyPuzzle.solution;
+    } else if (useDaily) {
+      const generated = generateSeededGrid(
+        difficulty,
+        getGlobalDailySeed(isoForSeed, difficulty),
+      );
+      grid = generated.grid;
+      solution = generated.solution;
+    } else {
+      const generated = generateGrid(difficulty);
+      grid = generated.grid;
+      solution = generated.solution;
+    }
 
     // Dev helper: on /dev-demo, start with a nearly complete board (2 empty cells)
     if (typeof window !== 'undefined' && window.location.pathname === '/dev-demo') {
@@ -509,10 +554,7 @@ export function SudokuGame({
       solution,
       difficulty,
       variant,
-      killerCages:
-        variant === GameVariant.KILLER
-          ? (generated as ReturnType<typeof generateKillerGrid>).cages
-          : undefined,
+      killerCages: variant === GameVariant.KILLER ? killerCages : undefined,
       selectedCell: null,
       isPaused: false,
       isNotesMode: false,
@@ -665,7 +707,11 @@ export function SudokuGame({
     if (unlocks.themeIds.length > 0) {
       setNewlyUnlockedThemes(unlocks.themeIds);
     }
-  }, [showVictory, gameState, time, hintsUsed, usedNotes]);
+    if (isDailyMode && dailyDateKey) {
+      markDailyCompleted(dailyDateKey);
+      window.dispatchEvent(new Event('sudoku-daily-completed'));
+    }
+  }, [showVictory, gameState, time, hintsUsed, usedNotes, isDailyMode, dailyDateKey]);
 
   if (!gameState) {
     return (
@@ -707,7 +753,7 @@ export function SudokuGame({
                         size="sm"
                         variant="outline"
                         onClick={() => {
-                          clearSavedGame();
+                          clearCurrentSave();
                           setSavedGameOffer(null);
                           startNewGame(initialDifficulty);
                         }}>

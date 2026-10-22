@@ -30,6 +30,9 @@ export default function Footer({ className, ...props }: FooterProps) {
           <TransitionLink href="/daily" className="font-medium underline-offset-4 hover:underline">
             Daily Challenge
           </TransitionLink>
+          <TransitionLink href="/daily/archive" className="font-medium underline-offset-4 hover:underline">
+            Daily archive
+          </TransitionLink>
           <TransitionLink
             href="/sudoku-solver"
             className="font-medium underline-offset-4 hover:underline"
