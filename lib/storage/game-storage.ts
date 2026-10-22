@@ -73,14 +73,12 @@ export interface GameMoveForSave {
   score: number;
 }
 
-export function saveGame(state: {
+export function buildSavedGameState(state: {
   gameState: GameState;
   time: number;
   moveHistory: GameMoveForSave[];
-}): void {
-  if (typeof window === 'undefined') return;
-
-  const saved: SavedGameState = {
+}): SavedGameState {
+  return {
     gameState: {
       ...state.gameState,
       grid: gridToSerializable(state.gameState.grid),
@@ -92,8 +90,15 @@ export function saveGame(state: {
       grid: gridToSerializable(m.grid),
     })),
   };
+}
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+export function saveGame(state: {
+  gameState: GameState;
+  time: number;
+  moveHistory: GameMoveForSave[];
+}): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(buildSavedGameState(state)));
 }
 
 export function loadGame(): SavedGameState | null {

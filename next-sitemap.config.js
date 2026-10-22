@@ -11,6 +11,15 @@ const exclude = ['/dashboard*', '/404', '/api*', '/login', '/server-sitemap.xml'
 const fs = require('fs');
 const path = require('path');
 
+const dailyPuzzlesPath = path.join(__dirname, 'data/daily/puzzles.json');
+let dailyIsoDates = [];
+if (fs.existsSync(dailyPuzzlesPath)) {
+  const dailyArchive = JSON.parse(fs.readFileSync(dailyPuzzlesPath, 'utf8'));
+  dailyIsoDates = Object.keys(dailyArchive.puzzles ?? {}).sort();
+}
+const todayUtc = new Date().toISOString().slice(0, 10);
+const publishedDailyDates = dailyIsoDates.filter((d) => d <= todayUtc);
+
 const registrySrc = fs.readFileSync(path.join(__dirname, 'lib/guides/registry.ts'), 'utf8');
 const registryBlock = registrySrc.split('export const guideRegistry')[1] ?? '';
 const GUIDE_SLUGS = [...registryBlock.matchAll(/^\s+'?([a-z0-9-]+)'?\s*:\s*\{/gm)].map(
@@ -36,8 +45,22 @@ const config = {
   additionalPaths: async (cfg) => {
     const paths = [
       await cfg.transform(cfg, '/daily'),
+      await cfg.transform(cfg, '/daily/archive'),
       await cfg.transform(cfg, '/guides'),
     ];
+    for (const iso of publishedDailyDates) {
+      const entry = await cfg.transform(cfg, `/daily/${iso}`);
+      entry.lastmod = `${iso}T00:00:00.000Z`;
+      entry.changefreq = 'never';
+      paths.push(entry);
+    }
+    const monthKeys = new Set(publishedDailyDates.map((d) => d.slice(0, 7)));
+    for (const ym of monthKeys) {
+      const [y, m] = ym.split('-');
+      const entry = await cfg.transform(cfg, `/daily/${y}/${m}`);
+      entry.lastmod = `${todayUtc}T00:00:00.000Z`;
+      paths.push(entry);
+    }
     for (const slug of GUIDE_SLUGS) {
       const entry = await cfg.transform(cfg, `/guides/${slug}`);
       const block = registryBlock.match(
