@@ -6,6 +6,7 @@ import { getDatesInMonth, getTodayDailyIso } from '@/lib/daily/puzzle-store';
 import { Container } from '@/components/container';
 import { DailyBreadcrumbs } from '@/components/daily/daily-breadcrumbs';
 import { DailyCalendar } from '@/components/daily/daily-calendar';
+import { DailyMonthSchemaScript } from '@/components/daily/daily-month-schema-script';
 
 export function parseYearMonth(year: string, month: string): { year: number; month: number } | null {
   const y = Number(year);
@@ -19,7 +20,9 @@ export function DailyMonthView({ year, month }: { year: number; month: number })
   const label = formatMonthYearLabel(year, month);
   const today = getTodayDailyIso();
   return (
-    <Container className="py-10">
+    <>
+      <DailyMonthSchemaScript year={year} month={month} puzzleDates={puzzleDates} />
+      <Container className="py-10">
       <DailyBreadcrumbs
         items={[
           { label: 'Home', href: '/' },
@@ -47,5 +50,6 @@ export function DailyMonthView({ year, month }: { year: number; month: number })
         </Link>
       </p>
     </Container>
+    </>
   );
 }

@@ -8,7 +8,9 @@ import { openGraphImages, twitterImages } from '@/lib/open-graph';
 import { absoluteUrl } from '@/lib/utils';
 
 import { Container } from '@/components/container';
+import { DailyArchiveSchemaScript } from '@/components/daily/daily-archive-schema-script';
 import { DailyBreadcrumbs } from '@/components/daily/daily-breadcrumbs';
+import type { DailyArchiveMonthGroup } from '@/lib/schema/daily-archive-schema';
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Daily Sudoku archive – every past puzzle';
@@ -35,13 +37,27 @@ function groupDatesByMonth(dates: string[]): Map<string, string[]> {
   return map;
 }
 
+function buildMonthGroups(dates: string[]): DailyArchiveMonthGroup[] {
+  const byMonth = groupDatesByMonth(dates);
+  return [...byMonth.keys()]
+    .sort()
+    .reverse()
+    .map((ym) => {
+      const [y, m] = ym.split('-').map(Number);
+      return { year: y, month: m, dates: byMonth.get(ym) ?? [] };
+    });
+}
+
 export default function DailyArchivePage() {
   const dates = getAllDailyPuzzleDates().filter((d) => d <= getTodayDailyIso());
   const byMonth = groupDatesByMonth(dates);
   const monthKeys = [...byMonth.keys()].sort().reverse();
+  const monthGroups = buildMonthGroups(dates);
 
   return (
-    <Container className="py-10">
+    <>
+      <DailyArchiveSchemaScript monthGroups={monthGroups} />
+      <Container className="py-10">
       <DailyBreadcrumbs
         items={[
           { label: 'Home', href: '/' },
@@ -87,6 +103,7 @@ export default function DailyArchivePage() {
         })}
       </div>
     </Container>
+    </>
   );
 }
 
