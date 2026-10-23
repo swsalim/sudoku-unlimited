@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next';
 
-import { getAllGuides } from '@/lib/guides/load-guide';
-import { getStaticDailyDates, getTodayDailyIso } from '@/lib/daily/puzzle-store';
-import { absoluteUrl } from '@/lib/utils';
 import { Difficulty } from '@/types';
+
+import { getStaticDailyDates, getTodayDailyIso } from '@/lib/daily/puzzle-store';
+import { GUIDE_PUBLICATION_DATE, guideRegistry, guideSlugs } from '@/lib/guides/registry';
+import { absoluteUrl } from '@/lib/utils';
 
 const CLASSIC_DIFFICULTIES = [
   Difficulty.EASY,
@@ -27,7 +28,10 @@ const DEFAULT_PRIORITY = 0.7;
 
 function entry(
   path: string,
-  options?: { lastModified?: string | Date; changeFrequency?: MetadataRoute.Sitemap[number]['changeFrequency'] },
+  options?: {
+    lastModified?: string | Date;
+    changeFrequency?: MetadataRoute.Sitemap[number]['changeFrequency'];
+  },
 ): MetadataRoute.Sitemap[number] {
   return {
     url: absoluteUrl(path),
@@ -37,14 +41,27 @@ function entry(
   };
 }
 
+/**
+ * Keep one data source from taking down `/sitemap.xml`.
+ * A failure while listing guides or daily URLs drops that section and still returns the rest.
+ */
+export function safeSitemapEntries(
+  source: string,
+  load: () => MetadataRoute.Sitemap,
+): MetadataRoute.Sitemap {
+  try {
+    return load();
+  } catch (error) {
+    console.error(`[sitemap] failed to build ${source} entries`, error);
+    return [];
+  }
+}
+
 /** Published daily puzzle, archive, and month URLs (evaluated at request time). */
 export function getDailySitemapEntries(): MetadataRoute.Sitemap {
   const publishedDailyDates = getStaticDailyDates();
   const today = getTodayDailyIso();
-  const entries: MetadataRoute.Sitemap = [
-    entry('/daily'),
-    entry('/daily/archive'),
-  ];
+  const entries: MetadataRoute.Sitemap = [entry('/daily'), entry('/daily/archive')];
 
   const monthKeys = new Set(publishedDailyDates.map((d) => d.slice(0, 7)));
   for (const ym of monthKeys) {
@@ -68,8 +85,21 @@ export function getDailySitemapEntries(): MetadataRoute.Sitemap {
   return entries;
 }
 
-/** Static site routes plus guides; daily URLs come from {@link getDailySitemapEntries}. */
-export function getStaticSitemapEntries(): MetadataRoute.Sitemap {
+/**
+ * Guide URLs come from the in-memory registry (slug + dateModified).
+ * Do not read `content/guides` here: those files are not traced into the
+ * dynamic sitemap function, and a missing file 500s the whole response.
+ */
+export function getGuideSitemapEntries(): MetadataRoute.Sitemap {
+  return guideSlugs.map((slug) =>
+    entry(`/guides/${slug}`, {
+      lastModified: guideRegistry[slug]?.dateModified ?? GUIDE_PUBLICATION_DATE,
+    }),
+  );
+}
+
+/** Static marketing and play routes (no filesystem or archive access). */
+export function getCoreSitemapEntries(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [
     entry('/'),
     entry('/about'),
@@ -96,17 +126,18 @@ export function getStaticSitemapEntries(): MetadataRoute.Sitemap {
     entries.push(entry(`/kids-sudoku/${size}`));
   }
 
-  for (const guide of getAllGuides()) {
-    entries.push(
-      entry(`/guides/${guide.slug}`, {
-        lastModified: guide.dateModified,
-      }),
-    );
-  }
-
   return entries;
 }
 
+/** Static site routes plus guides; daily URLs come from {@link getDailySitemapEntries}. */
+export function getStaticSitemapEntries(): MetadataRoute.Sitemap {
+  return [...getCoreSitemapEntries(), ...getGuideSitemapEntries()];
+}
+
 export function getFullSitemapEntries(): MetadataRoute.Sitemap {
-  return [...getStaticSitemapEntries(), ...getDailySitemapEntries()];
+  return [
+    ...safeSitemapEntries('static pages', getCoreSitemapEntries),
+    ...safeSitemapEntries('guides', getGuideSitemapEntries),
+    ...safeSitemapEntries('daily', getDailySitemapEntries),
+  ];
 }
