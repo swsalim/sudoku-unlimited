@@ -89,7 +89,7 @@ function BadgeLink({
 export async function BadgeRelaySite({
   siteKey,
   apiBase,
-  revalidateSeconds = 30,
+  revalidateSeconds = 60 * 60 * 24 * 30,
   className,
 }: BadgeRelaySiteProps) {
   if (!siteKey.startsWith('site_live_')) {
